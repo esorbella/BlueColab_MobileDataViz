@@ -1,3 +1,1 @@
-# BlueColab_MobileDataViz
-
-Hi.
+# BlueCoLab_MobileDataViz

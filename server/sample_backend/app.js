@@ -1,7 +1,22 @@
+require('dotenv').config();
+
 const express = require("express");
 const fetch = require("node-fetch");
 
+const mongoose = require("mongoose");
+
 const app = express();
+
+mongoose.connect(process.env.MONGO_DB, {
+  useNewUrlParser: true
+});
+
+const SampleSchema = new mongoose.Schema({
+  text: String,
+  number: Number
+})
+
+const Sample = mongoose.model("Sample", SampleSchema);
 
 const port = process.env.PORT || 3000;
 /*
@@ -14,14 +29,14 @@ const port = process.env.PORT || 3000;
 by checking server date against last generated month report.
 */
 
-/*app.get("/", async function(req, res) {
-  res.status(200).send("Hi :)");
-});
-*/
-
 app.get("/", async function(req, res) {
   try {
+    //TEST TO CONNECT TO BLUECOLAB API REMOVE LATER
     const data = await findTurbidity();
+    //TEST TO CONNECT TO MONGODB DATABASE REMOVE LATER
+    const query = await Sample.find({text: "hello"});
+    console.log(query);
+    //SEND RESPONSE
     res.status(200).send(`Turbidity: ${data}`);
       }
   catch (error)

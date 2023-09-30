@@ -21,16 +21,18 @@ let endHour = "00";
 let endMinute = "00";
 let endSecond = "00";
 
+let source = "Alan";
+
 // don't change
 let utcOffsetHour = "00";
 let utcOffsetMinute = "00";
 
-// console.log(`https://api.bluecolab.cc/influx/sensordata/Alan/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`)
+// console.log(`https://api.bluecolab.cc/influx/sensordata/O/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`)
 
 let y = [];
 (async () => {
   try {                        
-   const response = await fetch(`https://api.bluecolab.cc/influx/sensordata/Alan/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`);
+   const response = await fetch(`https://api.bluecolab.cc/influx/sensordata/${source}/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`);
     if (!response.ok) {
       const error = new Error(`${response.url}: ${response.status} ${response.statusText}`);
       error.response = response;

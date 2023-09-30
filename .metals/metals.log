@@ -1,0 +1,33 @@
+2023.09.30 13:05:47 INFO  Started: Metals version 1.0.1 in folders 'C:\Users\Kenji\Documents\Server Side Programming Projects\BlueColab_MobileDataViz' for client Visual Studio Code 1.82.2.
+Sep 30, 2023 1:05:48 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.21.2 by Redgate
+Sep 30, 2023 1:05:48 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Sep 30, 2023 1:05:48 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.FlywayExecutor execute
+INFO: Database: jdbc:h2:file:C:\Users\Kenji\Documents\Server Side Programming Projects\BlueColab_MobileDataViz\.metals\metals (H2 2.1)
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory allAppliedMigrations
+INFO: Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.051s)
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory create
+INFO: Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": << Empty Schema >>
+Sep 30, 2023 1:05:49 PM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "1 - Create tables"
+Sep 30, 2023 1:05:50 PM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "2 - Server discovery"
+Sep 30, 2023 1:05:50 PM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "3 - Jar symbols"
+Sep 30, 2023 1:05:50 PM org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+INFO: Migrating schema "PUBLIC" to version "4 - Fingerprints"
+Sep 30, 2023 1:05:50 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Successfully applied 4 migrations to schema "PUBLIC", now at version v4 (execution time 00:00.105s)
+2023.09.30 13:05:50 INFO  time: initialize in 2.89s
+2023.09.30 13:05:53 WARN  Build server is not auto-connectable.
+2023.09.30 13:05:53 WARN  no build tool detected in workspace 'C:\Users\Kenji\Documents\Server Side Programming Projects\BlueColab_MobileDataViz'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2023.09.30 13:28:56 INFO  Shutting down server
+2023.09.30 13:28:56 INFO  shutting down Metals
+2023.09.30 13:28:56 INFO  Exiting server

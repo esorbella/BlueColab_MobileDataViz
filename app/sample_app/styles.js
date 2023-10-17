@@ -11,7 +11,7 @@ export default StyleSheet.create({
         backgroundColor: '#333333',
         alignItems: 'center',
         width: deviceWidth,
-        height: 2*deviceHeight,
+        height: 1.55*deviceHeight,
     },
     mainButton: {
         borderRadius: 8,
@@ -22,6 +22,9 @@ export default StyleSheet.create({
         borderWidth: 2,
         borderColor: 'white',
         justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        right: 0
     },
     mainButtonText: {
         color: 'black',
@@ -32,5 +35,6 @@ export default StyleSheet.create({
         borderWidth: 1,
         marginTop: deviceHeight / 20,
         height: deviceHeight / 3,
+        position: 'relative'
     }
 });

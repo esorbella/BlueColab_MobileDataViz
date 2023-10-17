@@ -10,8 +10,14 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
-const HomeScreen = () => {
-  return (
+export default function HomeScreen({navigation}) {
+const handleStoryScreenPress = () => {
+        navigation.navigate('Our Story')
+    }
+const handleHistoricalDataScreenPress = () => {
+        navigation.navigate('HistoricalData')
+    }
+ return (
     <ScrollView>
       <View style={styles.container}>
         <TouchableHighlight
@@ -31,7 +37,7 @@ const HomeScreen = () => {
         </TouchableHighlight>
         <TouchableHighlight
           onPress={() => {
-            alert("Pressed Historical Data");
+            handleHistoricalDataScreenPress();
           }}
         >
           <View style={styles.buttonContainer}>
@@ -77,6 +83,4 @@ const HomeScreen = () => {
       </View>
     </ScrollView>
   );
-};
-
-export default HomeScreen;
+}

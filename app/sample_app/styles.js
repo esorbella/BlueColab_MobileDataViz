@@ -33,7 +33,7 @@ export default StyleSheet.create({
         width: deviceWidth / 1.05,
         borderColor: '#787878',
         borderWidth: 1,
-        marginTop: deviceHeight / 20,
+        marginTop: deviceHeight / 80,
         height: deviceHeight / 3,
         position: 'relative'
     }

@@ -65,21 +65,7 @@ const handleHistoricalDataScreenPress = () => {
             </View>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight
-          onPress={() => {
-            alert("Pressed Local Wildlife");
-          }}
-        >
-          <View style={styles.buttonContainer}>
-            <Image
-              source={{ uri: "https://i.imgur.com/MMXvBLp.jpg" }}
-              style={{ height: "100%", width: "auto" }}
-            />
-            <View style={styles.mainButton}>
-              <Text style={styles.mainButtonText}>Choate Pond Wildlife</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
+        
       </View>
     </ScrollView>
   );

@@ -5,10 +5,11 @@ import styles from "../../styles";
 
 export default function HistoricalDataScreen({ navigation }) {
   return (
+    
         <WebView
           source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/' }}
-          style={{ flex: .5 }}
+          style={{ flex: 1 }}
         />
-    
+      
   );
 }

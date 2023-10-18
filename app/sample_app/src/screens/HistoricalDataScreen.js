@@ -6,7 +6,7 @@ import styles from "../../styles";
 export default function HistoricalDataScreen({ navigation }) {
   return (
         <WebView
-          source={{ uri: 'https://gallery.shinyapps.io/113-bookmarking-url/' }}
+          source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/' }}
           style={{ flex: 1 }}
         />
   );

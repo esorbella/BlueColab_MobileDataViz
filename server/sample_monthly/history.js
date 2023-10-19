@@ -2,10 +2,6 @@ const express = require("express");
 const fetch = require("node-fetch");
 const fs = require('fs');
 
-const outputPort = express();
-outputPort.listen(3030, () => console.log("Server is attempting to startup...serving at localhost:3030"));
-outputPort.use(express.static('quickSite'));
-
 // update these parameters to change days
 let startYear = "2023";
 let startMonth = "09";
@@ -27,9 +23,6 @@ let sourceB = "Alan";
 // don't change
 let utcOffsetHour = "00";
 let utcOffsetMinute = "00";
-
-// console.log(`https://api.bluecolab.cc/influx/sensordata/O/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`)
-
 
 (async () => {
   try {                        
@@ -58,29 +51,29 @@ let utcOffsetMinute = "00";
   }
 })();
 
-(async () => {
-  try {                        
-   const response = await fetch(`https://colabprod01.pace.edu/api/influx/sensordata/${sourceB}/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`);
-    if (!response.ok) {
-      const error = new Error(`${response.url}: ${response.status} ${response.statusText}`);
-      error.response = response;
-      throw error;
-    }
-    const data = await response.json();
-    // console.log(data);
-    fs.writeFile(`data/myfile${sourceB}.json`, JSON.stringify(data,null," "), (err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log('File saved successfully!');
-        }
-      });
+// (async () => {
+//   try {                        
+//    const response = await fetch(`https://colabprod01.pace.edu/api/influx/sensordata/${sourceB}/idk/range?stream=false&start_date=${startYear}-${startMonth}-${startDay}T${startHour}%3A${startMinute}%3A${startSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}&stop_date=${endYear}-${endMonth}-${endDay}T${endHour}%3A${endMinute}%3A${endSecond}%2B${utcOffsetHour}%3A${utcOffsetMinute}`);
+//     if (!response.ok) {
+//       const error = new Error(`${response.url}: ${response.status} ${response.statusText}`);
+//       error.response = response;
+//       throw error;
+//     }
+//     const data = await response.json();
+//     // console.log(data);
+//     fs.writeFile(`data/myfile${sourceB}.json`, JSON.stringify(data,null," "), (err) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           console.log('File saved successfully!');
+//         }
+//       });
     
-  }
+//   }
 
 
-  catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-})();
+//   catch (error) {
+//     console.log(error);
+//     process.exit(1);
+//   }
+// })();

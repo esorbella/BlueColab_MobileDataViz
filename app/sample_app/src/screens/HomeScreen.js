@@ -12,17 +12,21 @@ import styles from "../../styles";
 
 export default function HomeScreen({navigation}) {
 const handleStoryScreenPress = () => {
-        navigation.navigate('OurStory')
+        navigation.navigate('Story')
     }
 const handleHistoricalDataScreenPress = () => {
-        navigation.navigate('HistoricalData')
+        navigation.navigate('Hub')
     }
+const handleWeatherScreenPress = () => {
+      navigation.navigate('Weather')
+  }
+  
  return (
     <ScrollView>
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => {
-            alert("Pressed Our Story");
+            handleStoryScreenPress();
           }}
         >
           <View style={styles.buttonContainer}>
@@ -52,7 +56,7 @@ const handleHistoricalDataScreenPress = () => {
         </TouchableHighlight>
         <TouchableHighlight
           onPress={() => {
-            alert("Pressed Local Weather");
+            handleWeatherScreenPress();
           }}
         >
           <View style={styles.buttonContainer}>

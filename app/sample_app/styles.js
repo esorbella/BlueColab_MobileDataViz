@@ -12,6 +12,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: deviceWidth,
         height: 1.55*deviceHeight,
+
     },
     mainButton: {
         borderRadius: 8,

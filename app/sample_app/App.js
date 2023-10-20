@@ -1,13 +1,19 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "./src/screens/HomeScreen";
-import HistoricalDataScreen from "./src/screens/HistoricalDataScreen";
+import DataChoate from "./src/screens/Data screens/DataChoate";
+import WeatherScreen from "./src/screens/WeatherScreen";
+import StoryScreen from "./src/screens/StoryScreen";
+import DataHub from "./src/screens/DataHub";
 import React, { useEffect, useState } from 'react'
 
 const navigator = createStackNavigator(
   {
     Home: HomeScreen,
-    HistoricalData: HistoricalDataScreen
+    Choate: DataChoate,
+    Weather: WeatherScreen,
+    Story: StoryScreen,
+    Hub: DataHub,
   },
   {
     initialRouteName: "Home",

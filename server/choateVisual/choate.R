@@ -7,31 +7,92 @@ library(zoo)
 ui <- fluidPage(
   titlePanel("Dropdown"),
   plotOutput("distPlot"),
-  selectInput("dataset", "Choose a dataset:", 
-                  choices = c("Conductivity", "Dissolved Oxygen", "Salinity", "Temperature", "Turbidity", "pH")),
+  selectInput("year", "Choose a Year:",
+    choices = c("2023", "2021", "2022")
+  ),
+  selectInput("month", "Choose a Month:",
+    choices = c(
+      "January", "February", "March", "April", "May",
+      "June", "July", "August", "September", "October",
+      "November", "December"
+    )
+  ),
+  selectInput("dataset", "Choose a dataset:",
+    choices = c(
+      "Conductivity", "Dissolved Oxygen",
+      "Salinity", "Temperature", "Turbidity", "pH"
+    )
+  )
 )
 
 # Define server logic
 server <- function(input, output) {
-  mydata <- fromJSON("https://colabprod01.pace.edu/api/influx/sensordata/Alan/idk/range?stream=false&start_date=2023-09-01T00%3A00%3A00%2B00%3A00&stop_date=2023-09-30T00%3A00%3A00%2B00%3A00")
-
   output$distPlot <- renderPlot({
+    start_year <- switch(input$year,
+      "2023" = "2023",
+      "2022" = "2022",
+      "2021" = "2021"
+    )
+    start_month <- switch(input$month,
+      "January" = "01",
+      "February" = "02",
+      "March" = "03",
+      "April" = "04",
+      "May" = "05",
+      "June" = "06",
+      "July" = "07",
+      "August" = "08",
+      "September" = "09",
+      "October" = "10",
+      "November" = "11",
+      "December" = "12"
+    )
+    start_day <- "01"
+    end_year <- start_year
+    end_month <- start_month
+    end_day <- switch(input$month,
+      "January" = "31",
+      "February" = "28",
+      "March" = "31",
+      "April" = "30",
+      "May" = "31",
+      "June" = "30",
+      "July" = "31",
+      "August" = "31",
+      "September" = "30",
+      "October" = "31",
+      "November" = "30",
+      "December" = "31"
+    )
+
+    my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
+      "sensordata/Alan/idk/range?stream=false",
+      "&start_date=", start_year, "-", start_month,
+      "-", start_day, "T00%3A00%3A00%2B00%3A00",
+      "&stop_date=", end_year, "-", end_month,
+      "-", end_day, "T23%3A59%3A59%2B00%3A00",
+      sep = ""
+    )) # R doesn't have string concatenation
+
     data <- switch(input$dataset,
-                   "Conductivity" = mydata$sensors$Cond,
-                   "Dissolved Oxygen" = mydata$sensors$DOpct,
-                   "Salinity" = mydata$sensors$Sal,
-                   "Temperature" = mydata$sensors$Temp,
-                   "Turbidity" = mydata$sensors$Turb,
-                   "pH" = mydata$sensors$pH
-                   )
+      "Conductivity" = my_data$sensors$Cond,
+      "Dissolved Oxygen" = my_data$sensors$DOpct,
+      "Salinity" = my_data$sensors$Sal,
+      "Temperature" = my_data$sensors$Temp,
+      "Turbidity" = my_data$sensors$Turb,
+      "pH" = my_data$sensors$pH
+    )
 
-    plot(rollmean(data,5), type="l",col="red")
+    color <- switch(input$dataset,
+      "Conductivity" = "red",
+      "Dissolved Oxygen" = "blue",
+      "Salinity" = "orange",
+      "Temperature" = "green",
+      "Turbidity" = "purple",
+      "pH" = "brown"
+    )
 
-    # x <- data[[1]]
-    # bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # hist(x, breaks = bins, col = 'darkgray', border = 'white',
-    #      main = paste("Histogram of", input$dataset))
+    plot(rollmean(data, 5), type = "l", col = color)
   })
 }
 

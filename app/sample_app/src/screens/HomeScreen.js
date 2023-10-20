@@ -14,7 +14,7 @@ export default function HomeScreen({navigation}) {
 const handleStoryScreenPress = () => {
         navigation.navigate('Story')
     }
-const handleHistoricalDataScreenPress = () => {
+const handleDataHubPress = () => {
         navigation.navigate('Hub')
     }
 const handleWeatherScreenPress = () => {
@@ -41,7 +41,7 @@ const handleWeatherScreenPress = () => {
         </TouchableHighlight>
         <TouchableHighlight
           onPress={() => {
-            handleHistoricalDataScreenPress();
+            handleDataHubPress();
           }}
         >
           <View style={styles.buttonContainer}>

@@ -1,20 +1,22 @@
+# Libraries
 library(shiny)
 library(jsonlite)
 library(zoo)
 library(ggplot2)
-library(shinyWidgets) # requires install.packages(shinyWidgets)
+library(shinyWidgets)
 library(dataRetrieval)
-
-
 
 # Define UI
 ui <- fluidPage(
+    setBackgroundColor("#333333"),
+    # title
     titlePanel(h1("Monthly Report",
         align = "center",
         style = "color: white;"
     )),
+    # outputs
     plotOutput("distPlot"),
-    setBackgroundColor("#333333"),
+    # dropdowns
     selectInput("location", "Choose a Location:",
         choices = c("Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)", "Choate Pond")
     ),
@@ -82,7 +84,8 @@ server <- function(input, output) {
             "December" = "31"
         )
 
-        if (location == "Choate") {
+        if (location == "Choate") { # if Choate data is selected
+            # gets Data from Blue CoLab
             my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
                 "sensordata/Alan/idk/range?stream=false",
                 "&start_date=", start_year, "-", start_month,
@@ -92,6 +95,7 @@ server <- function(input, output) {
                 sep = ""
             )) # R doesn't have string concatenation
 
+            # gets specific parameter
             data <- switch(input$dataset,
                 "Conductivity" = my_data$sensors$Cond,
                 "Dissolved Oxygen" = my_data$sensors$DOpct,
@@ -101,10 +105,12 @@ server <- function(input, output) {
                 "pH" = my_data$sensors$pH
             )
         } else {
+            # otherwise use USGS API
             my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(start_year, "-", start_month, "-", start_day, sep = ""), endDate = paste(end_year, "-", end_month, "-", end_day, sep = ""))
         }
 
-        if (location == "01376307") {
+        
+        if (location == "01376307") { # Yonkers
             data <- switch(input$dataset,
                 "Conductivity" = my_data$X_00095_00000,
                 "Dissolved Oxygen" = my_data$X_00300_00000,
@@ -113,7 +119,7 @@ server <- function(input, output) {
                 "Turbidity" = my_data$X_63680_00000,
                 "pH" = my_data$X_00400_00000
             )
-        } else if (location == "01374019") {
+        } else if (location == "01374019") { # West Point
             data <- switch(input$dataset,
                 "Conductivity" = my_data$X_.HRECOS._00095_00000,
                 "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
@@ -122,7 +128,7 @@ server <- function(input, output) {
                 "Turbidity" = my_data$X_.HRECOS._63680_00000,
                 "pH" = my_data$X_.HRECOS._00400_00000
             )
-        } else if (location == "01372043") {
+        } else if (location == "01372043") { # Pough.
             data <- switch(input$dataset,
                 "Conductivity" = my_data$X_Surface_00095_00000,
                 "Dissolved Oxygen" = my_data$X_Surface_00300_00000,

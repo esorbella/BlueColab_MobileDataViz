@@ -26,6 +26,7 @@ ui <- fluidPage(
 
   # outputs
   plotOutput("distPlot"),
+  uiOutput("example"),
 
   # dropdowns for location & time
   selectInput("location", "Choose a Location:",
@@ -102,6 +103,15 @@ server <- function(input, output) {
       "October" = "31",
       "November" = "30",
       "December" = "31"
+    )
+    
+    y_value_axis <- switch(input$dataset,
+           "Conductivity" = "Conductivity",
+           "Dissolved Oxygen" = "Dissolved Oxygen",
+           "Salinity" = "Salinity",
+           "Temperature" ="Temperature" ,
+           "Turbidity" = "Turbidity",
+           "pH" = "pH"
     )
 
     # logic to get appropriate data
@@ -185,16 +195,23 @@ server <- function(input, output) {
       "pH" = "brown"
     )
 
+    output$example <- renderUI({
+      HTML(paste0("<div style='color:white;'>Montly summary</div><br/><div style='color:white;'>Min: ",min(data$value),"</div><br/>",
+      "<div style='color:white;'>Max: ",max(data$value),"</div><br/>",
+      "<div style='color:white;'>Average: ",mean(data$value),"</div><br/>"
+      ))
+      
+    })
 
     if (type == "rd") {
       rolling_mean <- rollmean(data$value, 5)
-
+  
       ggplot(
         data = data.frame(Date = 1:length(rolling_mean), Value = rolling_mean),
         aes(x = Date, y = Value)
       ) +
         geom_line(color = color, linewidth = 1.5) +
-        labs(x = "Date", y = "Value") +
+        labs(x = "Date", y = y_value_axis) +
         theme(
           plot.background = element_rect(fill = "#333333"),
           panel.background = element_rect(fill = "#333333"),
@@ -203,7 +220,8 @@ server <- function(input, output) {
           panel.grid.minor = element_line(color = "#444444"),
           axis.text = element_text(color = "white"),
           axis.title = element_text(color = "white")
-        )
+        ) 
+      
     } else {
       # Compute daily max and min
       # print(data)
@@ -224,12 +242,26 @@ server <- function(input, output) {
       # plot(rollmean(data, 5), type = "l", col = color)
 
       plot <- ggplot() +
-        geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "pink") +
-        geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "blue", size = 1) +
-        labs(title = "Daily Min/Max/Average", x = "Timestamp", y = "Value")
+        geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "gray") +
+        geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = color, size = 1) +
+        labs(title = "Daily Min/Max/Average", x = "Timestamp", y = y_value_axis) +
+       theme(
+        plot.background = element_rect(fill = "#333333"),
+        panel.background = element_rect(fill = "#333333"),
+        panel.border = element_rect(color = "#444444", fill = NA, size = 2),
+        panel.grid.major = element_line(color = "#444444"),
+        panel.grid.minor = element_line(color = "#444444"),
+        axis.text = element_text(color = "white"),
+        axis.title = element_text(color = "white")
+      )
       print(plot)
     }
   })
+
+
+   
+
+
 }
 
 # Run the application

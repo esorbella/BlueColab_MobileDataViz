@@ -10,18 +10,18 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
-export default function HomeScreen({navigation}) {
-const handleStoryScreenPress = () => {
-        navigation.navigate('Story')
-    }
-const handleDataHubPress = () => {
-        navigation.navigate('Hub')
-    }
-const handleWeatherScreenPress = () => {
-      navigation.navigate('Weather')
+export default function HomeScreen({ navigation }) {
+  const handleStoryScreenPress = () => {
+    navigation.navigate('Story')
   }
-  
- return (
+  const handleDataHubPress = () => {
+    navigation.navigate('Hub')
+  }
+  const handleWeatherScreenPress = () => {
+    navigation.navigate('Weather')
+  }
+
+  return (
     <ScrollView>
       <View style={styles.container}>
         <TouchableHighlight
@@ -30,8 +30,9 @@ const handleWeatherScreenPress = () => {
           }}
         >
           <View style={styles.buttonContainer}>
+            
             <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164227285323362406/PXL_20221014_204618892.png?ex=65427227&is=652ffd27&hm=a4bd499fa34356dba736c42cd0daf8913e1c172dd1ffdca29e04fc7cce688d6c&" }}
+              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164227285323362406/PXL_20221014_204618892.png" }}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -61,7 +62,7 @@ const handleWeatherScreenPress = () => {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://i.imgur.com/MMXvBLp.jpg" }}
+              source={{ uri: "https://images.nationalgeographic.org/image/upload/t_edhub_resource_key_image/v1638886301/EducationHub/photos/lightning-bolts.jpg" }}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -69,7 +70,7 @@ const handleWeatherScreenPress = () => {
             </View>
           </View>
         </TouchableHighlight>
-        
+
       </View>
     </ScrollView>
   );

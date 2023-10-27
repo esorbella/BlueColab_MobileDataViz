@@ -24,22 +24,38 @@ export default function DataHub({ navigation }) {
           }}
         >
           <View style={styles.buttonContainer}>
+          <Image
+              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193015496796/choatepnd.PNG" }}
+              style={{ height: "100%", width: "auto" }}
+            />
             <View style={styles.mainButton}>
               <Text style={styles.mainButtonText}>Choate Data</Text>
             </View>
           </View>
         </TouchableHighlight>
         <View style={styles.buttonContainer}>
+        <Image
+              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193271357522/pough.PNG" }}
+              style={{ height: "100%", width: "auto" }}
+            />
           <View style={styles.mainButton}>
             <Text style={styles.mainButtonText}>Poughkeepsie Data</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
+        <Image
+              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193535594586/westpoint.PNG" }}
+              style={{ height: "100%", width: "auto" }}
+            />
           <View style={styles.mainButton}>
             <Text style={styles.mainButtonText}>West Point Data</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
+        <Image
+              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193896300645/yonkers.PNG" }}
+              style={{ height: "100%", width: "auto" }}
+            />
           <View style={styles.mainButton}>
             <Text style={styles.mainButtonText}>Yonkers Data</Text>
           </View>

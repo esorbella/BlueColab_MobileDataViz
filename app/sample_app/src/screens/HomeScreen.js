@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Weather')
   }
   const handleWildlifeScreenPress = () => {
-    navigation.navigate('WIldlife')
+    navigation.navigate('Wildlife')
   }
   return (
     <ScrollView>
@@ -79,7 +79,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://th.bing.com/th/id/R.8a6285bd63687233c53b2c7aa8e40f8d?rik=uopynz9NTZ4qkg&riu=http%3a%2f%2fwww.conservativestewards.org%2fwp-content%2fuploads%2f2016%2f05%2fTurtles_sm.jpg&ehk=%2fznrbzjqkZVqCYzTQV0qQZ0id7H7ADNbc%2fOx7p0wxz4%3d&risl=&pid=ImgRaw&r=0" }}
+              source={require('../../assets/homescreen/turtle.png')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>

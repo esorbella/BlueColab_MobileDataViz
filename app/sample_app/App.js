@@ -5,8 +5,8 @@ import DataChoate from "./src/screens/Data screens/DataChoate";
 import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub";
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState } from 'react'
+import WildlifeScreen from "./src/screens/WildlifeScreen";
 
 const navigator = createStackNavigator(
   {
@@ -15,12 +15,13 @@ const navigator = createStackNavigator(
     Weather: WeatherScreen,
     Story: StoryScreen,
     Hub: DataHub,
+    Wildlife: WildlifeScreen
   },
   {
     initialRouteName: "Home",
     defaultNavigationOptions: {
       title: "ChoateVisual",
-    },
+    }
   }
 );
 

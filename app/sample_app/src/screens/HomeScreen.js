@@ -21,8 +21,9 @@ export default function HomeScreen({ navigation }) {
   const handleWeatherScreenPress = () => {
     navigation.navigate('Weather')
   }
-  
-
+  const handleWildlifeScreenPress = () => {
+    navigation.navigate('Wildlife')
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -36,9 +37,9 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             
-            <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164227285323362406/PXL_20221014_204618892.png" }}
-              style={{ height: "100%", width: "auto" }}
+            <Image  
+                source={require('../../assets/homescreen/PXL_20221014_204618892.png')}
+                style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
               <Text style={styles.mainButtonText}>Our Story</Text>
@@ -55,7 +56,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164228432427753512/notTransparent.jpg?ex=65427338&is=652ffe38&hm=e2ea18de95f08c70d5cb91fa680c6100f589b454e64334f22699a1460065be30&" }}
+              source={require('../../assets/homescreen/notTransparent.jpg')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -74,7 +75,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://images.nationalgeographic.org/image/upload/t_edhub_resource_key_image/v1638886301/EducationHub/photos/lightning-bolts.jpg" }}
+              source={require('../../assets/homescreen/lightning-bolts.jpg')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -82,10 +83,21 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
-
-        <Text style={styles.paragraphText}>Click above to see the local weather and how it affects water quality</Text>
-        
-
+        <TouchableHighlight
+          onPress={() => {
+            handleWildlifeScreenPress();
+          }}
+        >
+          <View style={styles.buttonContainer}>
+            <Image
+              source={require('../../assets/homescreen/turtle.png')}
+              style={{ height: "100%", width: "auto" }}
+            />
+            <View style={styles.mainButton}>
+              <Text style={styles.mainButtonText}>Local Wildlife</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
       </View>
     </ScrollView>
   );

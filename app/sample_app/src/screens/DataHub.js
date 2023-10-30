@@ -25,7 +25,7 @@ export default function DataHub({ navigation }) {
         >
           <View style={styles.buttonContainer}>
           <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193015496796/choatepnd.PNG" }}
+              source={require('../../assets/datahub/choate.png')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -35,8 +35,8 @@ export default function DataHub({ navigation }) {
         </TouchableHighlight>
         <View style={styles.buttonContainer}>
         <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193271357522/pough.PNG" }}
-              style={{ height: "100%", width: "auto" }}
+             source={require('../../assets/datahub/pough.png')}
+             style={{ height: "100%", width: "auto" }}
             />
           <View style={styles.mainButton}>
             <Text style={styles.mainButtonText}>Poughkeepsie Data</Text>
@@ -44,7 +44,7 @@ export default function DataHub({ navigation }) {
         </View>
         <View style={styles.buttonContainer}>
         <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193535594586/westpoint.PNG" }}
+              source={require('../../assets/datahub/westpoint.png')}
               style={{ height: "100%", width: "auto" }}
             />
           <View style={styles.mainButton}>
@@ -53,7 +53,7 @@ export default function DataHub({ navigation }) {
         </View>
         <View style={styles.buttonContainer}>
         <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193896300645/yonkers.PNG" }}
+              source={require('../../assets/datahub/yonkers.png')}
               style={{ height: "100%", width: "auto" }}
             />
           <View style={styles.mainButton}>

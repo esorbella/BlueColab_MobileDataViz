@@ -23,23 +23,25 @@ export default function DataHub({ navigation }) {
             handleChoatePress();
           }}
         >
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainer}> 
           <Image
               source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193015496796/choatepnd.PNG" }}
               style={{ height: "100%", width: "auto" }}
             />
-            <View style={styles.mainButton}>
-              <Text style={styles.mainButtonText}>Choate Data</Text>
+            <View style={styles.dataButton}>
+              <Text style={styles.dataButtonText}>Choate Data</Text>
             </View>
           </View>
         </TouchableHighlight>
+
+
         <View style={styles.buttonContainer}>
         <Image
               source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193271357522/pough.PNG" }}
               style={{ height: "100%", width: "auto" }}
             />
-          <View style={styles.mainButton}>
-            <Text style={styles.mainButtonText}>Poughkeepsie Data</Text>
+          <View style={styles.dataButton}>
+            <Text style={styles.dataButtonText}>Poughkeepsie Data</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -47,8 +49,8 @@ export default function DataHub({ navigation }) {
               source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193535594586/westpoint.PNG" }}
               style={{ height: "100%", width: "auto" }}
             />
-          <View style={styles.mainButton}>
-            <Text style={styles.mainButtonText}>West Point Data</Text>
+          <View style={styles.dataButton}>
+            <Text style={styles.dataButtonText}>West Point Data</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -56,8 +58,8 @@ export default function DataHub({ navigation }) {
               source={{ uri: "https://cdn.discordapp.com/attachments/936750465562083384/1167380193896300645/yonkers.PNG" }}
               style={{ height: "100%", width: "auto" }}
             />
-          <View style={styles.mainButton}>
-            <Text style={styles.mainButtonText}>Yonkers Data</Text>
+          <View style={styles.dataButton}>
+            <Text style={styles.dataButtonText}>Yonkers Data</Text>
           </View>
         </View>
       </View>

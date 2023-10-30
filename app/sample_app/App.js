@@ -5,7 +5,8 @@ import DataChoate from "./src/screens/Data screens/DataChoate";
 import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+
 
 const navigator = createStackNavigator(
   {

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
+
 export default function HomeScreen({ navigation }) {
   const handleStoryScreenPress = () => {
     navigation.navigate('Story')
@@ -20,10 +21,14 @@ export default function HomeScreen({ navigation }) {
   const handleWeatherScreenPress = () => {
     navigation.navigate('Weather')
   }
+  
 
   return (
     <ScrollView>
       <View style={styles.container}>
+
+       
+
         <TouchableHighlight
           onPress={() => {
             handleStoryScreenPress();
@@ -40,6 +45,9 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>Click above to see our story</Text>
+        
         <TouchableHighlight
           onPress={() => {
             handleDataHubPress();
@@ -55,6 +63,10 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>Click the image above to see the data of different water sources in westchester</Text>
+        
+
         <TouchableHighlight
           onPress={() => {
             handleWeatherScreenPress();
@@ -70,6 +82,9 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>Click above to see the local weather and how it affects water quality</Text>
+        
 
       </View>
     </ScrollView>

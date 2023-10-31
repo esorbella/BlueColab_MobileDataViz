@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
+
 export default function HomeScreen({ navigation }) {
   const handleStoryScreenPress = () => {
     navigation.navigate('Story')
@@ -21,11 +22,14 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Weather')
   }
   const handleWildlifeScreenPress = () => {
-    navigation.navigate('WIldlife')
+    navigation.navigate('Wildlife')
   }
   return (
     <ScrollView>
       <View style={styles.container}>
+
+       
+
         <TouchableHighlight
           onPress={() => {
             handleStoryScreenPress();
@@ -33,15 +37,18 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             
-            <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164227285323362406/PXL_20221014_204618892.png" }}
-              style={{ height: "100%", width: "auto" }}
+            <Image  
+                source={require('../../assets/homescreen/PXL_20221014_204618892.png')}
+                style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
               <Text style={styles.mainButtonText}>Our Story</Text>
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>Click above to see our story</Text>
+        
         <TouchableHighlight
           onPress={() => {
             handleDataHubPress();
@@ -49,7 +56,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1164228432427753512/notTransparent.jpg?ex=65427338&is=652ffe38&hm=e2ea18de95f08c70d5cb91fa680c6100f589b454e64334f22699a1460065be30&" }}
+              source={require('../../assets/homescreen/notTransparent.jpg')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -57,6 +64,10 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>Click the image above to see the data of different water sources in westchester</Text>
+        
+
         <TouchableHighlight
           onPress={() => {
             handleWeatherScreenPress();
@@ -64,7 +75,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://images.nationalgeographic.org/image/upload/t_edhub_resource_key_image/v1638886301/EducationHub/photos/lightning-bolts.jpg" }}
+              source={require('../../assets/homescreen/lightning-bolts.jpg')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -79,7 +90,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={{ uri: "https://th.bing.com/th/id/R.8a6285bd63687233c53b2c7aa8e40f8d?rik=uopynz9NTZ4qkg&riu=http%3a%2f%2fwww.conservativestewards.org%2fwp-content%2fuploads%2f2016%2f05%2fTurtles_sm.jpg&ehk=%2fznrbzjqkZVqCYzTQV0qQZ0id7H7ADNbc%2fOx7p0wxz4%3d&risl=&pid=ImgRaw&r=0" }}
+              source={require('../../assets/homescreen/turtle.png')}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>

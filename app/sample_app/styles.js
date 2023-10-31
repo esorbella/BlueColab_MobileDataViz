@@ -65,5 +65,8 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito',
     },
+    pictureSub:{
+        color: 'white',
+    }
 
 });

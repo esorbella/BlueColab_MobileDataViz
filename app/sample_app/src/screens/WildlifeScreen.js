@@ -25,7 +25,7 @@ export default function WildlifeScreen({navigation}) {
                 style={{width: windowWidth * 0.9, aspectRatio: 2097/1227}} 
                 // Set width to 90% of screen width and maintain aspect ratio
             />
-            <Text>Largemouth bass (Micropterus salmoides)</Text>
+            <Text style = {styles.pictureSub}>Largemouth bass (Micropterus salmoides)</Text>
         </View>
     )
 }

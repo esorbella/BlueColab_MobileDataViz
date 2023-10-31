@@ -10,36 +10,31 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
-
 export default function HomeScreen({ navigation }) {
   const handleStoryScreenPress = () => {
-    navigation.navigate('Story')
-  }
+    navigation.navigate("Story");
+  };
   const handleDataHubPress = () => {
-    navigation.navigate('Hub')
-  }
+    navigation.navigate("Hub");
+  };
   const handleWeatherScreenPress = () => {
-    navigation.navigate('Weather')
-  }
+    navigation.navigate("Weather");
+  };
   const handleWildlifeScreenPress = () => {
-    navigation.navigate('Wildlife')
-  }
+    navigation.navigate("Wildlife");
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
-
-       
-
         <TouchableHighlight
           onPress={() => {
             handleStoryScreenPress();
           }}
         >
           <View style={styles.buttonContainer}>
-            
-            <Image  
-                source={require('../../assets/homescreen/PXL_20221014_204618892.png')}
-                style={{ height: "100%", width: "auto" }}
+            <Image
+              source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+              style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
               <Text style={styles.mainButtonText}>Our Story</Text>
@@ -48,7 +43,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableHighlight>
 
         <Text style={styles.paragraphText}>Click above to see our story</Text>
-        
+
         <TouchableHighlight
           onPress={() => {
             handleDataHubPress();
@@ -56,7 +51,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={require('../../assets/homescreen/notTransparent.jpg')}
+              source={require("../../assets/homescreen/notTransparent.jpg")}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -65,8 +60,10 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableHighlight>
 
-        <Text style={styles.paragraphText}>Click the image above to see the data of different water sources in westchester</Text>
-        
+        <Text style={styles.paragraphText}>
+          Click the image above to see the data of different water sources in
+          westchester
+        </Text>
 
         <TouchableHighlight
           onPress={() => {
@@ -75,7 +72,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={require('../../assets/homescreen/lightning-bolts.jpg')}
+              source={require("../../assets/homescreen/lightning-bolts.jpg")}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -83,6 +80,12 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+
+        <Text style={styles.paragraphText}>
+          {" "}
+          Click above to see the local weather and how it affect water
+        </Text>
+
         <TouchableHighlight
           onPress={() => {
             handleWildlifeScreenPress();
@@ -90,7 +93,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={styles.buttonContainer}>
             <Image
-              source={require('../../assets/homescreen/turtle.png')}
+              source={require("../../assets/homescreen/turtle.png")}
               style={{ height: "100%", width: "auto" }}
             />
             <View style={styles.mainButton}>
@@ -98,6 +101,7 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableHighlight>
+        <Text style = {styles.paragraphText}>Click above to read about Choate and Hudson Wildlife</Text>
       </View>
     </ScrollView>
   );

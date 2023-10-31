@@ -8,6 +8,7 @@ import DataHub from "./src/screens/DataHub";
 import React, { useEffect, useState } from 'react'
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 
+
 const navigator = createStackNavigator(
   {
     Home: HomeScreen,

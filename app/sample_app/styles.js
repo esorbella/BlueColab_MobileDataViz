@@ -2,17 +2,20 @@ import { Dimensions, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 
+
 let deviceHeight = Dimensions.get('window').height;
 let deviceWidth = Dimensions.get('window').width;
 
 
 export default StyleSheet.create({
+
+
     container: {
         flex: 1,
         backgroundColor: '#333333',
         alignItems: 'center',
         width: deviceWidth,
-        height: 1.55*deviceHeight,
+        
 
     },
     mainButton: {
@@ -57,9 +60,10 @@ export default StyleSheet.create({
     },
     paragraphText: {
         color: 'white',
-        fontFamily: 'Nunito-black',
         fontSize: 30,
         margin: 20,
         textAlign: 'center',
+        fontFamily: 'Nunito',
     },
+
 });

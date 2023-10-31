@@ -7,7 +7,7 @@ export default function DataYonk({ navigation }) {
   return (
     <View style = {styles.container}>
       
-    <Text>Yonkers data</Text>
+    <Text style = {styles.paragraphText}>Yonkers data</Text>
 
    </View>
   );

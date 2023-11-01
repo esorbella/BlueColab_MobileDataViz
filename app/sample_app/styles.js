@@ -60,10 +60,13 @@ export default StyleSheet.create({
     },
     paragraphText: {
         color: 'white',
-        fontSize: 30,
-        margin: 20,
+        fontSize: deviceHeight/25,
+        marginTop: deviceHeight/25,
+        marginBottom: deviceHeight/25,
+        marginLeft: deviceWidth/15,
+        marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
+        fontFamily: 'sans-serif',
     },
     pictureSub:{
         color: 'white',

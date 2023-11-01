@@ -42,7 +42,10 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableHighlight>
 
-        <Text style={styles.paragraphText}>Click above to see our story</Text>
+        <Text style={styles.paragraphText}>Blue CoLab is a part of the 
+        Seidenberg school of CSIS and its ultimate purpose is to make 
+        viable and reliable ways to give clean water to those across the 
+        world. Click on the image above to find out more</Text>
 
         <TouchableHighlight
           onPress={() => {
@@ -61,7 +64,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableHighlight>
 
         <Text style={styles.paragraphText}>
-          Click the image above to see the data of different water sources in
+          Click the image above to see the data from different water sources in
           westchester
         </Text>
 
@@ -82,8 +85,8 @@ export default function HomeScreen({ navigation }) {
         </TouchableHighlight>
 
         <Text style={styles.paragraphText}>
-          {" "}
-          Click above to see the local weather and how it affect water
+          Take a look at the local weather and how it affects water
+          quality
         </Text>
 
         <TouchableHighlight

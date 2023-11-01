@@ -7,7 +7,7 @@ export default function DataPough({ navigation }) {
   return (
     <View style = {styles.container}>
       
-    <Text>Put Poughkeepsie data here</Text>
+    <Text style = {styles.paragraphText}>Put Poughkeepsie data here</Text>
 
    </View>
   );

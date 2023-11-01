@@ -7,7 +7,7 @@ export default function DataWP({ navigation }) {
   return (
     <View style = {styles.container}>
       
-    <Text>WP data here</Text>
+    <Text style = {styles.paragraphText}>WP data here</Text>
 
    </View>
     

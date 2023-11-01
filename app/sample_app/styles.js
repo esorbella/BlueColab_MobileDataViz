@@ -67,6 +67,7 @@ export default StyleSheet.create({
     },
     pictureSub:{
         color: 'white',
+        fontSize: 16,
     }
 
 });

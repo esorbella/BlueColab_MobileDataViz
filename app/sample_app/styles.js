@@ -29,18 +29,20 @@ export default StyleSheet.create({
         justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
-        right: 0
+        right: 0,
     },
     mainButtonText: {
         color: 'black',
     },
     buttonContainer: {
-        width: deviceWidth,
+        width: deviceWidth/1.05,
+        backgroundColor: '#0E2B58',
         borderColor: '#787878',
+        borderRadius: 20,
         borderWidth: 1,
-        marginTop: deviceHeight / 80,
-        height: deviceHeight / 3,
-        position: 'relative',
+        marginTop: deviceHeight / 50,
+        marginBottom: deviceHeight/50,
+        
     },
     dataButton: {
         borderRadius: 8,
@@ -60,14 +62,25 @@ export default StyleSheet.create({
     },
     paragraphText: {
         color: 'white',
-        fontSize: 30,
-        margin: 20,
+        fontSize: deviceHeight/25,
+        marginTop: deviceHeight/100,
+        marginBottom: deviceHeight/20,
+        marginLeft: deviceWidth/15,
+        marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
+        fontFamily: 'sans-serif',
     },
     pictureSub:{
         color: 'white',
         fontSize: 16,
-    }
+    },
+    imageContainer:{
+        height: deviceHeight/3,
+        width: "90%",
+        margin: deviceWidth/30,
+        borderColor: "black",
+        borderWidth: 2,
+        borderRadius: 10,
+    },
 
 });

@@ -9,6 +9,7 @@ library(dplyr)
 library(lubridate)
 library(plotly)
 library(ggthemes)
+library(shinycssloaders)
 
 # Define UI
 ui <- fluidPage(
@@ -21,7 +22,7 @@ ui <- fluidPage(
   )),
   
   # outputs
-  plotlyOutput("distPlot"),
+  plotlyOutput("distPlot") %>% withSpinner(color="#FFFFFF"),
   uiOutput("example"),
   
   # dropdowns for location & time

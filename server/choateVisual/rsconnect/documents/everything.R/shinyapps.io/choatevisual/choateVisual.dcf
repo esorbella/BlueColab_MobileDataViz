@@ -5,9 +5,9 @@ account: choatevisual
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10236285
-bundleId: 7868110
+bundleId: 7878960
 url: https://choatevisual.shinyapps.io/choateVisual/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: compare.R|test.js
+ignoredFiles: compare.R|race/locally.json|test.js

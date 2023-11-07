@@ -93,7 +93,7 @@ let allMonthsAlan = [];
             }
             const monthlyData = await response.json();
 
-            allMonthsAlan.push(monthlyData);
+            allMonthsAlan.push({"data" : monthlyData});
             console.log('Data retrieved from Alan (called in dataRetrieval.js)!');
 
             //writes it to file

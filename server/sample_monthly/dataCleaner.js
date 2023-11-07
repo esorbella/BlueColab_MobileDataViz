@@ -19,7 +19,7 @@ async function cleanData(filePath) {
             let months = JSON.parse(data);
            // for (let month of months) {
             months.map( (month) =>  {
-                month.map((measurement) => {
+                month.data.map((measurement) => {
                     // convert temperate
                     measurement.sensors.TempF = convertToFahrenheit(measurement.sensors.Temp);
                 })

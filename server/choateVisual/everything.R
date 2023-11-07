@@ -229,7 +229,6 @@ server <- function(input, output) {
       group_by(timestamp) %>%
       summarise(daily_avg = mean(value))
     
-    # this is a comment
     
     # plot(rollmean(data, 5), type = "l", col = color)
     

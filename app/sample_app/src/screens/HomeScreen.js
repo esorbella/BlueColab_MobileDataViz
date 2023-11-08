@@ -26,72 +26,69 @@ export default function HomeScreen({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
+
         <View style={styles.buttonContainer}>
           <Image
             source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
             style={styles.imageContainer}
           />
-          <Text style={styles.paragraphText}>
+          <Text style={styles.storyParagraphText}>
           Blue CoLab is a part of the Seidenberg school of CSIS and its ultimate
           purpose is to make viable and reliable ways to give clean water to
           those across the world. 
-        </Text>
+          </Text>
           <TouchableHighlight
             onPress={() => {
               handleStoryScreenPress();
             }}
           >
-            <View style={styles.mainButton}>
+            <View style={styles.storyButton}>
               <Text style={styles.mainButtonText}>Learn more...</Text>
             </View>
           </TouchableHighlight>
         </View>
-
        
-
-        <View style={styles.buttonContainer}>
+        <View style={styles.graphButtonContainer}>
           <Image
             source={require("../../assets/homescreen/notTransparent.jpg")}
             style={styles.imageContainer}
           />
-           <Text style={styles.paragraphText}>
-          Click the image above to see the data from different water sources in
-          westchester
+           <Text style={styles.graphParagraphText}>
+          Visualizing the statistics of our local water sources is important for 
+          determining the water quality. We aim to optimize this process so one day
+          we can put it into our drinking water sources. 
         </Text>
           <TouchableHighlight
             onPress={() => {
               handleDataHubPress();
             }}
           >
-            <View style={styles.mainButton}>
-              <Text style={styles.mainButtonText}>Historical Data</Text>
+            <View style={styles.graphButton}>
+              <Text style={styles.mainButtonText}>See Historical Data...</Text>
             </View>
           </TouchableHighlight>
         </View>
-
         
-
-        <View style={styles.buttonContainer}>
+        <View style={styles.weatherButtonContainer}>
           <Image
             source={require("../../assets/homescreen/lightning-bolts.jpg")}
             style={styles.imageContainer}
           />
           <Text style={styles.paragraphText}>
-          Take a look at the local weather and how it affects water quality
-        </Text>
+          Holy shit we need to make this page functional
+          </Text>
           <TouchableHighlight
             onPress={() => {
               handleWeatherScreenPress();
             }}
           >
-            <View style={styles.mainButton}>
+            <View style={styles.weatherButton}>
               <Text style={styles.mainButtonText}>Local Weather</Text>
             </View>
           </TouchableHighlight>
         </View>
-
-
-        <View style={styles.buttonContainer}>
+        
+        <View style={styles.animalButtonContainer}>
           <Image
             source={require("../../assets/homescreen/turtle.png")}
             style={styles.imageContainer}
@@ -104,12 +101,12 @@ export default function HomeScreen({ navigation }) {
               handleWildlifeScreenPress();
             }}
           >
-            <View style={styles.mainButton}>
+            <View style={styles.wildlifeButton}>
               <Text style={styles.mainButtonText}>Local Wildlife</Text>
             </View>
           </TouchableHighlight>
         </View>
-
+        
        
       </View>
     </ScrollView>

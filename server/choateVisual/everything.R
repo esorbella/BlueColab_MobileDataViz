@@ -9,6 +9,7 @@ library(dplyr)
 library(lubridate)
 library(plotly)
 library(ggthemes)
+library(shinycssloaders)
 
 # Define UI
 ui <- fluidPage(
@@ -21,7 +22,7 @@ ui <- fluidPage(
   )),
   
   # outputs
-  plotlyOutput("distPlot"),
+  plotlyOutput("distPlot") %>% withSpinner(color="#FFFFFF"),
   uiOutput("example"),
   
   # dropdowns for location & time
@@ -227,7 +228,6 @@ server <- function(input, output) {
     data_avg <- data %>%
       group_by(timestamp) %>%
       summarise(daily_avg = mean(value))
-    
     
     
     # plot(rollmean(data, 5), type = "l", col = color)

@@ -75,6 +75,18 @@ export default StyleSheet.create({
     },
     buttonContainer: {
         width: deviceWidth/1.01,
+        
+        backgroundColor: '#0E2B58',
+        borderColor: '#787878',
+        borderRadius: 20,
+        borderWidth: 1,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight/200,
+        
+    },
+    graphImage: {
+        width: deviceWidth/1.01,
+        height: deviceHeight/4,
         backgroundColor: '#0E2B58',
         borderColor: '#787878',
         borderRadius: 20,

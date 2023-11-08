@@ -32,7 +32,7 @@ export default function DataHub({ navigation }) {
             handleChoatePress();
           }}
         >
-          <View style={styles.buttonContainer}>
+          <View style={styles.graphImage}>
             <Image
               source={require("../../assets/datahub/choate.png")}
               style={{ height: "100%", width: "auto" }}
@@ -48,7 +48,7 @@ export default function DataHub({ navigation }) {
             handlePoughPress();
           }}
         >
-          <View style={styles.buttonContainer}>
+          <View style={styles.graphImage}>
             <Image
               source={require("../../assets/datahub/pough.png")}
               style={{ height: "100%", width: "auto" }}
@@ -64,7 +64,7 @@ export default function DataHub({ navigation }) {
             handleWPPress();
           }}
         >
-          <View style={styles.buttonContainer}>
+          <View style={styles.graphImage}>
             <Image
               source={require("../../assets/datahub/westpoint.png")}
               style={{ height: "100%", width: "auto" }}
@@ -79,7 +79,7 @@ export default function DataHub({ navigation }) {
             handleYonkPress();
           }}
         >
-          <View style={styles.buttonContainer}>
+          <View style={styles.graphImage}>
             <Image
               source={require("../../assets/datahub/yonkers.png")}
               style={{ height: "100%", width: "auto" }}

@@ -94,8 +94,11 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
            <Text style={styles.paragraphText}>
-          Click above to read about Choate and Hudson Wildlife
-        </Text>
+          Animals need clean water too. Measuring water quality is important
+          to the wildlife as well as it can cause health problems for them.
+          Learn about how Wildlife in Choate Pond and the Hudson River is affect
+          by changes in certain statistics in water quality.
+          </Text>
           <TouchableHighlight
             onPress={() => {
               handleWildlifeScreenPress();

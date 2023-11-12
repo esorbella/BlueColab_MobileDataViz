@@ -16,7 +16,7 @@ ui <- fluidPage(
   setBackgroundColor("#333333"),
   
   # title
-  titlePanel(h1("Monthly Water Report",
+  titlePanel(h1("Monthly Weather Report",
                 align = "center",
                 style = "color: white;"
   )),
@@ -27,7 +27,7 @@ ui <- fluidPage(
   
   # dropdowns for location & time
   selectInput("location", "Choose a Location:",
-              choices = c("Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
+              choices = c("Choate Pond"),
               selectize = FALSE
   ),
   selectInput("firstYear", "Choose a Start Year:",
@@ -49,19 +49,12 @@ ui <- fluidPage(
               ),
               selectize = FALSE
   ),
-
-  selectInput("secondYear", "Choose a End Year:",
-              choices = c("2023", "2021", "2022"),
-              selectize = FALSE
-  ),
-  selectInput("secondMonth", "Choose a End Month:",
+  selectInput("weatherdataset", "Choose a weather dataset:",
               choices = c(
-                "January", "February", "March", "April", "May",
-                "June","July","August", "September", "October",
-                "November", "December"
+                "Rain", "Air Temperature", "Relative Humidity",
+                "Wind Speed", "Barometric Pressure", "Vapor Pressure"
               ),
-              selectize = FALSE
-  )
+              selectize = FALSE)
 
 )
 
@@ -69,9 +62,6 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$distPlot <- renderPlotly({
     location <- switch(input$location,
-                       "Yonkers (01376307)" = "01376307",
-                       "West Point (01374019)" = "01374019",
-                       "Poughkeepsie (01372043)" = "01372043",
                        "Choate Pond" = "Choate"
     )
     first_start_year <- switch(input$firstYear,
@@ -111,12 +101,12 @@ server <- function(input, output) {
                       "December" = "31"
     )
     
-    second_start_year <- switch(input$secondYear,
+    second_start_year <- switch(input$firstYear,
                          "2023" = "2023",
                          "2022" = "2022",
                          "2021" = "2021"
     )
-    second_start_month <- switch(input$secondMonth,
+    second_start_month <- switch(input$firstMonth,
                           "January" = "01",
                           "February" = "02",
                           "March" = "03",
@@ -130,9 +120,9 @@ server <- function(input, output) {
                           "November" = "11",
                           "December" = "12"
     )
-    second_end_year <- second_start_year
-    second_end_month <- second_start_month
-    second_end_day <- switch(input$secondMonth,
+    second_end_year <- first_start_year
+    second_end_month <- first_start_month
+    second_end_day <- switch(input$firstMonth,
                       "January" = "31",
                       "February" = "28",
                       "March" = "31",
@@ -184,7 +174,7 @@ server <- function(input, output) {
       )
 
       second_my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
-                                "sensordata/Alan/idk/range?stream=false",
+                                "sensordata/Odin/range?stream=false",
                                 "&start_date=", second_start_year, "-", second_start_month,
                                 "-", start_day, "T00%3A00%3A00%2B00%3A00",
                                 "&stop_date=", second_end_year, "-", second_end_month,
@@ -199,55 +189,12 @@ server <- function(input, output) {
       second_data <- data.frame(
         timestamp = second_my_data$timestamp,
         value = switch(input$dataset,
-                       "Conductivity" = second_my_data$sensors$Cond,
-                       "Dissolved Oxygen" = second_my_data$sensors$DOpct,
-                       "Salinity" = second_my_data$sensors$Sal,
-                       "Temperature" = second_my_data$sensors$Temp,
-                       "Turbidity" = second_my_data$sensors$Turb,
-                       "pH" = second_my_data$sensors$pH
-        )
-      )
-    } else {
-      # otherwise use USGS API
-      my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(first_start_year, "-", first_start_month, "-", start_day, sep = ""), endDate = paste(first_end_year, "-", first_end_month, "-", first_end_day, sep = ""))
-      my_data$timestamp <- as.Date(my_data$dateTime)
-    }
-    
-    if (location == "01376307") { # Yonkers
-      # gets specific parameter
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-                       "Conductivity" = my_data$X_00095_00000,
-                       "Dissolved Oxygen" = my_data$X_00300_00000,
-                       "Salinity" = my_data$X_90860_00000,
-                       "Temperature" = my_data$X_00010_00000,
-                       "Turbidity" = my_data$X_63680_00000,
-                       "pH" = my_data$X_00400_00000
-        )
-      )
-    } else if (location == "01374019") { # West Point
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-                       "Conductivity" = my_data$X_.HRECOS._00095_00000,
-                       "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
-                       "Salinity" = my_data$X_.HRECOS._90860_00000,
-                       "Temperature" = my_data$X_.HRECOS._00010_00000,
-                       "Turbidity" = my_data$X_.HRECOS._63680_00000,
-                       "pH" = my_data$X_.HRECOS._00400_00000
-        )
-      )
-    } else if (location == "01372043") { # Pough.
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-                       "Conductivity" = my_data$X_Surface_00095_00000,
-                       "Dissolved Oxygen" = my_data$X_Surface_00300_00000,
-                       "Salinity" = my_data$X_Surface_90860_00000,
-                       "Temperature" = my_data$X_Surface_00010_00000,
-                       "Turbidity" = my_data$X_Surface_63680_00000,
-                       "pH" = my_data$X_Surface_00400_00000
+                       "Rain" = second_my_data$sensors$Rain,
+                       "Air Temperature" = second_my_data$sensors$AirTemp,
+                       "Relative Humidity" = second_my_data$sensors$RelHumid,
+                       "Wind Speed" = second_my_data$sensors$WindSpeed,
+                       "Barometric Pressure" = second_my_data$sensors$BaroPressure,
+                       "Vapor Pressure" = second_my_data$sensors$VaporPressure
         )
       )
     }
@@ -264,34 +211,12 @@ server <- function(input, output) {
     
     output$example <- renderUI({
       HTML(paste0(
-        "<div style='color:white;'>Montly summary</div><br/><div style='color:white;'>Min: ", min(data$value), "</div><br/>",
+        "<div style='color:white;'>Monthly summary</div><br/><div style='color:white;'>Min: ", min(data$value), "</div><br/>",
         "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
         "<div style='color:white;'>Average: ", mean(data$value), "</div><br/>"
       ))
     })
-    
-    # if (type == "rd") {
-    #   rolling_mean <- rollmean(data$value, 5)
-    
-    #   ggplot(
-    #     data = data.frame(Date = 1:length(rolling_mean), Value = rolling_mean),
-    #     aes(x = Date, y = Value)
-    #   ) +
-    #     geom_line(color = color, linewidth = 1.5) +
-    #     labs(x = "Date", y = y_value_axis) +
-    #     theme(
-    #       plot.background = element_rect(fill = "#333333"),
-    #       panel.background = element_rect(fill = "#333333"),
-    #       panel.border = element_rect(color = "#444444", fill = NA, size = 2),
-    #       panel.grid.major = element_line(color = "#444444"),
-    #       panel.grid.minor = element_line(color = "#444444"),
-    #       axis.text = element_text(color = "white"),
-    #       axis.title = element_text(color = "white")
-    #     )
-    
-    # } else {
-    # Compute daily max and min
-    # print(data)
+
     data_maxmin <- data %>%
       group_by(timestamp) %>%
       summarise(
@@ -316,9 +241,6 @@ server <- function(input, output) {
       group_by(timestamp) %>%
       summarise(daily_avg = mean(value))
     
-    
-    
-    # plot(rollmean(data, 5), type = "l", col = color)
     
     plot <- ggplot() +
       geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +

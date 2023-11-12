@@ -16,7 +16,7 @@ ui <- fluidPage(
   setBackgroundColor("#333333"),
   
   # title
-  titlePanel(h1("Monthly Report",
+  titlePanel(h1("Monthly Water Report",
                 align = "center",
                 style = "color: white;"
   )),

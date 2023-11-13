@@ -22,7 +22,14 @@ const sensorDataSchema = new mongoose.Schema({
   MonthYear: String
 });
 
+const wqiSchema = new mongoose.Schema({
+  Location: String,
+  wqi: Number,
+  MonthYear: String
+})
+
 const ChoateWaterDoc = mongoose.model("ChoateWaterDoc", sensorDataSchema);
+const wqiDoc = mongoose.model("ChoateWQIDocs", wqiSchema);
 
 const port = process.env.PORT || 3000;
 /*
@@ -52,8 +59,8 @@ app.get("/", async function(req, res) {
 
 app.get("/WQI/Choate/10-2023", async function(req, res) {
   try{
-    const wqi = await findWQI();
-    res.status(200).send(`${wqi}`);
+    const wqi = await returnWQI();
+    res.json(wqi);
   }
   catch (error)
   {
@@ -78,10 +85,16 @@ async function findWQI()
     wqiArray.push(wqi);
   });
   const sum = wqiArray.reduce((acc, num) => acc + num, 0);
-  console.log(sum);
   const average = sum / wqiArray.length;
-  console.log(average);
-  return average;
+  
+  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "10-2023"})
+
+};
+
+async function returnWQI()
+{
+  const doc = await wqiDoc.find({MonthYear: "10-2023"}).exec();
+  return doc[0];
 }
 
 //sample function called when root is accessed.

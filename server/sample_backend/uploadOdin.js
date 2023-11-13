@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const axios = require('axios');
 const mongoose = require('mongoose');
 
@@ -6,7 +8,7 @@ const mongooseOptions = {
   useNewUrlParser: true,
 };
 
-mongoose.connect('', mongooseOptions);
+mongoose.connect(process.env.MONGO_DB, mongooseOptions);
 const db = mongoose.connection;
 
 // Define a mongoose schema for your data
@@ -17,10 +19,15 @@ const sensorDataSchema = new mongoose.Schema({
   WindSpeed: Number,
   BaroPressure: Number,
   VaporPressure: Number,
-  timestamp: String
+  timestamp: String,
+  MonthYear: String
 });
 
 const SensorData = mongoose.model('ChoateWeatherDoc', sensorDataSchema);
+
+const currentYear = new Date().getFullYear().toString();
+var month = new Date().getMonth() + 1;
+var currentMonth = month.toString().padStart(2, '0');
 
 async function fetchDataAndSaveToMongo(startDate, stopDate) {
   try {
@@ -37,7 +44,8 @@ async function fetchDataAndSaveToMongo(startDate, stopDate) {
       RelHumid: item.sensors.RelHumid,
       WindSpeed: item.sensors.WindSpeed,
       BaroPressure: item.sensors.BaroPressure,
-      VaporPressure: item.sensors.VaporPressure
+      VaporPressure: item.sensors.VaporPressure,
+      MonthYear: '10-' + currentYear 
     })));
 
     console.log(`Data for ${startDate} to ${stopDate} saved to MongoDB.`);
@@ -45,9 +53,6 @@ async function fetchDataAndSaveToMongo(startDate, stopDate) {
     console.error('Error fetching or saving data:', error.message);
   }
 }
-
-const currentYear = new Date().getFullYear().toString();
-const month = new Date().getMonth().toString();
 
 /*for(let month = 1; month < 13; month++){
     var dayCount = 0;
@@ -63,9 +68,9 @@ const month = new Date().getMonth().toString();
     {
         dayCount = 31;
     }*/
-    for (let day = 1; day < 30; day++) {
-        const startDate = `${currentYear}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
-        const stopDate = `${currentYear}-${month.toString().padStart(2, '0')}-${(day + 1).toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
+    for (let day = 16; day < 32; day++) {
+        const startDate = `${currentYear}-10-${day.toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
+        const stopDate = `${currentYear}-10-${(day + 1).toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
     
         fetchDataAndSaveToMongo(startDate, stopDate);
     }

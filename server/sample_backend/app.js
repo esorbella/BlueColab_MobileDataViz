@@ -57,9 +57,9 @@ app.get("/", async function(req, res) {
   }
 });
 
-app.get("/WQI/Choate/10-2023", async function(req, res) {
+app.get("/WQI/Choate/:month", async function(req, res) {
   try{
-    const wqi = await returnWQI();
+    const wqi = await returnWQI(req.params.month);
     res.json(wqi);
   }
   catch (error)
@@ -75,10 +75,10 @@ async function findWQI()
    const DOw = 0.34;
    const PHw = 0.22;
    const TEMPw = 0.2;
-   const COw = 0.08;
+   const COw = 0.05;
    const TURw = 0.16;
    
-   var docs = await ChoateWaterDoc.find({MonthYear: "10-2023"}).exec();
+   var docs = await ChoateWaterDoc.find({MonthYear: "01-2023"}).exec();
    docs.forEach(function(doc){
     wqi =  doc.DOpct * DOw + doc.Cond * COw + doc.Temp * 
     TEMPw + doc.Turb * TURw + doc.pH * PHw;
@@ -87,13 +87,13 @@ async function findWQI()
   const sum = wqiArray.reduce((acc, num) => acc + num, 0);
   const average = sum / wqiArray.length;
   
-  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "10-2023"})
-
+  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "01-2023"})
+  return "yay you did it";
 };
 
-async function returnWQI()
+async function returnWQI(month)
 {
-  const doc = await wqiDoc.find({MonthYear: "10-2023"}).exec();
+  const doc = await wqiDoc.find({MonthYear: month}).exec();
   return doc[0];
 }
 

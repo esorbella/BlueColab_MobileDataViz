@@ -173,28 +173,22 @@ server <- function(input, output) {
         )
       )
 
-      second_my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
-                                "sensordata/Odin/range?stream=false",
-                                "&start_date=", second_start_year, "-", second_start_month,
-                                "-", start_day, "T00%3A00%3A00%2B00%3A00",
-                                "&stop_date=", second_end_year, "-", second_end_month,
-                                "-", second_end_day, "T23%3A59%3A59%2B00%3A00",
-                                sep = ""
+      second_my_data <- fromJSON(paste("http://localhost:3000/Weather/Choate/10-2023"
       )) # R doesn't have string concatenation
       
       # second_my_data$timestamp <- as.Date(second_my_data$timestamp,format = "%Y-%m-%d")
-      second_my_data$timestamp <- as.Date(my_data$timestamp, format = "%Y-%m-%d")
+      second_my_data$timestamp <- as.Date(second_my_data$timestamp, format = "%Y-%m-%d")
 
       # gets specific parameter
       second_data <- data.frame(
         timestamp = second_my_data$timestamp,
         value = switch(input$dataset,
-                       "Rain" = second_my_data$sensors$Rain,
-                       "Air Temperature" = second_my_data$sensors$AirTemp,
-                       "Relative Humidity" = second_my_data$sensors$RelHumid,
-                       "Wind Speed" = second_my_data$sensors$WindSpeed,
-                       "Barometric Pressure" = second_my_data$sensors$BaroPressure,
-                       "Vapor Pressure" = second_my_data$sensors$VaporPressure
+                       "Rain" = second_my_data$Rain,
+                       "Air Temperature" = second_my_data$AirTemp,
+                       "Relative Humidity" = second_my_data$RelHumid,
+                       "Wind Speed" = second_my_data$WindSpeed,
+                       "Barometric Pressure" = second_my_data$BaroPressure,
+                       "Vapor Pressure" = second_my_data$VaporPressure
         )
       )
     }
@@ -242,30 +236,15 @@ server <- function(input, output) {
       summarise(daily_avg = mean(value))
     
     
-    plot <- ggplot() +
-      geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
-      theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
-      geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-      
-      geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
-      geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-      
-      theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
-      labs(title = "Daily Min / Max / Average", x = "Month-Day", y = "Measurement") +
-      theme(
-        text = element_text(family = "Nunito", color = "White"),
-        axis.text.x = element_text(size = 10, color = "white"),
-        axis.text.y = element_text(size = 10, color = "white")
-      )
-    
-    #    ggplotly(plot)
-    
-    interactive_plot <- ggplotly(plot) %>%
-      layout(hovermode = "x unified")
-    
-    interactive_plot
-  })
-}
+    output$my_plot <- renderPlot({
+  req(second_my_data)  # Ensure data is available
 
+  ggplot(second_data, aes(x = timestamp, y = value)) +
+    geom_line() +
+    labs(title = input$dataset,
+         x = "Timestamp",
+         y = "Value")
+})
+  })}
 # Run the application
 shinyApp(ui = ui, server = server)

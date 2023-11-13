@@ -11,12 +11,18 @@ mongoose.connect(process.env.MONGO_DB, {
   useNewUrlParser: true
 });
 
-const SampleSchema = new mongoose.Schema({
-  text: String,
-  number: Number
-})
+const sensorDataSchema = new mongoose.Schema({
+  Cond: Number,
+  DOpct: Number,
+  Sal: Number,
+  Temp: Number,
+  Turb: Number,
+  pH: Number,
+  timestamp: String,
+  MonthYear: String
+});
 
-const Sample = mongoose.model("Sample", SampleSchema);
+const ChoateWaterDoc = mongoose.model("ChoateWaterDoc", sensorDataSchema);
 
 const port = process.env.PORT || 3000;
 /*
@@ -33,8 +39,6 @@ app.get("/", async function(req, res) {
   try {
     //TEST TO CONNECT TO BLUECOLAB API REMOVE LATER
     const data = await findTurbidity();
-    //TEST TO CONNECT TO MONGODB DATABASE REMOVE LATER
-    const query = await Sample.find({text: "hello"});
     console.log(query);
     //SEND RESPONSE
     res.status(200).send(`Turbidity: ${data}`);
@@ -46,6 +50,39 @@ app.get("/", async function(req, res) {
   }
 });
 
+app.get("/WQI/Choate/10-2023", async function(req, res) {
+  try{
+    const wqi = await findWQI();
+    res.status(200).send(`${wqi}`);
+  }
+  catch (error)
+  {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
+async function findWQI()
+{
+   let wqiArray = [];
+   const DOw = 0.34;
+   const PHw = 0.22;
+   const TEMPw = 0.2;
+   const COw = 0.08;
+   const TURw = 0.16;
+   
+   var docs = await ChoateWaterDoc.find({MonthYear: "10-2023"}).exec();
+   docs.forEach(function(doc){
+    wqi =  doc.DOpct * DOw + doc.Cond * COw + doc.Temp * 
+    TEMPw + doc.Turb * TURw + doc.pH * PHw;
+    wqiArray.push(wqi);
+  });
+  const sum = wqiArray.reduce((acc, num) => acc + num, 0);
+  console.log(sum);
+  const average = sum / wqiArray.length;
+  console.log(average);
+  return average;
+}
 
 //sample function called when root is accessed.
 async function findTurbidity()

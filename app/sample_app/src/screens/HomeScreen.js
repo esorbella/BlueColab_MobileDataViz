@@ -33,9 +33,10 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.storyParagraphText}>
-          Blue CoLab is a part of the Seidenberg school of CSIS and its ultimate
-          purpose is to make viable and reliable ways to give clean water to
-          those across the world. 
+          Blue CoLab is a program of training, innovation, and research in 
+          real-time water monitoring technologies, committed to the 
+          principle that the human right to clean water requires the 
+          right-to-know water is clean.
           </Text>
           <TouchableHighlight
             onPress={() => {

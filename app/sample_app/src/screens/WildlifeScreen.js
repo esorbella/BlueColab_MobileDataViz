@@ -123,7 +123,7 @@ const WildlifeScreen = ({ navigation }) => {
   ];
 
   const renderItem = ({ item }) => (
-    <View>
+    <View style = {styles.wildContainer}>
       <Image
         source={{ uri: item.imageUri }}
         style={{ width: windowWidth * 0.9, aspectRatio: 2097 / 1227 }}

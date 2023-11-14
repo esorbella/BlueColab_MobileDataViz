@@ -184,6 +184,8 @@ export default StyleSheet.create({
     pictureSub:{
         color: 'white',
         fontSize: 16,
+        marginBottom: 15,
+        textAlign: 'center',
     },
     imageContainer:{
         height: deviceHeight/3,

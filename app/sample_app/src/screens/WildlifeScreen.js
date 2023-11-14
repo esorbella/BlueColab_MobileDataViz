@@ -16,7 +16,7 @@ const windowWidth = Dimensions.get("window").width; // Get the screen width
 export default function WildlifeScreen({ navigation }) {
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View style={styles.wildContainer}>
         <Text style = {styles.paragraphText}> Wildlife in Choate Pond: </Text>
         <Image
           source={{

@@ -150,7 +150,7 @@ server <- function(input, output) {
 fetchData <- function(location,dataset,start_year,start_month,start_day,end_year,end_month,end_day) {
   # logic to get appropriate data
 
-      url <- paste("http://localhost:3000/Weather/Choate/10-2023")
+      url <- paste("http://localhost:3000/Weather/Choate/",start_month,"-",start_year,sep = "")
 
       # Fetch data from the API
       my_data <- fromJSON(url)

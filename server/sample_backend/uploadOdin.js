@@ -1,3 +1,5 @@
+//CODE TO UPLOAD WEATHER DATA FROM BLUECOLAB'S ODIN TO OUR OWN DATABASE. 
+
 require('dotenv').config();
 
 const axios = require('axios');
@@ -68,7 +70,7 @@ async function fetchDataAndSaveToMongo(startDate, stopDate) {
     {
         dayCount = 31;
     }*/
-    for (let day = 16; day < 32; day++) {
+    for (let day = 1; day < 16; day++) {
         const startDate = `${currentYear}-10-${day.toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
         const stopDate = `${currentYear}-10-${(day + 1).toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
     

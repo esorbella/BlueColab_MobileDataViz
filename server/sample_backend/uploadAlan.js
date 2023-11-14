@@ -45,7 +45,7 @@ async function fetchDataAndSaveToMongo(startDate, stopDate) {
       Temp: item.sensors.Temp,
       Turb: item.sensors.Turb,
       pH: item.sensors.pH,
-      MonthYear: '10-' + currentYear 
+      MonthYear: '01-' + currentYear 
     })));
 
     console.log(`Data for ${startDate} to ${stopDate} saved to MongoDB.`);
@@ -69,8 +69,8 @@ async function fetchDataAndSaveToMongo(startDate, stopDate) {
         dayCount = 31;
     }*/
     for (let day = 1; day < 32; day++) {
-        const startDate = `${currentYear}-10-${day.toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
-        const stopDate = `${currentYear}-10-${(day + 1).toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
+        const startDate = `${currentYear}-01-${day.toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
+        const stopDate = `${currentYear}-01-${(day + 1).toString().padStart(2, '0')}T00%3A00%3A00%2B00%3A00`;
     
         fetchDataAndSaveToMongo(startDate, stopDate);
     }

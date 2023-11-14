@@ -70,7 +70,7 @@ const WildlifeScreen = ({ navigation }) => {
   ];
   const hudsonWildlifeData = [
     {
-      label: "Largemouth bass (Micropterus salmoides)",
+      label: "Largemouth basss (Micropterus salmoides)",
       imageUri:
         "https://th.bing.com/th/id/R.6dc550e4629145cbd44548c0b36a6145?rik=gHN9%2bthmmTih9A&riu=http%3a%2f%2fupload.wikimedia.org%2fwikipedia%2fcommons%2fe%2fed%2fLargemouth_bass_fish_underwater_animal_in_natural_habitat_micropterus_salmoides.jpg&ehk=BjhvQX7mchDiAAH0iVqhZ7QGdUjUlcL9SFFuNcRo6PM%3d&risl=&pid=ImgRaw&r=0",
     },
@@ -133,7 +133,7 @@ const WildlifeScreen = ({ navigation }) => {
   );
 
   return (
-    <ScrollView>
+    <><ScrollView>
       <View style={styles.container}>
         <Text style={styles.paragraphText}>Wildlife in Choate Pond:</Text>
         <Carousel
@@ -141,18 +141,18 @@ const WildlifeScreen = ({ navigation }) => {
           renderItem={renderItem}
           sliderWidth={windowWidth}
           itemWidth={windowWidth * 0.9}
-          layout="default"
-        />
-        <Text style={styles.paragraphText}>Wildlife in The Hudson River:</Text>
-        <Carousel
-          data={hudsonWildlifeData}
-          renderItem={renderItem}
-          sliderWidth={windowWidth}
-          itemWidth={windowWidth * 0.9}
-          layout="default"
-        />
+          layout="default" />
       </View>
-    </ScrollView>
+      <View style={styles.container}>
+          <Text style={styles.paragraphText}>Wildlife in The Hudson River:</Text>
+          <Carousel
+            data={hudsonWildlifeData}
+            renderItem={renderItem}
+            sliderWidth={windowWidth}
+            itemWidth={windowWidth * 0.9}
+            layout="default" />
+        </View>
+      </ScrollView></>
   );
 };
 

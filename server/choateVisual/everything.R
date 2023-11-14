@@ -106,98 +106,8 @@ server <- function(input, output) {
       "December" = "31"
     )
 
-    # logic to get appropriate data
-    if (location == "Choate") { # if Choate data is selected
-      # gets Data from Blue CoLab
-      my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
-        "sensordata/Alan/idk/range?stream=false",
-        "&start_date=", start_year, "-", start_month,
-        "-", start_day, "T00%3A00%3A00%2B00%3A00",
-        "&stop_date=", end_year, "-", end_month,
-        "-", end_day, "T23%3A59%3A59%2B00%3A00",
-        sep = ""
-      )) # R doesn't have string concatenation
-
-      my_data$timestamp <- as.Date(my_data$timestamp)
-
-      # gets specific parameter
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-          "Conductivity" = my_data$sensors$Cond,
-          "Dissolved Oxygen" = my_data$sensors$DOpct,
-          "Salinity" = my_data$sensors$Sal,
-          "Temperature" = my_data$sensors$Temp,
-          "Turbidity" = my_data$sensors$Turb,
-          "pH" = my_data$sensors$pH
-        )
-      )
-    } else if (location == "Weather") {
-      url <- paste("http://localhost:3000/Weather/Choate/10-2023")
-
-      # Fetch data from the API
-      my_data <- fromJSON(url)
-
-      # Convert timestamp to Date format
-      my_data$timestamp <- as.Date(my_data$timestamp, format = "%Y-%m-%d")
-
-      # Create a data frame based on the selected dataset
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset1,
-          "Rain" = my_data$Rain,
-          "Air Temperature" = my_data$AirTemp,
-          "Relative Humidity" = my_data$RelHumid,
-          "Wind Speed" = my_data$WindSpeed,
-          "Barometric Pressure" = my_data$BaroPressure,
-          "Vapor Pressure" = my_data$VaporPressure
-        )
-      )
-    } else {
-      # otherwise use USGS API
-      my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(start_year, "-", start_month, "-", start_day, sep = ""), endDate = paste(end_year, "-", end_month, "-", end_day, sep = ""))
-      my_data$timestamp <- as.Date(my_data$dateTime)
-    }
-
-    if (location == "01376307") { # Yonkers
-      # gets specific parameter
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-          "Conductivity" = my_data$X_00095_00000,
-          "Dissolved Oxygen" = my_data$X_00300_00000,
-          "Salinity" = my_data$X_90860_00000,
-          "Temperature" = my_data$X_00010_00000,
-          "Turbidity" = my_data$X_63680_00000,
-          "pH" = my_data$X_00400_00000
-        )
-      )
-    } else if (location == "01374019") { # West Point
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-          "Conductivity" = my_data$X_.HRECOS._00095_00000,
-          "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
-          "Salinity" = my_data$X_.HRECOS._90860_00000,
-          "Temperature" = my_data$X_.HRECOS._00010_00000,
-          "Turbidity" = my_data$X_.HRECOS._63680_00000,
-          "pH" = my_data$X_.HRECOS._00400_00000
-        )
-      )
-    } else if (location == "01372043") { # Pough.
-      data <- data.frame(
-        timestamp = my_data$timestamp,
-        value = switch(input$dataset,
-          "Conductivity" = my_data$X_Surface_00095_00000,
-          "Dissolved Oxygen" = my_data$X_Surface_00300_00000,
-          "Salinity" = my_data$X_Surface_90860_00000,
-          "Temperature" = my_data$X_Surface_00010_00000,
-          "Turbidity" = my_data$X_Surface_63680_00000,
-          "pH" = my_data$X_Surface_00400_00000
-        )
-      )
-    }
-
+    data <- fetchData(location,input$dataset,input$dataset1,start_year,start_month,start_day,end_year,end_month,end_day)
+   
     wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/10-2023"))
 
     output$example <- renderUI({
@@ -249,30 +159,98 @@ server <- function(input, output) {
   })
 }
 
-fetchData <- function(location,dataset) {
-  # Replace the URL with your actual API endpoint
-  url <- paste("http://localhost:3000/Weather/Choate/10-2023")
-  
-  # Fetch data from the API
-  my_data <- fromJSON(url)
-  
-  # Convert timestamp to Date format
-  my_data$timestamp <- as.Date(my_data$timestamp, format = "%Y-%m-%d")
-  
-  # Create a data frame based on the selected dataset
-  data <- data.frame(
-    timestamp = my_data$timestamp,
-    value = switch(
-      dataset,
-      "Rain" = my_data$Rain,
-      "Air Temperature" = my_data$AirTemp,
-      "Relative Humidity" = my_data$RelHumid,
-      "Wind Speed" = my_data$WindSpeed,
-      "Barometric Pressure" = my_data$BaroPressure,
-      "Vapor Pressure" = my_data$VaporPressure
-    )
-  )
-  
+fetchData <- function(location,dataset,dataset1,start_year,start_month,start_day,end_year,end_month,end_day) {
+  # logic to get appropriate data
+    if (location == "Choate") { # if Choate data is selected
+      # gets Data from Blue CoLab
+      my_data <- fromJSON(paste("https://colabprod01.pace.edu/api/influx/",
+        "sensordata/Alan/idk/range?stream=false",
+        "&start_date=", start_year, "-", start_month,
+        "-", start_day, "T00%3A00%3A00%2B00%3A00",
+        "&stop_date=", end_year, "-", end_month,
+        "-", end_day, "T23%3A59%3A59%2B00%3A00",
+        sep = ""
+      )) # R doesn't have string concatenation
+
+      my_data$timestamp <- as.Date(my_data$timestamp)
+
+      # gets specific parameter
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$sensors$Cond,
+          "Dissolved Oxygen" = my_data$sensors$DOpct,
+          "Salinity" = my_data$sensors$Sal,
+          "Temperature" = my_data$sensors$Temp,
+          "Turbidity" = my_data$sensors$Turb,
+          "pH" = my_data$sensors$pH
+        )
+      )
+    } else if (location == "Weather") {
+      url <- paste("http://localhost:3000/Weather/Choate/10-2023")
+
+      # Fetch data from the API
+      my_data <- fromJSON(url)
+
+      # Convert timestamp to Date format
+      my_data$timestamp <- as.Date(my_data$timestamp, format = "%Y-%m-%d")
+
+      # Create a data frame based on the selected dataset
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset1,
+          "Rain" = my_data$Rain,
+          "Air Temperature" = my_data$AirTemp,
+          "Relative Humidity" = my_data$RelHumid,
+          "Wind Speed" = my_data$WindSpeed,
+          "Barometric Pressure" = my_data$BaroPressure,
+          "Vapor Pressure" = my_data$VaporPressure
+        )
+      )
+    } else {
+      # otherwise use USGS API
+      my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(start_year, "-", start_month, "-", start_day, sep = ""), endDate = paste(end_year, "-", end_month, "-", end_day, sep = ""))
+      my_data$timestamp <- as.Date(my_data$dateTime)
+    }
+
+    if (location == "01376307") { # Yonkers
+      # gets specific parameter
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_00095_00000,
+          "Dissolved Oxygen" = my_data$X_00300_00000,
+          "Salinity" = my_data$X_90860_00000,
+          "Temperature" = my_data$X_00010_00000,
+          "Turbidity" = my_data$X_63680_00000,
+          "pH" = my_data$X_00400_00000
+        )
+      )
+    } else if (location == "01374019") { # West Point
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_.HRECOS._00095_00000,
+          "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
+          "Salinity" = my_data$X_.HRECOS._90860_00000,
+          "Temperature" = my_data$X_.HRECOS._00010_00000,
+          "Turbidity" = my_data$X_.HRECOS._63680_00000,
+          "pH" = my_data$X_.HRECOS._00400_00000
+        )
+      )
+    } else if (location == "01372043") { # Pough.
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_Surface_00095_00000,
+          "Dissolved Oxygen" = my_data$X_Surface_00300_00000,
+          "Salinity" = my_data$X_Surface_90860_00000,
+          "Temperature" = my_data$X_Surface_00010_00000,
+          "Turbidity" = my_data$X_Surface_63680_00000,
+          "pH" = my_data$X_Surface_00400_00000
+        )
+      )
+    }
   return(data)
 }
 

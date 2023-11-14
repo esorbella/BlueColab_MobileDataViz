@@ -11,7 +11,8 @@ import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub";
 import React, { useEffect, useState } from 'react'
 import WildlifeScreen from "./src/screens/WildlifeScreen";
-
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 
 
 const navigator = createStackNavigator(
@@ -33,6 +34,8 @@ const navigator = createStackNavigator(
       title: "ChoateVisual",
     }
   }
+
 );
 
 export default createAppContainer(navigator);
+

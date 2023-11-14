@@ -109,9 +109,9 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
-        
-       
+
       </View>
+      
     </ScrollView>
   );
 }

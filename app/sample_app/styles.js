@@ -1,5 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
+import AppLoading from 'expo-app-loading';
+import {useFonts} from 'expo-font';
 
 
 
@@ -7,9 +9,11 @@ let deviceHeight = Dimensions.get('window').height;
 let deviceWidth = Dimensions.get('window').width;
 
 
+
+
 export default StyleSheet.create({
 
-
+ 
     container: {
         flex: 1,
         backgroundColor: 'black',
@@ -18,15 +22,48 @@ export default StyleSheet.create({
         
 
     },
+    wildContainer: {
+        flex: 1,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        width: deviceWidth,
+        height:deviceHeight,
+        
+
+    },
     welcome: {
         flex: 1,
-        backgroundColor: '#333333',
+        backgroundColor: 'lightcyan',
         alignItems: 'center',
         justifyContent: 'center',
         width: deviceWidth,
         
 
     },
+    welcomeButton: {
+        backgroundColor: 'lightskyblue',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: deviceWidth/1.4,
+        height: deviceHeight/13,
+        borderRadius: 17,
+
+    },
+    welcomeText: {
+       fontSize: deviceHeight/25,
+       color: 'darkgreen',
+       textAlign: 'center',
+    
+    },
+    quoteText: {
+        fontSize: deviceHeight/39,
+        color: '#336CED',
+        textAlign: 'center',
+        marginBottom: deviceHeight/ 25,
+        marginLeft: deviceWidth/18,
+        marginRight: deviceWidth/18,
+        
+     },
     storyButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -158,7 +195,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        fontFamily: 'Nunito',
     },
     graphParagraphText: {
         color: 'black',
@@ -184,6 +221,8 @@ export default StyleSheet.create({
     pictureSub:{
         color: 'white',
         fontSize: 16,
+        marginBottom: 15,
+        textAlign: 'center',
     },
     imageContainer:{
         height: deviceHeight/3,

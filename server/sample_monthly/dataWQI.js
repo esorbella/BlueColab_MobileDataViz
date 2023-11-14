@@ -37,7 +37,7 @@ async function wqiData(filePath) {
                     measurement.wqi = obj;
                 })
                 month.wqi = monthlyWQISum / month.data.length;
-                console.log(month.data[0],monthlyWQISum / month.data.length);
+                console.log(month.data[0].timestamp.substring(0,month.data[0].timestamp.indexOf("T")),monthlyWQISum / month.data.length);
             })
 
             fs.writeFile(`data/wqiAlanSourceData.json`, JSON.stringify(jsonData, null, " "), (err) => {

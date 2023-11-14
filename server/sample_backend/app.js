@@ -89,6 +89,7 @@ app.get("/Weather/Choate/:month", async function(req, res)
 
 app.get("/WQI/Choate/:month", async function(req, res) {
   try{
+    console.log(req.params.month)
     const wqi = await returnWQI(req.params.month);
     res.json(wqi);
   }

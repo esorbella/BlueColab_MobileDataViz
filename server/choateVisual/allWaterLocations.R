@@ -27,7 +27,7 @@ ui <- fluidPage(
 
   # dropdowns for location & time
   selectInput("location", "Choose a Location:",
-    choices = c("Choate Pond", "Choate Weather", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
+    choices = c("Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
     selectize = FALSE
   ),
   selectInput("year", "Choose a Year:",
@@ -49,13 +49,6 @@ ui <- fluidPage(
       "Salinity", "Temperature", "Turbidity", "pH"
     ),
     selectize = FALSE
-  ),
-  selectInput("dataset1", "Choose a dataset for the weather:",
-    choices = c(
-      "Rain", "Air Temperature", "Relative Humidity",
-      "Wind Speed", "Barometric Pressure", "Vapor Pressure"
-    ),
-    selectize = FALSE
   )
 )
 
@@ -67,8 +60,7 @@ server <- function(input, output) {
       "Yonkers (01376307)" = "01376307",
       "West Point (01374019)" = "01374019",
       "Poughkeepsie (01372043)" = "01372043",
-      "Choate Pond" = "Choate",
-      "Choate Weather" = "Weather"
+      "Choate Pond" = "Choate"
     )
     start_year <- switch(input$year,
       "2023" = "2023",
@@ -107,13 +99,13 @@ server <- function(input, output) {
       "December" = "31"
     )
 
-    data <- fetchData(location,input$dataset,input$dataset1,start_year,start_month,start_day,end_year,end_month,end_day)
+    data <- fetchData(location,input$dataset,start_year,start_month,start_day,end_year,end_month,end_day)
    
     wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/10-2023"))
 
     output$example <- renderUI({
       HTML(paste0(
-        "<div style='color:white;'>WQI: ", wqi$wqi, "</div><br/>",
+        "<div style='color:white;'>WQI: ", round(wqi$wqi), "</div><br/>",
         "<div style='color:white;'>Monthly summary</div><br/><div style='color:white;'>Min: ", min(data$value), "</div><br/>",
         "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
         "<div style='color:white;'>Average: ", mean(data$value), "</div><br/>"
@@ -160,7 +152,7 @@ server <- function(input, output) {
   })
 }
 
-fetchData <- function(location,dataset,dataset1,start_year,start_month,start_day,end_year,end_month,end_day) {
+fetchData <- function(location,dataset,start_year,start_month,start_day,end_year,end_month,end_day) {
   # logic to get appropriate data
     if (location == "Choate") { # if Choate data is selected
       # gets Data from Blue CoLab

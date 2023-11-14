@@ -31,7 +31,8 @@ ui <- fluidPage(
     selectize = FALSE
   ),
   selectInput("year", "Choose a Year:",
-    choices = c("2023", "2021", "2022"),
+    choices = c("2021", "2022", "2023"),
+    selected = "2023",
     selectize = FALSE
   ),
   selectInput("month", "Choose a Month:",

@@ -267,11 +267,15 @@ server <- function(input, output) {
     #                 "pH" = "brown"
     # )
     
+    wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/",first_start_month,"-",first_start_year,sep = ""))
+
     output$example <- renderUI({
       HTML(paste0(
-        "<div style='color:white;'>Monthly summary</div><br/><div style='color:white;'>Min: ", min(data$value), "</div><br/>",
+        "<div style='color:white;'>Monthly Summary For ",input$firstMonth, " ", input$firstYear, ":</div><br/>
+        <div style='color:white;'>WQI: ", round(wqi$wqi), "</div><br/
+        <div style='color:white;'>Min: ", min(data$value), "</div><br/>",
         "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
-        "<div style='color:white;'>Average: ", mean(data$value), "</div><br/>"
+        "<div style='color:white;'>Average: ", mean(data$value), "</div>"
       ))
     })
     

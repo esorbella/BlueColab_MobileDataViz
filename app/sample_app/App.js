@@ -1,6 +1,7 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "./src/screens/HomeScreen";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
 import DataChoate from "./src/screens/Data screens/DataChoate";
 import DataPough from "./src/screens/Data screens/DataPough";
 import DataWP from "./src/screens/Data screens/DataWP";
@@ -15,6 +16,7 @@ import WildlifeScreen from "./src/screens/WildlifeScreen";
 
 const navigator = createStackNavigator(
   {
+    Wel: WelcomeScreen,
     Home: HomeScreen,
     Choate: DataChoate,
     Weather: WeatherScreen,
@@ -26,7 +28,7 @@ const navigator = createStackNavigator(
     Yonk: DataYonk,
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Wel",
     defaultNavigationOptions: {
       title: "ChoateVisual",
     }

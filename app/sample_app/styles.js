@@ -18,6 +18,15 @@ export default StyleSheet.create({
         
 
     },
+    welcome: {
+        flex: 1,
+        backgroundColor: '#333333',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: deviceWidth,
+        
+
+    },
     storyButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 

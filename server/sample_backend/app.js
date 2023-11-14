@@ -99,6 +99,22 @@ app.get("/WQI/Choate/:month", async function(req, res) {
   }
 });
 
+app.get("/delete", async function (req, res){
+  try{
+    deleteDocs();
+    await res.status(200).send("yay you did it");
+  }
+  catch (error){
+    console.error(error);
+  }
+    
+})
+
+async function deleteDocs()
+{
+  //TODO: delete docs so we don't query through EVERY SINGLE DOC in weather.
+}
+
 async function findWQI()
 {
    let wqiArray = [];

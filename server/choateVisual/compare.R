@@ -272,7 +272,7 @@ server <- function(input, output) {
     output$example <- renderUI({
       HTML(paste0(
         "<div style='color:white;'>Monthly Summary For ",input$firstMonth, " ", input$firstYear, ":</div><br/>
-        <div style='color:white;'><h4>WQI: </h4>", round(wqi$wqi), "</div><br/
+        <div style='color:white;'>WQI: ", round(wqi$wqi), "</div><br/
         <div style='color:white;'>Min: ", min(data$value), "</div><br/>",
         "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
         "<div style='color:white;'>Average: ", mean(data$value), "</div>"

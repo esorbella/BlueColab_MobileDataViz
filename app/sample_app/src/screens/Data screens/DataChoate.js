@@ -9,6 +9,6 @@ export default function HistoricalDataScreenChoate({ navigation }) {
           source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/' }}
           style={{ flex: 1 }}
         />
-    
+
   );
 }

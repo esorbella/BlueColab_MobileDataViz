@@ -112,4 +112,3 @@ let allMonthsAlan = [];
 
     }
 })();
-

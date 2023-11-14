@@ -11,12 +11,37 @@ mongoose.connect(process.env.MONGO_DB, {
   useNewUrlParser: true
 });
 
-const SampleSchema = new mongoose.Schema({
-  text: String,
-  number: Number
+const waterDataSchema = new mongoose.Schema({
+  Cond: Number,
+  DOpct: Number,
+  Sal: Number,
+  Temp: Number,
+  Turb: Number,
+  pH: Number,
+  timestamp: String,
+  MonthYear: String
+});
+
+const weatherDataSchema = new mongoose.Schema({
+  Rain: Number,
+  AirTemp: Number,
+  RelHumid: Number,
+  WindSpeed: Number,
+  BaroPressure: Number,
+  VaporPressure: Number,
+  timestamp: String,
+  MonthYear: String
+});
+
+const wqiSchema = new mongoose.Schema({
+  Location: String,
+  wqi: Number,
+  MonthYear: String
 })
 
-const Sample = mongoose.model("Sample", SampleSchema);
+const ChoateWaterDoc = mongoose.model("ChoateWaterDoc", waterDataSchema);
+const ChoateWeatherDoc = mongoose.model("ChoateWeatherDoc", waterDataSchema);
+const wqiDoc = mongoose.model("ChoateWQIDocs", wqiSchema);
 
 const port = process.env.PORT || 3000;
 /*
@@ -33,8 +58,6 @@ app.get("/", async function(req, res) {
   try {
     //TEST TO CONNECT TO BLUECOLAB API REMOVE LATER
     const data = await findTurbidity();
-    //TEST TO CONNECT TO MONGODB DATABASE REMOVE LATER
-    const query = await Sample.find({text: "hello"});
     console.log(query);
     //SEND RESPONSE
     res.status(200).send(`Turbidity: ${data}`);
@@ -46,6 +69,64 @@ app.get("/", async function(req, res) {
   }
 });
 
+app.get("/Weather/Choate/:month", async function(req, res)
+{
+  try {
+    var docs = await ChoateWeatherDoc.find({MonthYear: req.params.month});
+    var aggArray = []
+    for (let i = 0; i < docs.length; i+=15)
+    {
+      aggArray.push(docs[i]);
+    }
+    res.json(aggArray);
+  }
+  catch (error)
+  {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
+app.get("/WQI/Choate/:month", async function(req, res) {
+  try{
+    console.log(req.params.month)
+    const wqi = await returnWQI(req.params.month);
+    res.json(wqi);
+  }
+  catch (error)
+  {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
+async function findWQI()
+{
+   let wqiArray = [];
+   const DOw = 0.34;
+   const PHw = 0.22;
+   const TEMPw = 0.2;
+   const COw = 0.05;
+   const TURw = 0.16;
+   
+   var docs = await ChoateWaterDoc.find({MonthYear: "01-2023"}).exec();
+   docs.forEach(function(doc){
+    wqi =  doc.DOpct * DOw + doc.Cond * COw + doc.Temp * 
+    TEMPw + doc.Turb * TURw + doc.pH * PHw;
+    wqiArray.push(wqi);
+  });
+  const sum = wqiArray.reduce((acc, num) => acc + num, 0);
+  const average = sum / wqiArray.length;
+  
+  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "01-2023"})
+  return "yay you did it";
+};
+
+async function returnWQI(month)
+{
+  const doc = await wqiDoc.find({MonthYear: month}).exec();
+  return doc[0];
+}
 
 //sample function called when root is accessed.
 async function findTurbidity()

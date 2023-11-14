@@ -11,7 +11,7 @@ mongoose.connect(process.env.MONGO_DB, {
   useNewUrlParser: true
 });
 
-const sensorDataSchema = new mongoose.Schema({
+const waterDataSchema = new mongoose.Schema({
   Cond: Number,
   DOpct: Number,
   Sal: Number,
@@ -22,13 +22,25 @@ const sensorDataSchema = new mongoose.Schema({
   MonthYear: String
 });
 
+const weatherDataSchema = new mongoose.Schema({
+  Rain: Number,
+  AirTemp: Number,
+  RelHumid: Number,
+  WindSpeed: Number,
+  BaroPressure: Number,
+  VaporPressure: Number,
+  timestamp: String,
+  MonthYear: String
+});
+
 const wqiSchema = new mongoose.Schema({
   Location: String,
   wqi: Number,
   MonthYear: String
 })
 
-const ChoateWaterDoc = mongoose.model("ChoateWaterDoc", sensorDataSchema);
+const ChoateWaterDoc = mongoose.model("ChoateWaterDoc", waterDataSchema);
+const ChoateWeatherDoc = mongoose.model("ChoateWeatherDoc", waterDataSchema);
 const wqiDoc = mongoose.model("ChoateWQIDocs", wqiSchema);
 
 const port = process.env.PORT || 3000;
@@ -50,6 +62,24 @@ app.get("/", async function(req, res) {
     //SEND RESPONSE
     res.status(200).send(`Turbidity: ${data}`);
       }
+  catch (error)
+  {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
+app.get("/Weather/Choate/:month", async function(req, res)
+{
+  try {
+    var docs = await ChoateWeatherDoc.find({MonthYear: req.params.month});
+    var aggArray = []
+    for (let i = 0; i < docs.length; i+=15)
+    {
+      aggArray.push(docs[i]);
+    }
+    res.json(aggArray);
+  }
   catch (error)
   {
     console.error(error);

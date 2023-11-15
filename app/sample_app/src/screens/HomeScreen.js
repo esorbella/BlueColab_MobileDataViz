@@ -70,25 +70,6 @@ export default function HomeScreen({ navigation }) {
           </TouchableHighlight>
         </View>
         
-        <View style={styles.weatherButtonContainer}>
-          <Image
-            source={require("../../assets/homescreen/lightning-bolts.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.paragraphText}>
-          Holy shit we need to make this page functional
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleWeatherScreenPress();
-            }}
-          >
-            <View style={styles.weatherButton}>
-              <Text style={styles.mainButtonText}>Local Weather</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        
         <View style={styles.animalButtonContainer}>
           <Image
             source={require("../../assets/homescreen/turtle.png")}
@@ -106,7 +87,26 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <View style={styles.wildlifeButton}>
-              <Text style={styles.mainButtonText}>Local Wildlife</Text>
+              <Text style={styles.mainButtonText}>See Local Wildlife...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
+        <View style={styles.weatherButtonContainer}>
+          <Image
+            source={require("../../assets/homescreen/lightning-bolts.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.paragraphText}>
+          Weather has a signifigant impact on the health of marine ecosystems.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleWeatherScreenPress();
+            }}
+          >
+            <View style={styles.weatherButton}>
+              <Text style={styles.mainButtonText}>See Local Weather...</Text>
             </View>
           </TouchableHighlight>
         </View>

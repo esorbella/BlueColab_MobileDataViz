@@ -7,8 +7,12 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  Dimensions
 } from "react-native";
 import styles from "../../styles";
+
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
 
 export default function WelcomeScreen({ navigation }) {
     const handleHomeScreenPress = () => {
@@ -37,7 +41,7 @@ export default function WelcomeScreen({ navigation }) {
       
         <Image
               source ={{uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1173717151232839700/Blue_CoLab_2.png?ex=6564f847&is=65528347&hm=139e1acbabfdb193ad52e2b60687e7a8347eab9061333f2e254447b6d791a10d&"}}
-              style={{ height: 52, width: 225, margin: 30, position: 'absolute', left: -20, bottom: -20 }}
+              style={{ height: 52, width: 225, margin: deviceWidth/20, position: 'absolute', left: -deviceWidth/25, bottom: -deviceWidth/25 }}
             />
 
         </View>

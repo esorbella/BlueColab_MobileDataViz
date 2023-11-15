@@ -15,7 +15,7 @@ import styles from "../../styles";
 const windowWidth = Dimensions.get("window").width;
 
 const WildlifeScreen = ({ navigation }) => {
-  const wildlifeData = [
+  const choateWildlifeData = [
     {
       label: "Largemouth bass (Micropterus salmoides)",
       imageUri:
@@ -68,9 +68,62 @@ const WildlifeScreen = ({ navigation }) => {
     },
     // Add more wildlife data in a similar format
   ];
+  const hudsonWildlifeData = [
+    {
+      label: "Humpback Whale (Megaptera novaeangliae)",
+      imageUri:
+        "https://th.bing.com/th/id/R.0597795217c0fd35b1a5276cf8dc4dc4?rik=kXyr6duUrZt8nA&riu=http%3a%2f%2f2.bp.blogspot.com%2f-hRXrWYgdhvA%2fTtG0Oshp85I%2fAAAAAAAAFFQ%2fWSJVQhs6C8M%2fs1600%2fHumpback%2bWhale%2bunderwater.jpg&ehk=OmLVx%2bKtw3KuTusunRZvP76po56jLuoQs%2fSuTlo2pv8%3d&risl=&pid=ImgRaw&r=0",
+    },
+    {
+      label: "Diamondback Terrapin (Malaclemys terrapin)",
+      imageUri:
+        "https://th.bing.com/th/id/R.ea7fece4729197bf548c724e2ee896ed?rik=a48QKyM8pfxhXg&riu=http%3a%2f%2ffarm6.staticflickr.com%2f5231%2f7165621250_c7629dc1a5_o_d.jpg&ehk=j4ooaqMGC%2fNdBOgCs%2fd%2fYaBe2Kx4BuPSn5EdZCmcnp8%3d&risl=&pid=ImgRaw&r=0",
+    },
+    {
+      label: "Lined seahorse (Hippocampus erectus)",
+      imageUri:
+        "https://live.staticflickr.com/6217/6316824300_49c319eb2b_b.jpg",
+    },
+    {
+      label: "Atlantic Sturgeon (Acipenser oxyrinchus oxyrinchus)",
+      imageUri:
+        "https://th.bing.com/th/id/OIP.Pk0oZ6sKQmvri258EwgbEAHaFj?pid=ImgDet&rs=1",
+    },
+    {
+      label: "Blue Crab (Callinectes sapidus)",
+      imageUri:
+        "https://th.bing.com/th/id/OIP.iTsbymGPQ2wXr-Q9dnS-jgHaE8?pid=ImgDet&rs=1",
+    },
+    {
+      label: "Great Blue Heron (Ardea herodias)",
+      imageUri:
+        "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/60314281/1800",
+    },
+    {
+      label: "American Shad (Alosa sapidissima)",
+      imageUri:
+        "https://www.fws.gov/sites/default/files/styles/facebook_1200x630/public/banner_images/2021-06/American%20shad.jpg?h=a4c76022&itok=vYCojAe0",
+    },
+    {
+      label: "Mink (Neovison vison)",
+      imageUri:
+        "https://calphotos.berkeley.edu/imgs/512x768/8235_3181/2555/0081.jpeg",
+    },
+    {
+      label: "American Eel (Anguilla rostrata)",
+      imageUri:
+        "https://th.bing.com/th/id/OIP.t0RrvsP9s7EKMFvlNG-PEAHaE7?pid=ImgDet&rs=1",
+    },
+    {
+      label: "Eastern Red-backed Salamander (Plethodon cinereus)",
+      imageUri:
+        "https://live.staticflickr.com/2548/5739708251_48ed49dc85_b.jpg",
+    },
+    // Add more wildlife data in a similar format
+  ];
 
   const renderItem = ({ item }) => (
-    <View>
+    <View style = {styles.wildContainer}>
       <Image
         source={{ uri: item.imageUri }}
         style={{ width: windowWidth * 0.9, aspectRatio: 2097 / 1227 }}
@@ -80,18 +133,24 @@ const WildlifeScreen = ({ navigation }) => {
   );
 
   return (
-    <ScrollView>
+    <><ScrollView>
       <View style={styles.wildContainer}>
-        <Text style = {styles.paragraphText}> Wildlife in Choate Pond: </Text>
-        <Image
-          source={{
-            uri: "https://th.bing.com/th/id/R.6dc550e4629145cbd44548c0b36a6145?rik=gHN9%2bthmmTih9A&riu=http%3a%2f%2fupload.wikimedia.org%2fwikipedia%2fcommons%2fe%2fed%2fLargemouth_bass_fish_underwater_animal_in_natural_habitat_micropterus_salmoides.jpg&ehk=BjhvQX7mchDiAAH0iVqhZ7QGdUjUlcL9SFFuNcRo6PM%3d&risl=&pid=ImgRaw&r=0",
-          }}
-          style={{ width: windowWidth * 0.9, aspectRatio: 2097 / 1227 }}
-          // Set width to 90% of screen width and maintain aspect ratio
-        />
-      </View>
-    </ScrollView>
+        <Text style={styles.paragraphText}>Wildlife in Choate Pond:</Text>
+        <Carousel
+          data={choateWildlifeData}
+          renderItem={renderItem}
+          sliderWidth={windowWidth}
+          itemWidth={windowWidth * 0.9}
+          layout="default" />
+          <Text style={styles.paragraphText}>Wildlife in The Hudson River:</Text>
+          <Carousel
+            data={hudsonWildlifeData}
+            renderItem={renderItem}
+            sliderWidth={windowWidth}
+            itemWidth={windowWidth * 0.9}
+            layout="default" />
+        </View>
+      </ScrollView></>
   );
 };
 

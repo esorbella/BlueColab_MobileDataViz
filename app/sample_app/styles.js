@@ -47,6 +47,8 @@ export default StyleSheet.create({
         width: deviceWidth/1.4,
         height: deviceHeight/13,
         borderRadius: 17,
+        borderWidth: 2,
+        borderColor: 'darkgreen',
 
     },
     welcomeText: {
@@ -205,7 +207,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        fontFamily: 'Nunito',
     },
 
     paragraphText: {

@@ -1,8 +1,14 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 
+siteID = "01376307"; // default
+
+if (process.argv.length > 2) {
+    siteID = process.argv[2];
+}
+
 // Function to parse a tab-separated file
-function parseTSVFile(filePath) {
+function parseRDBFile(filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const rows = fileContent.split('\n');
     const data = rows.map(row => row.split('\t'));
@@ -22,19 +28,36 @@ function saveToFile(data, filePath) {
 // Function to convert CSV to JSON
 function convertCSVtoJSON(csvData) {
     const lines = csvData.split('\n');
-    let headers = lines[33].split(',');
+    let headerLine = 0;
+
+    // detecting the header line
+    while (!lines[headerLine].includes("agency_cd")) {
+        // console.log(lines[headerLine])
+        headerLine++;
+    }
+    let headers = lines[headerLine].split(',');
     const result = [];
 
-    headers[2] = "timestamp";
-    headers[4] = "Temp";
-    headers[6] = "Cond";
-    headers[8] = "DOmpl"
-    headers[10] = "DOpct"
-    headers[12] = "pH"
-    headers[14] = "Turb"
-    headers[16] = "Sal"
+    // fixing labels
+    for (let headIndex = 0; headIndex < headers.length; headIndex++) {
+       // console.log(headers[headIndex]);
+        if (headers[headIndex].includes("00010"))
+            headers[headIndex] = "Temp";
+        if (headers[headIndex].includes("00095"))
+            headers[headIndex] = "Cond";
+        if (headers[headIndex].includes("00300"))
+            headers[headIndex] = "DOmpl";
+        if (headers[headIndex].includes("00301"))
+            headers[headIndex] = "DOpct";
+        if (headers[headIndex].includes("00400"))
+            headers[headIndex] = "pH";
+        if (headers[headIndex].includes("63680"))
+            headers[headIndex] = "Turb";
+        if (headers[headIndex].includes("90860"))
+            headers[headIndex] = "Sal";
+    }
 
-    for (let i = 34; i < lines.length; i++) {
+    for (let i = headerLine + 2; i < lines.length; i++) {
         const obj = {};
         const currentLine = lines[i].split(',');
 
@@ -43,28 +66,22 @@ function convertCSVtoJSON(csvData) {
         }
 
         const sensors = {}
-        
-        for (let j = 4; j < headers.length; j+=2) {
+
+        for (let j = 4; j < headers.length; j += 2) {
             sensors[headers[j]] = currentLine[j];
         }
         obj.sensors = sensors;
         result.push(obj);
     }
-
-    
-
-
-
-
     return result;
 }
 
 // Download and process the file
 const downloadAndProcess = async () => {
-    const url = 'https://nwis.waterservices.usgs.gov/nwis/iv/?sites=01376307&startDT=2023-01-01&endDT=2023-12-31&format=rdb';
-    const outputFile = 'downloaded1.rdb';
-    const csvFilePath = 'converted_data.csv';
-    const jsonFilePath = 'converted_data.json';
+    const url = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${siteID}&startDT=2023-01-01&endDT=2023-12-31&format=rdb`;
+    const outputFile = `data/downloaded${siteID}.rdb`;
+    const csvFilePath = `data/converted_data${siteID}.csv`;
+    const jsonFilePath = `data/converted_data${siteID}.json`;
 
     try {
         const response = await fetch(url);
@@ -86,8 +103,8 @@ const downloadAndProcess = async () => {
 
         console.log('Download complete. File saved as', outputFile);
 
-        // Parse TSV
-        const parsedData = parseTSVFile(outputFile);
+        // Parse RDB
+        const parsedData = parseRDBFile(outputFile);
 
         // Convert to CSV
         const csvData = convertToCSV(parsedData);

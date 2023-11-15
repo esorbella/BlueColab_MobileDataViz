@@ -267,7 +267,7 @@ server <- function(input, output) {
     #                 "pH" = "brown"
     # )
     
-    wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/",first_start_month,"-",first_start_year,sep = ""))
+    wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/",first_start_month,"-",first_start_year,sep = ""))
 
     output$example <- renderUI({
       HTML(paste0(

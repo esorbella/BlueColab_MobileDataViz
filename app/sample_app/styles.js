@@ -223,8 +223,16 @@ export default StyleSheet.create({
     pictureSub:{
         color: 'white',
         fontSize: 16,
+        textAlign: 'center',
+        marginLeft: deviceWidth/15,
+        marginRight: deviceWidth/15,
+    },
+    pictureSubScientific:{
+        color: 'white',
+        fontSize: 16,
         marginBottom: 15,
         textAlign: 'center',
+        fontStyle: "italic"
     },
     imageContainer:{
         height: deviceHeight/3,

@@ -216,6 +216,8 @@ server <- function(input, output) {
       # otherwise use USGS API
       my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(first_start_year, "-", first_start_month, "-", start_day, sep = ""), endDate = paste(first_end_year, "-", first_end_month, "-", first_end_day, sep = ""))
       my_data$timestamp <- as.Date(my_data$dateTime)
+      second_my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(second_start_year, "-", second_start_month, "-", start_day, sep = ""), endDate = paste(second_end_year, "-", second_end_month, "-", second_end_day, sep = ""))
+      second_my_data$timestamp <- as.Date(second_my_data$dateTime)
     }
     
     if (location == "01376307") { # Yonkers
@@ -231,6 +233,19 @@ server <- function(input, output) {
                        "pH" = my_data$X_00400_00000
         )
       )
+
+      # gets specific parameter
+      second_data <- data.frame(
+        timestamp = second_my_data$timestamp,
+        value = switch(input$dataset,
+                       "Conductivity" = second_my_data$X_00095_00000,
+                       "Dissolved Oxygen" = second_my_data$X_00300_00000,
+                       "Salinity" = second_my_data$X_90860_00000,
+                       "Temperature" = second_my_data$X_00010_00000,
+                       "Turbidity" = second_my_data$X_63680_00000,
+                       "pH" = second_my_data$X_00400_00000
+        )
+      )
     } else if (location == "01374019") { # West Point
       data <- data.frame(
         timestamp = my_data$timestamp,
@@ -241,6 +256,18 @@ server <- function(input, output) {
                        "Temperature" = my_data$X_.HRECOS._00010_00000,
                        "Turbidity" = my_data$X_.HRECOS._63680_00000,
                        "pH" = my_data$X_.HRECOS._00400_00000
+        )
+      )
+
+      second_data <- data.frame(
+        timestamp = second_my_data$timestamp,
+        value = switch(input$dataset,
+                       "Conductivity" = second_my_data$X_.HRECOS._00095_00000,
+                       "Dissolved Oxygen" = second_my_data$X_.HRECOS._00300_00000,
+                       "Salinity" = second_my_data$X_.HRECOS._90860_00000,
+                       "Temperature" = second_my_data$X_.HRECOS._00010_00000,
+                       "Turbidity" = second_my_data$X_.HRECOS._63680_00000,
+                       "pH" = second_my_data$X_.HRECOS._00400_00000
         )
       )
     } else if (location == "01372043") { # Pough.
@@ -255,6 +282,18 @@ server <- function(input, output) {
                        "pH" = my_data$X_Surface_00400_00000
         )
       )
+
+      second_data <- data.frame(
+        timestamp = second_my_data$timestamp,
+        value = switch(input$dataset,
+                       "Conductivity" = second_my_data$X_Surface_00095_00000,
+                       "Dissolved Oxygen" = second_my_data$X_Surface_00300_00000,
+                       "Salinity" = second_my_data$X_Surface_90860_00000,
+                       "Temperature" = second_my_data$X_Surface_00010_00000,
+                       "Turbidity" = second_my_data$X_Surface_63680_00000,
+                       "pH" = second_my_data$X_Surface_00400_00000
+        )
+      )
     }
     
     # sets color
@@ -267,7 +306,7 @@ server <- function(input, output) {
     #                 "pH" = "brown"
     # )
     
-    wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/",first_start_month,"-",first_start_year,sep = ""))
+    wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/",first_start_month,"-",first_start_year,sep = ""))
 
     output$example <- renderUI({
       HTML(paste0(

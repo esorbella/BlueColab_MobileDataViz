@@ -101,7 +101,7 @@ server <- function(input, output) {
 
     data <- fetchData(location,input$dataset,start_year,start_month,start_day,end_year,end_month,end_day)
    
-    wqi <- fromJSON(paste("http://localhost:3000/WQI/Choate/10-2023"))
+     wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/",start_month,"-",start_year,sep = ""))
 
     output$example <- renderUI({
       HTML(paste0(

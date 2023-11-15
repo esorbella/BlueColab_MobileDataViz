@@ -7,8 +7,13 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import styles from "../../styles";
+
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
+
 
 export default function HomeScreen({ navigation }) {
   const handleStoryScreenPress = () => {
@@ -109,6 +114,14 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+
+        <View style = {{backgroundColor: 'black', height: deviceHeight/15, width: deviceWidth}}></View>
+        <Image
+              source ={{uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1173717151232839700/Blue_CoLab_2.png?ex=6564f847&is=65528347&hm=139e1acbabfdb193ad52e2b60687e7a8347eab9061333f2e254447b6d791a10d&"}}
+              style={{ height: deviceHeight/16.5, width: deviceWidth/1.8, margin: deviceWidth/20, position: 'absolute', left: -deviceWidth/25, bottom: -deviceWidth/25 }}
+            />
+
+        
 
       </View>
       

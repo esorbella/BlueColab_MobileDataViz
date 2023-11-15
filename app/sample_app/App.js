@@ -2,6 +2,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import HomeScreen from "./src/screens/HomeScreen";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
+import BlogScreen from "./src/screens/BlogScreen";
 import DataChoate from "./src/screens/Data screens/DataChoate";
 import DataPough from "./src/screens/Data screens/DataPough";
 import DataWP from "./src/screens/Data screens/DataWP";
@@ -27,6 +28,7 @@ const navigator = createStackNavigator(
     Pough: DataPough,
     WP: DataWP,
     Yonk: DataYonk,
+    Blog: BlogScreen
   },
   {
     initialRouteName: "Wel",

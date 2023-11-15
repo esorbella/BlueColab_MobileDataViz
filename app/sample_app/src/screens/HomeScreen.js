@@ -23,6 +23,9 @@ export default function HomeScreen({ navigation }) {
   const handleWildlifeScreenPress = () => {
     navigation.navigate("Wildlife");
   };
+  const handleBlogScreenPress = () => {
+    navigation.navigate("Blog");
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -111,8 +114,25 @@ export default function HomeScreen({ navigation }) {
           </TouchableHighlight>
         </View>
 
+        <View style={styles.buttonContainer}>
+          <Image
+            source={require("../../assets/homescreen/waterSplash2.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.storyParagraphText}>
+          Check out some of the Blue CoLab Blogs.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleBlogScreenPress();
+            }}
+          >
+            <View style={styles.storyButton}>
+              <Text style={styles.mainButtonText}>Learn more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </View>
-      
     </ScrollView>
   );
 }

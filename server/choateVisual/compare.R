@@ -24,8 +24,8 @@ ui <- fluidPage(
   # text outs like for WQIs
   plotlyOutput("distPlot") %>% withSpinner(color = "#FFFFFF"),
   fluidRow(
-    column(6, uiOutput("first"), plotlyOutput("firstGauge")),
-    column(6, uiOutput("second"), plotlyOutput("secondGauge"))
+    column(1, uiOutput("first"), plotlyOutput("firstGauge")),
+    column(1, uiOutput("second"), plotlyOutput("secondGauge"))
   ),
 
   # dropdowns for location & time
@@ -172,7 +172,8 @@ server <- function(input, output) {
 
     # display reports
     output$first <- generateUI(input$firstMonth, input$firstYear, wqi, data)
-    output$firstGauge <- renderPlotly({gaugeChart(wqi)
+    output$firstGauge <- renderPlotly({
+      gaugeChart(wqi)
     })
 
     # find max and mins
@@ -184,7 +185,7 @@ server <- function(input, output) {
     if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA") {
       # this runs only where one month is selected
       # gets the graph
-      interactive_plot <- singlePlot(data, data_maxmin, data_avg)
+      interactive_plot <- singlePlot(data, data_maxmin, data_avg, input$dataset)
     } else {
       # this runs only when there's two months selected
       # this section gets data for the second month
@@ -198,7 +199,8 @@ server <- function(input, output) {
       # display reports
       output$second <- generateUI(input$secondMonth, input$secondYear, second_wqi, second_data)
 
-      output$secondGauge <- renderPlotly({gaugeChart(second_wqi)
+      output$secondGauge <- renderPlotly({
+        gaugeChart(second_wqi)
       })
 
       # find max mins
@@ -230,16 +232,13 @@ server <- function(input, output) {
       }
 
       # gets the graph
-      interactive_plot <- doublePlot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg)
+      interactive_plot <- doublePlot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset)
     }
 
     # displays graph
     interactive_plot
   })
 }
-
-# Run the application
-shinyApp(ui = ui, server = server)
 
 # logic to get data
 fetchData <- function(location, dataset, start_year, start_month, start_day, end_year, end_month, end_day) {
@@ -351,7 +350,20 @@ findDailyAvg <- function(data) {
 }
 
 # responsible for drawing the single month
-singlePlot <- function(data, data_maxmin, data_avg) {
+singlePlot <- function(data, data_maxmin, data_avg, dataset) {
+  thresholds <- list(
+    "Conductivity" = c(150, 500),
+    "pH" = c(7, 8),
+    "Dissolved Oxygen" = c(80, 120),
+    "Salinity" = c(0, 1),
+    "Temperature" = c(0, 24),
+    "Turbidity" = c(0, 24)
+  )
+  # gets markers for average/min/max lines
+  avg_thresholds_data <- drawThresholdsDataAvg(data_avg, dataset,thresholds)
+  min_thresholds_data <- drawThresholdsDataMin(data_maxmin, dataset,thresholds)
+  max_thresholds_data <- drawThresholdsDataMax(data_maxmin, dataset,thresholds)
+
   # plots
   plot <- ggplot() +
     theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
@@ -359,6 +371,17 @@ singlePlot <- function(data, data_maxmin, data_avg) {
     # draws the first line
     geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
     geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+    
+    # draws the three thresholds
+    geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
@@ -377,7 +400,25 @@ singlePlot <- function(data, data_maxmin, data_avg) {
 }
 
 # please update this function to however you feel is appropriate!
-doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg) {
+doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset) {
+  thresholds <- list(
+    "Conductivity" = c(150, 500),
+    "pH" = c(7, 8),
+    "Dissolved Oxygen" = c(80, 120),
+    "Salinity" = c(0, 1),
+    "Temperature" = c(0, 24),
+    "Turbidity" = c(0, 24)
+  )
+  # gets markers for average/max/min lines
+  avg_thresholds_data <- drawThresholdsDataAvg(data_avg, dataset, thresholds)
+  min_thresholds_data <- drawThresholdsDataMin(data_maxmin, dataset, thresholds)
+  max_thresholds_data <- drawThresholdsDataMax(data_maxmin, dataset, thresholds)
+
+  # gets markers for average/max/min lines, for the other line
+  second_avg_thresholds_data <- drawThresholdsDataAvg(second_data_avg, dataset, thresholds)
+  second_min_thresholds_data <- drawThresholdsDataMin(second_data_maxmin, dataset, thresholds)
+  second_max_thresholds_data <- drawThresholdsDataMax(second_data_maxmin, dataset, thresholds)
+
   plot <- ggplot() +
     theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
 
@@ -389,6 +430,28 @@ doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_d
     geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
     geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
+    
+    # draws the three thresholds
+    geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+
+    # draws the three thresholds for second month
+    geom_point(data = subset(second_avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(second_avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(second_min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(second_min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(second_min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    geom_point(data = subset(second_max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
+    geom_point(data = subset(second_max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
+    geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
       y = "Measurement"
@@ -402,54 +465,86 @@ doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_d
   interactive_plot <- ggplotly(plot) %>%
     layout(hovermode = "x unified")
 
-
   return(interactive_plot)
 }
 
+# draws gauge
 gaugeChart <- function(wqi) {
-  
-    value <- wqi$wqi
+  value <- wqi$wqi
 
-    # Define custom tick values and labels
-    custom_ticks <- c(0, 25, 50, 70, 90, 100)
-    custom_tick_labels <- c("0", "25", "50", "70", "90", "100")
+  # Define custom tick values and labels
+  custom_ticks <- c(0, 25, 50, 70, 90, 100)
+  custom_tick_labels <- c("0", "25", "50", "70", "90", "100")
 
-    # Create a gauge chart using plot_ly with custom tick values and labels
-    gauge_chart <- plot_ly(
-      value = value,
-      type = "indicator",
-      mode = "gauge+number",
-      height = 200,
-      gauge = list(
-        axis = list(
-          range = list(0, 100),
-          tickvals = custom_ticks,
-          ticktext = custom_tick_labels
-        ),
-        steps = list(
-          list(range = c(0, 25), color = "darkred"),
-          list(range = c(25, 50), color = "darkorange"),
-          list(range = c(50, 70), color = "yellow"),
-          list(range = c(70, 90), color = "#4ff04ce8"),
-          list(range = c(90, 100), color = "#2a6423")
-        ),
-        bgcolor = "#333333",
-        bar = list(color = "#ffffffe7"),
-        threshold = list(
-          line = list(color = "ffffffe7", width = 4),
-          thickness = 0.75,
-          value = wqi$wqi
-        )
+  # Create a gauge chart using plot_ly with custom tick values and labels
+  gauge_chart <- plot_ly(
+    value = value,
+    type = "indicator",
+    mode = "gauge+number",
+    height = 200,
+    gauge = list(
+      axis = list(
+        range = list(0, 100),
+        tickvals = custom_ticks,
+        ticktext = custom_tick_labels
+      ),
+      steps = list(
+        list(range = c(0, 25), color = "darkred"),
+        list(range = c(25, 50), color = "darkorange"),
+        list(range = c(50, 70), color = "yellow"),
+        list(range = c(70, 90), color = "#4ff04ce8"),
+        list(range = c(90, 100), color = "#2a6423")
+      ),
+      bgcolor = "#333333",
+      bar = list(color = "#ffffffe7"),
+      threshold = list(
+        line = list(color = "ffffffe7", width = 4),
+        thickness = 0.75,
+        value = wqi$wqi
       )
+    )
+  )
+
+
+  gauge_chart <- gauge_chart %>%
+    layout(
+      paper_bgcolor = "#333333",
+      font = list(color = "white")
     )
 
 
-    gauge_chart <- gauge_chart %>%
-      layout(
-        paper_bgcolor = "#333333",
-        font = list(color = "white")
-      )
-    
-
   return(gauge_chart)
 }
+
+# gets if parameter needs to be flagged or not
+drawThresholdsDataAvg <- function(data_avg, dataset,thresholds) {
+  return(data_avg %>%
+    mutate(
+      low_flag = ifelse(daily_avg < thresholds[[dataset]][1], TRUE, FALSE),
+      high_flag = ifelse(daily_avg > thresholds[[dataset]][2], TRUE, FALSE),
+      norm_flag = ifelse((daily_avg > thresholds[[dataset]][1]) & (daily_avg < thresholds[[dataset]][2]), TRUE, FALSE)
+    ))
+}
+
+# gets if parameter needs to be flagged or not
+drawThresholdsDataMin <- function(data_maxmin, dataset,thresholds) {
+  return(data_maxmin %>%
+    mutate(
+      low_flag = ifelse(daily_min < thresholds[[dataset]][1], TRUE, FALSE),
+      high_flag = ifelse(daily_min > thresholds[[dataset]][2], TRUE, FALSE),
+      norm_flag = ifelse((daily_min > thresholds[[dataset]][1]) & (daily_min < thresholds[[dataset]][2]), TRUE, FALSE)
+    ))
+}
+
+# gets if parameter needs to be flagged or not
+drawThresholdsDataMax <- function(data_maxmin, dataset,thresholds) {
+  return(data_maxmin %>%
+    mutate(
+      low_flag = ifelse(daily_max < thresholds[[dataset]][1], TRUE, FALSE),
+      high_flag = ifelse(daily_max > thresholds[[dataset]][2], TRUE, FALSE),
+      norm_flag = ifelse((daily_max > thresholds[[dataset]][1]) & (daily_max < thresholds[[dataset]][2]), TRUE, FALSE)
+    ))
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)

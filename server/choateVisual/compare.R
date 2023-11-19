@@ -24,8 +24,8 @@ ui <- fluidPage(
   # text outs like for WQIs
   plotlyOutput("distPlot") %>% withSpinner(color = "#FFFFFF"),
   fluidRow(
-    column(1, uiOutput("first"), plotlyOutput("firstGauge")),
-    column(1, uiOutput("second"), plotlyOutput("secondGauge"))
+    column(6, uiOutput("first"), plotlyOutput("firstGauge")),
+    column(6, uiOutput("second"), plotlyOutput("secondGauge"))
   ),
 
   # dropdowns for location & time
@@ -375,13 +375,13 @@ singlePlot <- function(data, data_maxmin, data_avg, dataset) {
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
@@ -429,29 +429,32 @@ doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_d
     # draws the second line
     geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
     geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+    
+    # themes
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
     
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
 
     # draws the three thresholds for second month
     geom_point(data = subset(second_avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(second_min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(second_min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(second_min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(second_max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    #geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
       y = "Measurement"

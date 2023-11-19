@@ -21,12 +21,13 @@ ui <- fluidPage(
     style = "color: white;"
   )),
 
-  # outputs
+  # text outs like for WQIs
   plotlyOutput("distPlot") %>% withSpinner(color = "#FFFFFF"),
   fluidRow(
-    column(3, uiOutput("first")),
-    column(3, uiOutput("second"))
+    column(6, uiOutput("first"), plotlyOutput("firstGauge")),
+    column(6, uiOutput("second"), plotlyOutput("secondGauge"))
   ),
+
   # dropdowns for location & time
   fluidRow(
     column(
@@ -58,30 +59,33 @@ ui <- fluidPage(
         selectize = FALSE
       ),
       selectInput("secondYear", "Choose an End Year:",
-        choices = c("2023", "2021", "2022"),
+        choices = c("NA", "2023", "2021", "2022"),
         selectize = FALSE
       ),
       selectInput("secondMonth", "Choose an End Month:",
         choices = c(
-          "January", "February", "March", "April", "May",
+          "NA", "January", "February", "March", "April", "May",
           "June", "July", "August", "September", "October",
           "November", "December"
         ),
         selectize = FALSE
       )
     )
-  ),
+  )
 )
 
 # Define server logic
 server <- function(input, output) {
   output$distPlot <- renderPlotly({
+    # getting location
     location <- switch(input$location,
       "Yonkers (01376307)" = "01376307",
       "West Point (01374019)" = "01374019",
       "Poughkeepsie (01372043)" = "01372043",
       "Choate Pond" = "Choate"
     )
+
+    # getting drop downs for first month
     first_start_year <- switch(input$firstYear,
       "2023" = "2023",
       "2022" = "2022",
@@ -119,10 +123,12 @@ server <- function(input, output) {
       "December" = "31"
     )
 
+    # getting drop downs for second month
     second_start_year <- switch(input$secondYear,
       "2023" = "2023",
       "2022" = "2022",
-      "2021" = "2021"
+      "2021" = "2021",
+      "NA" = "NA"
     )
     second_start_month <- switch(input$secondMonth,
       "January" = "01",
@@ -136,7 +142,8 @@ server <- function(input, output) {
       "September" = "09",
       "October" = "10",
       "November" = "11",
-      "December" = "12"
+      "December" = "12",
+      "NA" = "NA"
     )
     second_end_year <- second_start_year
     second_end_month <- second_start_month
@@ -152,78 +159,81 @@ server <- function(input, output) {
       "September" = "30",
       "October" = "31",
       "November" = "30",
-      "December" = "31"
+      "December" = "31",
+      "NA" = "NA"
     )
 
+    # this section gets data for the first month
     # gets data
     data <- fetchData(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
-    second_data <- fetchData(location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
 
     # get wqis
     wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
-    second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
 
     # display reports
     output$first <- generateUI(input$firstMonth, input$firstYear, wqi, data)
-    output$second <- generateUI(input$secondMonth, input$secondYear, second_wqi, second_data)
+    output$firstGauge <- renderPlotly({gaugeChart(wqi)
+    })
 
     # find max and mins
     data_maxmin <- findMaxMin(data)
-    second_data_maxmin <- findMaxMin(second_data)
-
-    # cleans up timestamp mismatch
-    if (nrow(data_maxmin) > nrow(second_data_maxmin)) {
-      data_maxmin <- head(data_maxmin, nrow(second_data_maxmin) - nrow(data_maxmin))
-      data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
-    } else if (nrow(second_data_maxmin) > nrow(data_maxmin)) {
-      second_data_maxmin <- head(second_data_maxmin, nrow(data_maxmin) - nrow(second_data_maxmin))
-      second_data_maxmin$timestamp <- as.Date(data_maxmin$timestamp, format = "%Y-%m-%d")
-    } else {
-      data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
-    }
 
     # Compute daily averages
     data_avg <- findDailyAvg(data)
-    second_data_avg <- findDailyAvg(second_data)
 
-    # cleans up data mismatch
-    if (nrow(data_avg) > nrow(second_data_avg)) {
-      data_avg <- head(data_avg, nrow(second_data_avg) - nrow(data_avg))
-      data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
-    } else if (nrow(second_data_avg) > nrow(data_avg)) {
-      second_data_avg <- head(second_data_avg, nrow(data_avg) - nrow(second_data_avg))
-      second_data_avg$timestamp <- as.Date(data_avg$timestamp, format = "%Y-%m-%d")
+    if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA") {
+      # this runs only where one month is selected
+      # gets the graph
+      interactive_plot <- singlePlot(data, data_maxmin, data_avg)
     } else {
-      data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
+      # this runs only when there's two months selected
+      # this section gets data for the second month
+
+      # get data
+      second_data <- fetchData(location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
+
+      # get wqis
+      second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
+
+      # display reports
+      output$second <- generateUI(input$secondMonth, input$secondYear, second_wqi, second_data)
+
+      output$secondGauge <- renderPlotly({gaugeChart(second_wqi)
+      })
+
+      # find max mins
+      second_data_maxmin <- findMaxMin(second_data)
+
+      # Compute daily averages
+      second_data_avg <- findDailyAvg(second_data)
+
+      # cleans up timestamp mismatch
+      if (nrow(data_maxmin) > nrow(second_data_maxmin)) {
+        data_maxmin <- head(data_maxmin, nrow(second_data_maxmin) - nrow(data_maxmin))
+        data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
+      } else if (nrow(second_data_maxmin) > nrow(data_maxmin)) {
+        second_data_maxmin <- head(second_data_maxmin, nrow(data_maxmin) - nrow(second_data_maxmin))
+        second_data_maxmin$timestamp <- as.Date(data_maxmin$timestamp, format = "%Y-%m-%d")
+      } else {
+        data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
+      }
+
+      # cleans up data mismatch
+      if (nrow(data_avg) > nrow(second_data_avg)) {
+        data_avg <- head(data_avg, nrow(second_data_avg) - nrow(data_avg))
+        data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
+      } else if (nrow(second_data_avg) > nrow(data_avg)) {
+        second_data_avg <- head(second_data_avg, nrow(data_avg) - nrow(second_data_avg))
+        second_data_avg$timestamp <- as.Date(data_avg$timestamp, format = "%Y-%m-%d")
+      } else {
+        data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
+      }
+
+      # gets the graph
+      interactive_plot <- doublePlot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg)
     }
 
-    # plots
-    plot <- ggplot() +
-      theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
-
-      # draws the first line
-      geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
-      geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-
-      # draws the second line
-      geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
-      geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-      theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
-      labs(
-        title = "Daily Min / Max / Average", x = "Month-Day",
-        y = "Measurement"
-      ) +
-      theme(
-        text = element_text(family = "Nunito", color = "White"),
-        axis.text.x = element_text(size = 10, color = "white"),
-        axis.text.y = element_text(size = 10, color = "white")
-      )
-
-    #    ggplotly(plot)
-
-    interactive_plot <- ggplotly(plot) %>%
-      layout(hovermode = "x unified")
-
+    # displays graph
     interactive_plot
   })
 }
@@ -231,6 +241,7 @@ server <- function(input, output) {
 # Run the application
 shinyApp(ui = ui, server = server)
 
+# logic to get data
 fetchData <- function(location, dataset, start_year, start_month, start_day, end_year, end_month, end_day) {
   # logic to get appropriate data
   if (location == "Choate") { # if Choate data is selected
@@ -305,11 +316,11 @@ fetchData <- function(location, dataset, start_year, start_month, start_day, end
   return(data)
 }
 
+# logic to display WQIs
 generateUI <- function(month, year, wqi, data) {
   return(renderUI({
     HTML(paste0(
       "<div style='color:white;'>Monthly Summary For ", month, " ", year, ":</div><br/>",
-      "<div style='color:white;'>WQI: ", round(wqi$wqi), "</div><br/>",
       "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
       "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
       "<div style='color:white;'>Average: ", round(mean(data$value)), "</div>"
@@ -319,6 +330,7 @@ generateUI <- function(month, year, wqi, data) {
   }))
 }
 
+# logic to find the "bounds"
 findMaxMin <- function(data) {
   data_maxmin <- data %>%
     group_by(timestamp) %>%
@@ -330,9 +342,114 @@ findMaxMin <- function(data) {
   return(data_maxmin)
 }
 
+# logic to find the average
 findDailyAvg <- function(data) {
   data_avg <- data %>%
     group_by(timestamp) %>%
     summarise(daily_avg = mean(value))
   return(data_avg)
+}
+
+# responsible for drawing the single month
+singlePlot <- function(data, data_maxmin, data_avg) {
+  # plots
+  plot <- ggplot() +
+    theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
+
+    # draws the first line
+    geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
+    geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+    theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
+    labs(
+      title = "Daily Min / Max / Average", x = "Month-Day",
+      y = "Measurement"
+    ) +
+    theme(
+      text = element_text(family = "Nunito", color = "White"),
+      axis.text.x = element_text(size = 10, color = "white"),
+      axis.text.y = element_text(size = 10, color = "white")
+    )
+
+  interactive_plot <- ggplotly(plot) %>%
+    layout(hovermode = "x unified")
+
+  return(interactive_plot)
+}
+
+# please update this function to however you feel is appropriate!
+doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg) {
+  plot <- ggplot() +
+    theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
+
+    # draws the first line
+    geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
+    geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+
+    # draws the second line
+    geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
+    geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+    theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
+    labs(
+      title = "Daily Min / Max / Average", x = "Month-Day",
+      y = "Measurement"
+    ) +
+    theme(
+      text = element_text(family = "Nunito", color = "White"),
+      axis.text.x = element_text(size = 10, color = "white"),
+      axis.text.y = element_text(size = 10, color = "white")
+    )
+
+  interactive_plot <- ggplotly(plot) %>%
+    layout(hovermode = "x unified")
+
+
+  return(interactive_plot)
+}
+
+gaugeChart <- function(wqi) {
+  
+    value <- wqi$wqi
+
+    # Define custom tick values and labels
+    custom_ticks <- c(0, 25, 50, 70, 90, 100)
+    custom_tick_labels <- c("0", "25", "50", "70", "90", "100")
+
+    # Create a gauge chart using plot_ly with custom tick values and labels
+    gauge_chart <- plot_ly(
+      value = value,
+      type = "indicator",
+      mode = "gauge+number",
+      height = 200,
+      gauge = list(
+        axis = list(
+          range = list(0, 100),
+          tickvals = custom_ticks,
+          ticktext = custom_tick_labels
+        ),
+        steps = list(
+          list(range = c(0, 25), color = "darkred"),
+          list(range = c(25, 50), color = "darkorange"),
+          list(range = c(50, 70), color = "yellow"),
+          list(range = c(70, 90), color = "#4ff04ce8"),
+          list(range = c(90, 100), color = "#2a6423")
+        ),
+        bgcolor = "#333333",
+        bar = list(color = "#ffffffe7"),
+        threshold = list(
+          line = list(color = "ffffffe7", width = 4),
+          thickness = 0.75,
+          value = wqi$wqi
+        )
+      )
+    )
+
+
+    gauge_chart <- gauge_chart %>%
+      layout(
+        paper_bgcolor = "#333333",
+        font = list(color = "white")
+      )
+    
+
+  return(gauge_chart)
 }

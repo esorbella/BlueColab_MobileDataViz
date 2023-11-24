@@ -35,7 +35,8 @@ const navigator = createStackNavigator(
     Pough: DataPough,
     WP: DataWP,
     Yonk: DataYonk,
-    Blog: BlogScreen
+    Blog: BlogScreen,
+    Ai: BlogScreen
   },
   {
     initialRouteName: 'Wel',

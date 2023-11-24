@@ -31,6 +31,10 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
+  const handleAiPress = () => {
+    navigation.navigate("Ai");
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -137,6 +141,26 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+
+        <View style={styles.buttonContainer}>
+          <Image
+            source={require("../../assets/homescreen/waterQuestion.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.storyParagraphText}>
+          Coming Soon: What's That in The Water
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleAiPress();
+            }}
+          >
+            <View style={styles.storyButton}>
+              <Text style={styles.mainButtonText}>Discover more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
         <View style = {{backgroundColor: 'black', height: deviceHeight/15, width: deviceWidth}}></View>
         <Image
               source ={{uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1173717151232839700/Blue_CoLab_2.png?ex=6564f847&is=65528347&hm=139e1acbabfdb193ad52e2b60687e7a8347eab9061333f2e254447b6d791a10d&"}}

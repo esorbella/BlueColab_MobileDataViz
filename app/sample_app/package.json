@@ -24,7 +24,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-webview": "13.2.2",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "expo-camera": "~13.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

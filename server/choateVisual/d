@@ -1,0 +1,20 @@
+// Function to update dissolved oxygen (DO) and percent saturation based on user input
+//https://www.waterontheweb.org/under/waterquality/dosatcalc.html
+var updateDO = function () {
+    "use strict";
+
+    // Input variables
+    let tc = 23, // Water temperature in degrees Celsius
+        tk = tc + 273.15, // Water temperature in Kelvin
+        pAtm = 1,
+        pWV = Math.exp(11.8571 - (3840.7 / tk) - (216961 / Math.pow(tk, 2))), // Partial pressure of water vapor in atmospheres using the Antoine equation
+        theta = 9.75E-4 - (1.426E-5 * tc) + (6.436E-8 * Math.pow(tc, 2)), // Coefficient related to oxygen solubility
+        cStar = Math.exp(7.7117 - 1.31403 * Math.log(tc + 45.93)), // Equilibrium oxygen concentration at standard pressure (1 atm)
+        pctSat = 100;
+    // Calculate dissolved oxygen concentration (cP)
+    let = cStar * pAtm * (((1 - pWV / pAtm) * (1 - theta * pAtm)) / ((1 - pWV) * (1 - theta)));
+
+    let o2 = pctSat / 100 * cP;
+    return roundOff(o2, 2)); // Update dissolved oxygen field
+
+};

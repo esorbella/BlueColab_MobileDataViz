@@ -60,7 +60,7 @@ ui <- fluidPage(
     column(
       6, # Half of the row
       selectInput("secondLocation", "Choose a Location:",
-        choices = c("Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
+        choices = c("NA","Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
         selectize = FALSE
       ),
       selectInput("secondYear", "Choose an End Year:",
@@ -168,6 +168,15 @@ server <- function(input, output) {
       "NA" = "NA"
     )
 
+    second_location <- switch(input$secondLocation,
+      "Yonkers (01376307)" = "01376307",
+      "West Point (01374019)" = "01374019",
+      "Poughkeepsie (01372043)" = "01372043",
+      "Choate Pond" = "Choate",
+      "NA" = "NA"
+    )
+
+
     thresholds <- list(
       "Conductivity" = c(150, 500),
       "pH" = c(7, 8),
@@ -199,7 +208,7 @@ server <- function(input, output) {
     # Compute daily averages
     data_avg <- find_daily_avg(data)
 
-    if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA") {
+    if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") {
       # this runs only where one month is selected
       # gets the graph
       interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
@@ -208,10 +217,10 @@ server <- function(input, output) {
       # this section gets data for the second month
 
       # get data
-      second_data <- fetch_data(location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
+      second_data <- fetch_data(second_location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
 
       # get wqis
-      if (location == "Choate") {
+      if (second_location == "Choate") {
         second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
       } else {
         second_wqi <- "NA"
@@ -221,7 +230,7 @@ server <- function(input, output) {
       output$second <- generate_ui(input$secondMonth, input$secondYear, second_data)
 
       output$secondGauge <- renderPlotly({
-        gauge_chart(second_wqi, location)
+        gauge_chart(second_wqi, second_location)
       })
 
       # find max mins
@@ -354,11 +363,11 @@ convert_units <- function(data, dataset, location) {
 
   if (dataset == "Conductivity" && location != "Choate") {
     data <- data %>% mutate(value = map_dbl(value, ~ (. / 1000) %>% unlist()))
-  }
+  } # todo: check if it's valid conversion
 
   if (dataset == "Salinity" && location != "Choate") {
     data <- data %>% mutate(value = map_dbl(value, ~ (. * 1000) %>% unlist()))
-  }
+  } # todo: check if it's valid conversion
 
   if (dataset == "Dissolved Oxygen" && location != "Choate") {
     data <- data %>%

@@ -10,6 +10,7 @@ library(lubridate)
 library(plotly)
 library(ggthemes)
 library(shinycssloaders)
+library(purrr)
 
 # Define UI
 ui <- fluidPage(
@@ -24,9 +25,16 @@ ui <- fluidPage(
   # text outs like for WQIs
   plotlyOutput("distPlot") %>% withSpinner(color = "#FFFFFF"),
   fluidRow(
-    column(6, uiOutput("first"), plotlyOutput("firstGauge")),
-    column(6, uiOutput("second"), plotlyOutput("secondGauge"))
+    column(6, uiOutput("first"), plotlyOutput("firstGauge", height = "175px")),
+    column(6, uiOutput("second"), plotlyOutput("secondGauge", height = "175px"))
   ),
+    selectInput("dataset", "Choose a dataset:",
+        choices = c(
+          "Conductivity", "Dissolved Oxygen",
+          "Salinity", "Temperature", "Turbidity", "pH"
+        ),
+        selectize = FALSE
+      ),
 
   # dropdowns for location & time
   fluidRow(
@@ -51,11 +59,8 @@ ui <- fluidPage(
     ),
     column(
       6, # Half of the row
-      selectInput("dataset", "Choose a dataset:",
-        choices = c(
-          "Conductivity", "Dissolved Oxygen",
-          "Salinity", "Temperature", "Turbidity", "pH"
-        ),
+      selectInput("secondLocation", "Choose a Location:",
+        choices = c("Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
         selectize = FALSE
       ),
       selectInput("secondYear", "Choose an End Year:",
@@ -163,51 +168,67 @@ server <- function(input, output) {
       "NA" = "NA"
     )
 
+    thresholds <- list(
+      "Conductivity" = c(150, 500),
+      "pH" = c(7, 8),
+      "Dissolved Oxygen" = c(80, 120),
+      "Salinity" = c(0, 1),
+      "Temperature" = c(32, 75.2), # 0,24
+      "Turbidity" = c(0, 24)
+    )
+
     # this section gets data for the first month
     # gets data
-    data <- fetchData(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
+    data <- fetch_data(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
 
     # get wqis
-    wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
-
+    if (location == "Choate") {
+      wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
+    } else {
+      wqi <- "NA"
+    }
     # display reports
-    output$first <- generateUI(input$firstMonth, input$firstYear, wqi, data)
+    output$first <- generate_ui(input$firstMonth, input$firstYear, data)
     output$firstGauge <- renderPlotly({
-      gaugeChart(wqi)
+      gauge_chart(wqi, location)
     })
 
     # find max and mins
-    data_maxmin <- findMaxMin(data)
+    data_maxmin <- find_max_min(data)
 
     # Compute daily averages
-    data_avg <- findDailyAvg(data)
+    data_avg <- find_daily_avg(data)
 
     if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA") {
       # this runs only where one month is selected
       # gets the graph
-      interactive_plot <- singlePlot(data, data_maxmin, data_avg, input$dataset)
+      interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
     } else {
       # this runs only when there's two months selected
       # this section gets data for the second month
 
       # get data
-      second_data <- fetchData(location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
+      second_data <- fetch_data(location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
 
       # get wqis
-      second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
+      if (location == "Choate") {
+        second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
+      } else {
+        second_wqi <- "NA"
+      }
 
       # display reports
-      output$second <- generateUI(input$secondMonth, input$secondYear, second_wqi, second_data)
+      output$second <- generate_ui(input$secondMonth, input$secondYear, second_data)
 
       output$secondGauge <- renderPlotly({
-        gaugeChart(second_wqi)
+        gauge_chart(second_wqi, location)
       })
 
       # find max mins
-      second_data_maxmin <- findMaxMin(second_data)
+      second_data_maxmin <- find_max_min(second_data)
 
       # Compute daily averages
-      second_data_avg <- findDailyAvg(second_data)
+      second_data_avg <- find_daily_avg(second_data)
 
       # cleans up timestamp mismatch
       if (nrow(data_maxmin) > nrow(second_data_maxmin)) {
@@ -232,7 +253,7 @@ server <- function(input, output) {
       }
 
       # gets the graph
-      interactive_plot <- doublePlot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset)
+      interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds)
     }
 
     # displays graph
@@ -241,7 +262,7 @@ server <- function(input, output) {
 }
 
 # logic to get data
-fetchData <- function(location, dataset, start_year, start_month, start_day, end_year, end_month, end_day) {
+fetch_data <- function(location, dataset, start_year, start_month, start_day, end_year, end_month, end_day) {
   # logic to get appropriate data
   if (location == "Choate") { # if Choate data is selected
     # gets Data from Blue CoLab
@@ -266,71 +287,133 @@ fetchData <- function(location, dataset, start_year, start_month, start_day, end
         "Temperature" = my_data$sensors$Temp,
         "Turbidity" = my_data$sensors$Turb,
         "pH" = my_data$sensors$pH
-      )
+      ),
+      temp = my_data$sensors$Temp
     )
   } else {
     # otherwise use USGS API
     my_data <- readNWISuv(siteNumbers = location, parameterCd = "all", startDate = paste(start_year, "-", start_month, "-", start_day, sep = ""), endDate = paste(end_year, "-", end_month, "-", end_day, sep = ""))
     my_data$timestamp <- as.Date(my_data$dateTime)
+
+    if (location == "01376307") { # Yonkers
+      # gets specific parameter
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_00095_00000,
+          "Dissolved Oxygen" = my_data$X_00300_00000,
+          "Salinity" = my_data$X_90860_00000,
+          "Temperature" = my_data$X_00010_00000,
+          "Turbidity" = my_data$X_63680_00000,
+          "pH" = my_data$X_00400_00000
+        ),
+        temp = my_data$X_00010_00000
+      )
+    } else if (location == "01374019") { # West Point
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_.HRECOS._00095_00000,
+          "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
+          "Salinity" = my_data$X_.HRECOS._90860_00000,
+          "Temperature" = my_data$X_.HRECOS._00010_00000,
+          "Turbidity" = my_data$X_.HRECOS._63680_00000,
+          "pH" = my_data$X_.HRECOS._00400_00000
+        ),
+        temp = my_data$X_.HRECOS._00010_00000
+      )
+    } else if (location == "01372043") { # Pough.
+      data <- data.frame(
+        timestamp = my_data$timestamp,
+        value = switch(dataset,
+          "Conductivity" = my_data$X_Surface_00095_00000,
+          "Dissolved Oxygen" = my_data$X_Surface_00300_00000,
+          "Salinity" = my_data$X_Surface_90860_00000,
+          "Temperature" = my_data$X_Surface_00010_00000,
+          "Turbidity" = my_data$X_Surface_63680_00000,
+          "pH" = my_data$X_Surface_00400_00000
+        ), # Close Switch
+        temp = my_data$X_Surface_00010_00000
+      ) # close DataFrame
+    } # close Pough
+  } # close else
+
+
+
+  data <- convert_units(data, dataset, location)
+  data <- remove_outliers(data)
+
+
+  return(data)
+} # close function
+
+convert_units <- function(data, dataset, location) {
+  if (dataset == "Temperature") {
+    data <- data %>% mutate(value = map_dbl(value, ~ (. * (9 / 5) + 32) %>% unlist()))
   }
 
-  if (location == "01376307") { # Yonkers
-    # gets specific parameter
-    data <- data.frame(
-      timestamp = my_data$timestamp,
-      value = switch(dataset,
-        "Conductivity" = my_data$X_00095_00000,
-        "Dissolved Oxygen" = my_data$X_00300_00000,
-        "Salinity" = my_data$X_90860_00000,
-        "Temperature" = my_data$X_00010_00000,
-        "Turbidity" = my_data$X_63680_00000,
-        "pH" = my_data$X_00400_00000
-      )
-    )
-  } else if (location == "01374019") { # West Point
-    data <- data.frame(
-      timestamp = my_data$timestamp,
-      value = switch(dataset,
-        "Conductivity" = my_data$X_.HRECOS._00095_00000,
-        "Dissolved Oxygen" = my_data$X_.HRECOS._00300_00000,
-        "Salinity" = my_data$X_.HRECOS._90860_00000,
-        "Temperature" = my_data$X_.HRECOS._00010_00000,
-        "Turbidity" = my_data$X_.HRECOS._63680_00000,
-        "pH" = my_data$X_.HRECOS._00400_00000
-      )
-    )
-  } else if (location == "01372043") { # Pough.
-    data <- data.frame(
-      timestamp = my_data$timestamp,
-      value = switch(dataset,
-        "Conductivity" = my_data$X_Surface_00095_00000,
-        "Dissolved Oxygen" = my_data$X_Surface_00300_00000,
-        "Salinity" = my_data$X_Surface_90860_00000,
-        "Temperature" = my_data$X_Surface_00010_00000,
-        "Turbidity" = my_data$X_Surface_63680_00000,
-        "pH" = my_data$X_Surface_00400_00000
-      )
-    )
+  if (dataset == "Conductivity" && location != "Choate") {
+    data <- data %>% mutate(value = map_dbl(value, ~ (. / 1000) %>% unlist()))
   }
+
+  if (dataset == "Salinity" && location != "Choate") {
+    data <- data %>% mutate(value = map_dbl(value, ~ (. * 1000) %>% unlist()))
+  }
+
+  if (dataset == "Dissolved Oxygen" && location != "Choate") {
+    data <- data %>%
+      mutate(value = pmap_dbl(list(value, temp), function(x, y) x / max_do(y) * 100))
+  }
+
   return(data)
 }
 
+# Function to find the max do mg/L of a water based on temperature
+# Source: https://www.waterontheweb.org/under/waterquality/dosatcalc.html
+max_do <- function(temperature) {
+  # Input variables
+  tc <- temperature # Water temperature in degrees Celsius
+  tk <- tc + 273.15 # Water temperature in Kelvin
+  pAtm <- 1
+  pWV <- exp(11.8571 - (3840.7 / tk) - (216961 / tk^2)) # Partial pressure of water vapor in atmospheres using the Antoine equation
+  theta <- 9.75E-4 - (1.426E-5 * tc) + (6.436E-8 * tc^2) # Coefficient related to oxygen solubility
+  cStar <- exp(7.7117 - 1.31403 * log(tc + 45.93)) # Equilibrium oxygen concentration at standard pressure (1 atm)
+  pctSat <- 100
+
+  # Calculate dissolved oxygen concentration (cP)
+  cP <- cStar * pAtm * (((1 - pWV / pAtm) * (1 - theta * pAtm)) / ((1 - pWV) * (1 - theta)))
+
+  o2 <- pctSat / 100 * cP
+  return(round(o2, 2)) # Update dissolved oxygen field
+}
+
+remove_outliers <- function(data) {
+  # Define the window size for the rolling mean
+  window_size <- 4 # Adjust the window size as needed
+
+  # Apply the rolling mean in place
+  data$value <- rollapply(data$value, width = window_size, FUN = mean, align = "right", fill = NA)
+
+  # Remove rows with NA values
+  data <- data[complete.cases(data), ]
+  return(data)
+}
+
+
 # logic to display WQIs
-generateUI <- function(month, year, wqi, data) {
+generate_ui <- function(month, year, data) {
   return(renderUI({
     HTML(paste0(
       "<div style='color:white;'>Monthly Summary For ", month, " ", year, ":</div><br/>",
       "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
       "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
       "<div style='color:white;'>Average: ", round(mean(data$value)), "</div>"
-      # "<div style='background-color: #336bed95; color:white; width: 80px;' >blue",input$firstMonth, " ", input$firstYear,"</div>",
-      # "<div style='background-color: #ff000075; color:white; width: 80px;' >red",input$secondMonth, " ", input$secondYear,"</div>"
     ))
   }))
 }
 
 # logic to find the "bounds"
-findMaxMin <- function(data) {
+find_max_min <- function(data) {
   data_maxmin <- data %>%
     group_by(timestamp) %>%
     summarise(
@@ -342,7 +425,7 @@ findMaxMin <- function(data) {
 }
 
 # logic to find the average
-findDailyAvg <- function(data) {
+find_daily_avg <- function(data) {
   data_avg <- data %>%
     group_by(timestamp) %>%
     summarise(daily_avg = mean(value))
@@ -350,19 +433,11 @@ findDailyAvg <- function(data) {
 }
 
 # responsible for drawing the single month
-singlePlot <- function(data, data_maxmin, data_avg, dataset) {
-  thresholds <- list(
-    "Conductivity" = c(150, 500),
-    "pH" = c(7, 8),
-    "Dissolved Oxygen" = c(80, 120),
-    "Salinity" = c(0, 1),
-    "Temperature" = c(0, 24),
-    "Turbidity" = c(0, 24)
-  )
+single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds) {
   # gets markers for average/min/max lines
-  avg_thresholds_data <- drawThresholdsDataAvg(data_avg, dataset,thresholds)
-  min_thresholds_data <- drawThresholdsDataMin(data_maxmin, dataset,thresholds)
-  max_thresholds_data <- drawThresholdsDataMax(data_maxmin, dataset,thresholds)
+  avg_thresholds_data <- draw_thresholds_data_avg(data_avg, dataset, thresholds)
+  min_thresholds_data <- draw_thresholds_data_min(data_maxmin, dataset, thresholds)
+  max_thresholds_data <- draw_thresholds_data_max(data_maxmin, dataset, thresholds)
 
   # plots
   plot <- ggplot() +
@@ -371,17 +446,17 @@ singlePlot <- function(data, data_maxmin, data_avg, dataset) {
     # draws the first line
     geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
     geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-    
+
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
     # geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
@@ -400,24 +475,16 @@ singlePlot <- function(data, data_maxmin, data_avg, dataset) {
 }
 
 # please update this function to however you feel is appropriate!
-doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset) {
-  thresholds <- list(
-    "Conductivity" = c(150, 500),
-    "pH" = c(7, 8),
-    "Dissolved Oxygen" = c(80, 120),
-    "Salinity" = c(0, 1),
-    "Temperature" = c(0, 24),
-    "Turbidity" = c(0, 24)
-  )
+double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset, thresholds) {
   # gets markers for average/max/min lines
-  avg_thresholds_data <- drawThresholdsDataAvg(data_avg, dataset, thresholds)
-  min_thresholds_data <- drawThresholdsDataMin(data_maxmin, dataset, thresholds)
-  max_thresholds_data <- drawThresholdsDataMax(data_maxmin, dataset, thresholds)
+  avg_thresholds_data <- draw_thresholds_data_avg(data_avg, dataset, thresholds)
+  min_thresholds_data <- draw_thresholds_data_min(data_maxmin, dataset, thresholds)
+  max_thresholds_data <- draw_thresholds_data_max(data_maxmin, dataset, thresholds)
 
   # gets markers for average/max/min lines, for the other line
-  second_avg_thresholds_data <- drawThresholdsDataAvg(second_data_avg, dataset, thresholds)
-  second_min_thresholds_data <- drawThresholdsDataMin(second_data_maxmin, dataset, thresholds)
-  second_max_thresholds_data <- drawThresholdsDataMax(second_data_maxmin, dataset, thresholds)
+  second_avg_thresholds_data <- draw_thresholds_data_avg(second_data_avg, dataset, thresholds)
+  second_min_thresholds_data <- draw_thresholds_data_min(second_data_maxmin, dataset, thresholds)
+  second_max_thresholds_data <- draw_thresholds_data_max(second_data_maxmin, dataset, thresholds)
 
   plot <- ggplot() +
     theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
@@ -429,32 +496,32 @@ doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_d
     # draws the second line
     geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
     geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-    
+
     # themes
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
-    
+
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
 
     # draws the three thresholds for second month
     geom_point(data = subset(second_avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(second_min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(second_min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
+    # geom_point(data = subset(second_min_thresholds_data, norm_flag), aes(x = timestamp, y = daily_min), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(second_max_thresholds_data, low_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 6) +
     geom_point(data = subset(second_max_thresholds_data, high_flag), aes(x = timestamp, y = daily_max), color = "red", size = 2, shape = 2) +
-    #geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
-    
+    # geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
+
     labs(
       title = "Daily Min / Max / Average", x = "Month-Day",
       y = "Measurement"
@@ -472,7 +539,43 @@ doublePlot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_d
 }
 
 # draws gauge
-gaugeChart <- function(wqi) {
+gauge_chart <- function(wqi, location) {
+  if (location != "Choate") {
+    gauge_chart <- plot_ly(
+      value = "NA",
+      type = "indicator",
+      mode = "gauge+number",
+      height = 200,
+      gauge = list(
+        axis = list(
+          range = list(0, 100),
+          tickvals = c(0, 25, 50, 70, 90, 100),
+          ticktext = c("0", "25", "50", "70", "90", "100")
+        ),
+        steps = list(
+          list(range = c(0, 25), color = "darkred"),
+          list(range = c(25, 50), color = "darkorange"),
+          list(range = c(50, 70), color = "yellow"),
+          list(range = c(70, 90), color = "#4ff04ce8"),
+          list(range = c(90, 100), color = "#2a6423")
+        ),
+        bgcolor = "#333333",
+        bar = list(color = "#ffffffe7"),
+        threshold = list(
+          line = list(color = "ffffffe7", width = 4),
+          thickness = 0.75,
+          value = 0 # Set the threshold value to 0 for "NA" case
+        )
+      )
+    )
+
+    gauge_chart <- gauge_chart %>%
+      layout(
+        paper_bgcolor = "#333333",
+        font = list(color = "white")
+      )
+    return(gauge_chart)
+  }
   value <- wqi$wqi
 
   # Define custom tick values and labels
@@ -520,7 +623,7 @@ gaugeChart <- function(wqi) {
 }
 
 # gets if parameter needs to be flagged or not
-drawThresholdsDataAvg <- function(data_avg, dataset,thresholds) {
+draw_thresholds_data_avg <- function(data_avg, dataset, thresholds) {
   return(data_avg %>%
     mutate(
       low_flag = ifelse(daily_avg < thresholds[[dataset]][1], TRUE, FALSE),
@@ -530,7 +633,7 @@ drawThresholdsDataAvg <- function(data_avg, dataset,thresholds) {
 }
 
 # gets if parameter needs to be flagged or not
-drawThresholdsDataMin <- function(data_maxmin, dataset,thresholds) {
+draw_thresholds_data_min <- function(data_maxmin, dataset, thresholds) {
   return(data_maxmin %>%
     mutate(
       low_flag = ifelse(daily_min < thresholds[[dataset]][1], TRUE, FALSE),
@@ -540,7 +643,7 @@ drawThresholdsDataMin <- function(data_maxmin, dataset,thresholds) {
 }
 
 # gets if parameter needs to be flagged or not
-drawThresholdsDataMax <- function(data_maxmin, dataset,thresholds) {
+draw_thresholds_data_max <- function(data_maxmin, dataset, thresholds) {
   return(data_maxmin %>%
     mutate(
       low_flag = ifelse(daily_max < thresholds[[dataset]][1], TRUE, FALSE),

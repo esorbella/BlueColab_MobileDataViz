@@ -1,6 +1,10 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
+import { Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function AiScreen({ navigation }) {
   const [type, setType] = useState(CameraType.back);
@@ -8,7 +12,6 @@ export default function AiScreen({ navigation }) {
   const [startCamera, setStartCamera] = useState(false)
   const [previewVisible, setPreviewVisible] = useState(false)
   const [capturedImage, setCapturedImage] = useState(null)
-  const [flashMode, setFlashMode] = useState('off')
 
 
   if (!permission) {
@@ -49,11 +52,43 @@ export default function AiScreen({ navigation }) {
     __startCamera()
   }
 
-  const __savePhoto = () => {
-    console.log(capturedImage)
-    //uploadImage(capturedImage.uri);
+  const __savePhoto = async () => {
+    // console.log(capturedImage)
+    const uri = capturedImage.uri;
+    // console.log('Selected image URI:', uri);
+
+    // Convert image to Base64
+    // const base64Image = await imageToBase64(uri);
+    // console.log('Base64 representation:', base64Image);
+    //sendStringToServer("heelo");
+    uploadImage(uri);
   }
 
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setPreviewVisible(true)
+      setCapturedImage(result)
+      // The URI of the selected image is in result.uri
+      const uri = result.uri;
+      // Handle the image URI as needed
+    }
+  };
+
+
+
+  // const imageToBase64 = async (uri) => {
+  //   const base64 = await FileSystem.readAsStringAsync(uri, {
+  //     encoding: FileSystem.EncodingType.Base64,
+  //   });
+  //   return base64;
+  // };
 
   const __startCamera = async () => {
     const { status } = await Camera.requestPermissionsAsync()
@@ -65,40 +100,55 @@ export default function AiScreen({ navigation }) {
     }
   }
 
-  // const createFormData = (photo, body = {}) => {
-  //   const data = new FormData();
+  const uploadImage = async (imageUri) => {
+    try {
+      const formData = createFormData({ uri: imageUri });
+      const response = await axios.post('http://192.168.1.211:3000/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-  //   data.append('photo', {
-  //     name: 'photo.jpg',
-  //     type: 'image/jpeg',
-  //     uri: Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
-  //   });
+      // Handle the server response
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors
+      console.error('Error uploading image: ', error);
+    }
+  };
 
-  //   // Append additional data to the FormData if needed
-  //   Object.keys(body).forEach((key) => {
-  //     data.append(key, body[key]);
-  //   });
+  const createFormData = (photo, body = {}) => {
+    const data = new FormData();
 
-  //   return data;
-  // };
+    data.append('photo', {
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+      uri: Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
+    });
+
+    // Append additional data to the FormData if needed
+    Object.keys(body).forEach((key) => {
+      data.append(key, body[key]);
+    });
+
+    return data;
+  };
 
 
-  // const uploadImage = async (imageUri) => {
+  // const sendStringToServer = async (yourString) => {
   //   try {
-  //     const formData = createFormData({ uri: imageUri });
-  //     const response = await axios.post('YOUR_SERVER_ENDPOINT', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
+  //     const response = await axios.post('http://192.168.1.211:3000/your-endpoint', {
+  //       data: yourString,
   //     });
 
   //     // Handle the server response
-  //     console.log(response.data);
+  //     console.log('Server response:', response.data);
   //   } catch (error) {
   //     // Handle errors
-  //     console.error('Error uploading image: ', error);
+  //     console.error('Error sending string to server:', error);
   //   }
   // };
+
 
 
   return (
@@ -112,6 +162,9 @@ export default function AiScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.takePicture} >
             <Text style={styles.text}>Take Photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={pickImage} >
+            <Text style={styles.text}>Photo from Phone</Text>
           </TouchableOpacity>
         </View>
       </Camera>)}
@@ -212,7 +265,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
                   fontSize: 20
                 }}
               >
-                save photo
+                analyze photo
               </Text>
             </TouchableOpacity>
           </View>

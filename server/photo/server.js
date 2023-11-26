@@ -6,8 +6,6 @@ const FormData = require('form-data');
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const csv = require('csv-parser');
-
 
 const app = express();
 const port = 3000;
@@ -19,7 +17,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     // Use a unique filename, or use the original filename
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, '-' + file.originalname);
   }
 });
 
@@ -46,43 +44,15 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
     console.log('done')
 
-
-    const file_path = './USRIISv2_MasterList.csv';
-    fs.createReadStream(file_path)
-      .pipe(csv())
-      .on('data', (row) => {
-        // Assuming the name is in the 'name' column, adjust the key if it's in a different column
-        const currentName = row.scientificName;
-        for (let specie of result.data.results) {
-          let scientificNameWithoutAuthor = specie.species.scientificNameWithoutAuthor;
-          if (scientificNameWithoutAuthor == currentName) {
-            console.log("Ahhh")
-            // if (specie.invasive) {
-            specie.invasive = true;
-
-          } else if (specie.invasive == true) {
-            // edge case 
-          } else {
-            specie.invasive = false;
-          }
-
-        }
-      })
-      .on('end', () => {
-        console.log('Finished reading the CSV file.');
-        //        console.log('data', require('util').inspect(data, false, null, true)); // should be: read "Step 6" below]
-        res.json({ message: 'Image received, saved, and processed successfully!!!', result });
-        console.log(result.data.results)
-
-      })
-      .on('error', (error) => {
-        console.error(`An error occurred: ${error}`);
-      });
-
-
+    res.json({ message: 'Image received, saved, and processed successfully!!!', result });
   } catch (error) {
     // Handle errors
-    console.error('Error handling image upload:', error);
+    if (error.response.data.statusCode == 404) {
+      console.log("404 Error",error.response.data.message);
+      res.json({ message: error.response.data.message });
+      return;
+    }
+      
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -107,7 +77,7 @@ async function sendToAnotherServer(fileDetails) {
 
     return { status, data };
   } catch (error) {
-    console.error('error', error);
+ //   console.error('error', error);
     throw error;
   }
 }

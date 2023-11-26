@@ -7,10 +7,6 @@
     <list default="true" id="6f8e3e14-3a0f-4c8e-8a92-95a30e5563ef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/AiScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AiScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../server/photo/id.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../server/photo/id.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../server/photo/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../server/photo/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../server/photo/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../server/photo/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../server/photo/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../server/photo/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

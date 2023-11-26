@@ -1,6 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList } from 'react-native';
 import axios from 'axios';
 import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,7 +11,7 @@ export default function AiScreen({ navigation }) {
   const [previewVisible, setPreviewVisible] = useState(false)
   const [capturedImage, setCapturedImage] = useState(null)
   const [aiReplyVisible, setAIVisible] = useState(false);
-  const [speciesData,setSpeciesData] = useState([]);
+  const [speciesData, setSpeciesData] = useState([]);
 
 
   // permission handling
@@ -87,12 +87,27 @@ export default function AiScreen({ navigation }) {
         },
       });
 
-      // Handle the server response
-      console.log(response.data.result.data.bestMatch);
-      console.log(response.data.result.data.results);
+      if (response.data.message != 'Species not found' ) {
+        setSpeciesData(response.data.result.data.results);
+      } else {
+        setSpeciesData([
+          {
+            species : {
+              scientificNameWithoutAuthor : "No Valid Plant Found",
+              commonNames : []
+            },
+            score : 0,
+            invasive : false
+          }
+        ]);
+      }
 
-      console.log(response.data.result.data.remainingIdentificationRequests)
-      setSpeciesData(response.data.result.data.results);
+      // Handle the server response
+      // console.log(response.data.result.data.bestMatch);
+      // console.log(response.data.result.data.results);
+
+      // console.log(response.data.result.data.remainingIdentificationRequests)
+      
     } catch (error) {
       // Handle errors
       console.error('Error uploading image: ', error);
@@ -118,7 +133,7 @@ export default function AiScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {previewVisible && capturedImage ? (aiReplyVisible ? (<AIResponse speciesData={speciesData}/>) : ( <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} /> )
+      {previewVisible && capturedImage ? (aiReplyVisible ? (<AIResponse speciesData={speciesData} />) : (<CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} />)
       ) : (<Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} >
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
@@ -212,7 +227,25 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
   )
 }
 
-const AIResponse = ({speciesData}) => {
+const Item = ({ title, score, commonNames, isInvasive }) => {
+
+  if (commonNames.length <= 0)
+    return (<View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+      <Text>Score: {Math.round(score * 10000) / 100}</Text>
+      <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+    </View>)
+  else {
+    return (<View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+      <Text>Score: {Math.round(score * 10000) / 100}</Text>
+      <Text>Common Name(s): {commonNames.join(", ")}</Text>
+      <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+    </View>)
+  }
+};
+
+const AIResponse = ({ speciesData }) => {
   const loadingImages = [
     "https://cdn.dribbble.com/users/2882885/screenshots/7861928/media/a4c4da396c3da907e7ed9dd0b55e5031.gif",
     "https://media.tenor.com/DHkIdy0a-UkAAAAC/loading-cat.gif",
@@ -221,17 +254,18 @@ const AIResponse = ({speciesData}) => {
   ];
   // console.log('The photo', photo)
 
-  
+
+
   const displaySpecies = (species) => {
     if (species.length > 0) { // valid array received
       return (
-        <View style={styles.container} >
-          {speciesData.map((singleSpecies, index) => (
-            <Text key={index}>{Math.round(singleSpecies.score*10000)/100}% chance it's the {singleSpecies.species.scientificNameWithoutAuthor} (aka the {
-              singleSpecies.species.commonNames[0]
-            }). Is it invasive? {singleSpecies.invasive ? "Yes" : "No"}</Text>
-          ))}
-        </View>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={species}
+            renderItem={({ item }) => <Item title={item.species.scientificNameWithoutAuthor} score={item.score} commonNames={item.species.commonNames} isInvasive={item.invasive} />}
+            keyExtractor={item => item.species.scientificNameWithoutAuthor}
+          />
+        </SafeAreaView>
       );
     } else { // an error or we're still waiting for a response from a server
       return (
@@ -242,9 +276,9 @@ const AIResponse = ({speciesData}) => {
             style={{ height: 500, width: 400 }} // Adjust the dimensions as needed
           />
         </View>
-      );      
+      );
     }
-    
+
 
   }
 
@@ -277,6 +311,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
   },
 });
 

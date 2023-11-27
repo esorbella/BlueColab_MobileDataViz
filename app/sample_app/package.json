@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
+    "axios": "^1.6.2",
     "expo": "~49.0.10",
     "expo-app-loading": "^2.1.1",
+    "expo-camera": "~13.4.4",
+    "expo-file-system": "~15.4.5",
     "expo-font": "~11.4.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
@@ -24,7 +27,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-webview": "13.2.2",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -7,8 +7,13 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import styles from "../../styles";
+
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
+
 
 export default function HomeScreen({ navigation }) {
   const handleStoryScreenPress = () => {
@@ -23,6 +28,13 @@ export default function HomeScreen({ navigation }) {
   const handleWildlifeScreenPress = () => {
     navigation.navigate("Wildlife");
   };
+  const handleBlogScreenPress = () => {
+    navigation.navigate("Blog");
+  };
+  const handleAiPress = () => {
+    navigation.navigate("Ai");
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -51,13 +63,15 @@ export default function HomeScreen({ navigation }) {
        
         <View style={styles.graphButtonContainer}>
           <Image
-            source={require("../../assets/homescreen/notTransparent.jpg")}
+            source={{uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg"}}
             style={styles.imageContainer}
           />
            <Text style={styles.graphParagraphText}>
-          Visualizing the statistics of our local water sources is important for 
-          determining the water quality. We aim to optimize this process so one day
-          we can put it into our drinking water sources. 
+          Adding sensors and visualizing the information and statistics of our local 
+          water sources is important for determining the water quality. We aim 
+          to optimize this process so one day we can put these sensors into our 
+          drinking water sources and bring this type of information to people across
+          the globe.
         </Text>
           <TouchableHighlight
             onPress={() => {
@@ -65,7 +79,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <View style={styles.graphButton}>
-              <Text style={styles.mainButtonText}>See Historical Data...</Text>
+              <Text style={styles.mainButtonText}>See Live Data...</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -111,8 +125,45 @@ export default function HomeScreen({ navigation }) {
           </TouchableHighlight>
         </View>
 
+        <View style={styles.buttonContainer}>
+          <Image
+            source={require("../../assets/homescreen/waterSplash2.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.storyParagraphText}>
+          Check out some of the Blue CoLab Blogs.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleBlogScreenPress();
+            }}
+          >
+            <View style={styles.storyButton}>
+              <Text style={styles.mainButtonText}>Learn more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <Image
+            source={require("../../assets/homescreen/waterQuestion.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.storyParagraphText}>
+          Coming Soon: What's That in The Water
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleAiPress();
+            }}
+          >
+            <View style={styles.storyButton}>
+              <Text style={styles.mainButtonText}>Discover more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
       </View>
-      
     </ScrollView>
   );
 }

@@ -13,7 +13,7 @@ let deviceWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
 
- 
+    //main use for background, also a good template to copy/paste for a new background
     container: {
         flex: 1,
         backgroundColor: 'black',
@@ -22,15 +22,17 @@ export default StyleSheet.create({
         
 
     },
+    //wildlife screen background
     wildContainer: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: 'darkolivegreen',
         alignItems: 'center',
         width: deviceWidth,
-        height:deviceHeight,
+       
         
 
     },
+    //welcome screen backgroun
     welcome: {
         flex: 1,
         backgroundColor: 'lightcyan',
@@ -40,6 +42,7 @@ export default StyleSheet.create({
         
 
     },
+    //code for the welcome button 
     welcomeButton: {
         backgroundColor: 'lightskyblue',
         alignItems: 'center',
@@ -47,14 +50,18 @@ export default StyleSheet.create({
         width: deviceWidth/1.4,
         height: deviceHeight/13,
         borderRadius: 17,
+        borderWidth: 2,
+        borderColor: 'darkgreen',
 
     },
+    //text in the welcome button
     welcomeText: {
        fontSize: deviceHeight/25,
        color: 'darkgreen',
        textAlign: 'center',
     
     },
+    //Text for the quote on the welcome screen
     quoteText: {
         fontSize: deviceHeight/39,
         color: '#336CED',
@@ -64,6 +71,7 @@ export default StyleSheet.create({
         marginRight: deviceWidth/18,
         
      },
+    //button in the Our Story widget 
     storyButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -76,13 +84,15 @@ export default StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
+        margin: deviceWidth/55,
     },
+    //button in the data widget
     graphButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
-        backgroundColor: 'seashell',
+        backgroundColor: 'lightcyan',
         borderWidth: 2,
         borderColor: '#333333',
         justifyContent: 'center',
@@ -90,6 +100,7 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    //button in the weathe widget
     weatherButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -103,6 +114,7 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    //button in the wildlife widget
     wildlifeButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -116,12 +128,14 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    //Template to copy/paste for text or just use as a placeholder
     mainButtonText: {
         color: 'black',
     },
+    //used for OUR STORY
+    //widget template to copy/paste or use as a placeholder
     buttonContainer: {
         width: deviceWidth/1.01,
-        
         backgroundColor: '#0E2B58',
         borderColor: '#787878',
         borderRadius: 20,
@@ -130,6 +144,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/200,
         
     },
+   //idk what this is too scared to delete
     graphImage: {
         width: deviceWidth/1.01,
         height: deviceHeight/4,
@@ -141,9 +156,10 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/200,
         
     },
+    //data widget
     graphButtonContainer: {
         width: deviceWidth/1.01,
-        backgroundColor: 'darkgrey',
+        backgroundColor: 'mediumaquamarine',
         borderColor: '#787878',
         borderRadius: 20,
         borderWidth: 1,
@@ -151,6 +167,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/300,
         
     },
+    //weather widget
     weatherButtonContainer: {
         width: deviceWidth/1.01,
         backgroundColor: '#333333',
@@ -161,6 +178,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/300,
         
     },
+    //wildlife screen widget
     animalButtonContainer: {
         width: deviceWidth/1.01,
         backgroundColor: 'darkolivegreen',
@@ -171,6 +189,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/300,
         
     },
+    //button in the data widget
     dataButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -184,9 +203,11 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    //text for the data button
     dataButtonText: {
         color: 'black',
     },
+    //specific to OUR STORY widget paragraph text
     storyParagraphText: {
         color: 'white',
         fontSize: deviceHeight/25,
@@ -197,6 +218,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito',
     },
+    //Text below the image
     graphParagraphText: {
         color: 'black',
         fontSize: deviceHeight/25,
@@ -205,9 +227,9 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        fontFamily: 'Nunito',
     },
-
+    //used throughout app- also good copy/paste template
     paragraphText: {
         color: 'white',
         fontSize: deviceHeight/25,
@@ -218,6 +240,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito-Black',
     },
+    //used in wildlife page
     pictureSub:{
         color: 'white',
         fontSize: 16,
@@ -225,6 +248,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
     },
+    //used in wildlife page
     pictureSubScientific:{
         color: 'white',
         fontSize: 16,
@@ -232,6 +256,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontStyle: "italic"
     },
+    //image styling
     imageContainer:{
         height: deviceHeight/3,
         width: "90%",
@@ -239,6 +264,7 @@ export default StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 10,
+        marginLeft: deviceWidth/19.5
     },
 
 });

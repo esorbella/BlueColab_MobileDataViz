@@ -229,11 +229,19 @@ const Item = ({ title, score, commonNames, isInvasive }) => {
       <Text>Score: {Math.round(score * 10000) / 100}</Text>
       <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
     </View>)
-  else {
+  else if ((commonNames.length == 1)) {
     return (<View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{commonNames[0]}</Text>
+      <Text>Scientific Name: {title}</Text>
       <Text>Score: {Math.round(score * 10000) / 100}</Text>
-      <Text>Common Name(s): {commonNames.join(", ")}</Text>
+      <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+    </View>)
+  } else if ((commonNames.length > 1)) {
+    return (<View style={styles.item}>
+      <Text style={styles.title}>{commonNames[0]}</Text>
+      <Text>Other Common Name(s): {commonNames.slice(1).join(", ")}</Text>
+      <Text>Scientific Name: {title}</Text>
+      <Text>Score: {Math.round(score * 10000) / 100}</Text>
       <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
     </View>)
   }

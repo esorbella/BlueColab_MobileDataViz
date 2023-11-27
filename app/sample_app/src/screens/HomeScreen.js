@@ -59,13 +59,15 @@ export default function HomeScreen({ navigation }) {
        
         <View style={styles.graphButtonContainer}>
           <Image
-            source={require("../../assets/homescreen/notTransparent.jpg")}
+            source={{uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg"}}
             style={styles.imageContainer}
           />
            <Text style={styles.graphParagraphText}>
-          Visualizing the statistics of our local water sources is important for 
-          determining the water quality. We aim to optimize this process so one day
-          we can put it into our drinking water sources. 
+          Adding sensors and visualizing the information and statistics of our local 
+          water sources is important for determining the water quality. We aim 
+          to optimize this process so one day we can put these sensors into our 
+          drinking water sources and bring this type of information to people across
+          the globe.
         </Text>
           <TouchableHighlight
             onPress={() => {
@@ -73,7 +75,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <View style={styles.graphButton}>
-              <Text style={styles.mainButtonText}>See Historical Data...</Text>
+              <Text style={styles.mainButtonText}>See Live Data...</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -137,14 +139,6 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
-        <View style = {{backgroundColor: 'black', height: deviceHeight/15, width: deviceWidth}}></View>
-        <Image
-              source ={{uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1173717151232839700/Blue_CoLab_2.png?ex=6564f847&is=65528347&hm=139e1acbabfdb193ad52e2b60687e7a8347eab9061333f2e254447b6d791a10d&"}}
-              style={{ height: deviceHeight/16.5, width: deviceWidth/1.8, margin: deviceWidth/20, position: 'absolute', left: -deviceWidth/25, bottom: -deviceWidth/25 }}
-            />
-
-        
-
       </View>
     </ScrollView>
   );

@@ -101,12 +101,6 @@ export default function AiScreen({ navigation }) {
           }
         ]);
       }
-
-      // Handle the server response
-      // console.log(response.data.result.data.bestMatch);
-      // console.log(response.data.result.data.results);
-
-      // console.log(response.data.result.data.remainingIdentificationRequests)
       
     } catch (error) {
       // Handle errors
@@ -252,10 +246,7 @@ const AIResponse = ({ speciesData }) => {
     "https://64.media.tumblr.com/bdaea39db57dc0b48d763262514268db/tumblr_mgj44mNyST1s199fdo1_500.gif",
     "https://cdn.dribbble.com/users/160117/screenshots/3197970/main.gif",
   ];
-  // console.log('The photo', photo)
-
-
-
+  
   const displaySpecies = (species) => {
     if (species.length > 0) { // valid array received
       return (

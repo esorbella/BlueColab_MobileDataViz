@@ -5,10 +5,9 @@ import styles from "../../../styles";
 
 export default function DataPough({ navigation }) {
   return (
-    <View style = {styles.container}>
-      
-    <Text style = {styles.paragraphText}>Put Poughkeepsie data here</Text>
-
-   </View>
+    <WebView
+    source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/?defaultLocation=P' }}
+    style={{ flex: 1 }}
+  />
   );
 }

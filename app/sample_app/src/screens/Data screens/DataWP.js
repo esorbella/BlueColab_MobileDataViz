@@ -5,11 +5,9 @@ import styles from "../../../styles";
 
 export default function DataWP({ navigation }) {
   return (
-    <View style = {styles.container}>
-      
-    <Text style = {styles.paragraphText}>WP data here</Text>
-
-   </View>
-    
+    <WebView
+    source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/?defaultLocation=WP' }}
+    style={{ flex: 1 }}
+  />
   );
 }

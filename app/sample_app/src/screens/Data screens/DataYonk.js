@@ -5,10 +5,9 @@ import styles from "../../../styles";
 
 export default function DataYonk({ navigation }) {
   return (
-    <View style = {styles.container}>
-      
-    <Text style = {styles.paragraphText}>Yonkers data</Text>
-
-   </View>
+    <WebView
+    source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/?defaultLocation=Y' }}
+    style={{ flex: 1 }}
+  />
   );
 }

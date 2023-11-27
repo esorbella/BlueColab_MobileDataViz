@@ -6,7 +6,7 @@ import styles from "../../../styles";
 export default function HistoricalDataScreenChoate({ navigation }) {
   return (
         <WebView
-          source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/' }}
+          source={{ uri: 'https://choatevisual.shinyapps.io/choateVisual/?defaultLocation=Choate' }}
           style={{ flex: 1 }}
         />
 

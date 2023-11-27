@@ -122,7 +122,7 @@ async function findWQI()
    const DOw = 0.34;
    const PHw = 0.22;
    const TEMPw = 0.2;
-   const COw = 0.05;
+   const COw = 0.08;
    const TURw = 0.16;
    
    var docs = await ChoateWaterDoc.find({MonthYear: "01-2023"}).exec();

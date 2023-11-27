@@ -28,20 +28,20 @@ ui <- fluidPage(
     column(6, uiOutput("first"), plotlyOutput("firstGauge", height = "175px")),
     column(6, uiOutput("second"), plotlyOutput("secondGauge", height = "175px"))
   ),
-    selectInput("dataset", "Choose a dataset:",
-        choices = c(
-          "Conductivity", "Dissolved Oxygen",
-          "Salinity", "Temperature", "Turbidity", "pH"
-        ),
-        selectize = FALSE
-      ),
+  selectInput("dataset", "Choose a dataset:",
+    choices = c(
+      "Conductivity", "Dissolved Oxygen",
+      "Salinity", "Temperature", "Turbidity", "pH"
+    ),
+    selectize = FALSE
+  ),
 
   # dropdowns for location & time
   fluidRow(
     column(
       6, # Half of the row
       selectInput("location", "Choose a Location:",
-        choices = c("Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
+        choices = c("NA", "Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
         selectize = FALSE
       ),
       selectInput("firstYear", "Choose a Start Year:",
@@ -60,7 +60,7 @@ ui <- fluidPage(
     column(
       6, # Half of the row
       selectInput("secondLocation", "Choose a Location:",
-        choices = c("NA","Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
+        choices = c("NA", "Choate Pond", "Yonkers (01376307)", "West Point (01374019)", "Poughkeepsie (01372043)"),
         selectize = FALSE
       ),
       selectInput("secondYear", "Choose an End Year:",
@@ -80,14 +80,34 @@ ui <- fluidPage(
 )
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
   output$distPlot <- renderPlotly({
+    query <- parseQueryString(session$clientData$url_search)
+    if (!is.null(query[["defaultLocation"]])) {
+      location_URL <- query[["defaultLocation"]]
+
+      if (location_URL=="Choate") {
+        updateSelectInput(session, "location", selected = "Choate Pond")
+      } else if (location_URL=="WP") {
+        updateSelectInput(session, "location", selected = "West Point (01374019)")
+      } else if (location_URL=="P") {
+        updateSelectInput(session, "location", selected = "Poughkeepsie (01372043)")
+      } else if (location_URL=="Y") {
+        updateSelectInput(session, "location", selected = "Yonkers (01376307)")
+      } else {
+        updateSelectInput(session, "location", selected = "Choate Pond")
+      }
+    } else {
+      updateSelectInput(session, "location", selected = "Choate Pond")
+    }
+
     # getting location
     location <- switch(input$location,
       "Yonkers (01376307)" = "01376307",
       "West Point (01374019)" = "01374019",
       "Poughkeepsie (01372043)" = "01372043",
-      "Choate Pond" = "Choate"
+      "Choate Pond" = "Choate",
+      "NA" = "NA"
     )
 
     # getting drop downs for first month
@@ -186,33 +206,38 @@ server <- function(input, output) {
       "Turbidity" = c(0, 24)
     )
 
-    # this section gets data for the first month
-    # gets data
-    data <- fetch_data(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
+    if (location != "NA") {
+      # this section gets data for the first month
+      # gets data
+      data <- fetch_data(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
 
-    # get wqis
-    if (location == "Choate") {
-      wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
-    } else {
-      wqi <- "NA"
+      # get wqis
+      if (location == "Choate") {
+        wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
+      } else {
+        wqi <- "NA"
+      }
+      # display reports
+      output$first <- generate_ui(input$firstMonth, input$firstYear, data)
+      output$firstGauge <- renderPlotly({
+        gauge_chart(wqi, location)
+      })
+
+      # find max and mins
+      data_maxmin <- find_max_min(data)
+
+      # Compute daily averages
+      data_avg <- find_daily_avg(data)
     }
-    # display reports
-    output$first <- generate_ui(input$firstMonth, input$firstYear, data)
-    output$firstGauge <- renderPlotly({
-      gauge_chart(wqi, location)
-    })
 
-    # find max and mins
-    data_maxmin <- find_max_min(data)
-
-    # Compute daily averages
-    data_avg <- find_daily_avg(data)
-
-    if (second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") {
+    if ((second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") && location != "NA")  {
       # this runs only where one month is selected
       # gets the graph
       interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
-    } else {
+
+      # displays graph
+      interactive_plot
+    } else if (second_end_day != "NA" && second_start_month != "NA" && second_start_year != "NA" && second_location != "NA" && location != "NA") {
       # this runs only when there's two months selected
       # this section gets data for the second month
 
@@ -263,10 +288,12 @@ server <- function(input, output) {
 
       # gets the graph
       interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds)
+
+      # displays graph
+      interactive_plot
     }
 
-    # displays graph
-    interactive_plot
+    
   })
 }
 

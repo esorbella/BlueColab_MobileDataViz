@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     // Use a unique filename, or use the original filename
-    cb(null,  'a-' + file.originalname);
+    cb(null, 'a-' + file.originalname);
   }
 });
 
@@ -50,6 +50,19 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
       res.json({ message: 'Species not found', result });
       return;
     }
+
+    const promises = result.data.results.map(async (item) => {
+      try {
+        const result1 = await test1(item.gbif.id);
+        item.imgs = result1;
+      } catch (error) {
+        console.error(`Error for ${item.species.scientificNameWithoutAuthor}: ${error.message}`);
+      }
+    });
+
+    await Promise.all(promises);
+
+    console.log("Loop done")
 
 
     const file_path = './USRIISv2_MasterList.csv';
@@ -108,7 +121,7 @@ async function sendToAnotherServer(fileDetails) {
     });
 
     console.log('status', status);
-    console.log('data', require('util').inspect(data, false, null, true));
+ //   console.log('data', require('util').inspect(data, false, null, true));
 
     return { status, data };
   } catch (error) {
@@ -127,3 +140,47 @@ async function sendToAnotherServer(fileDetails) {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+
+async function test1(id) {
+  try {
+    const apiUrl = `https://api.gbif.org/v1/species/${id}/media`;
+    const response = await axios.get(apiUrl);
+
+    const listOfNames = response.data.results.map(obj => obj.identifier);
+
+    return listOfNames;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error; // Rethrow the error to handle it elsewhere if needed
+  }
+}
+
+// async function test(species) {
+
+//   const apiUrl = 'https://api.gbif.org/v1/species/match';
+//   const speciesName = species;;
+//   const verbose = true;
+
+//   const params = {
+//     species: speciesName,
+//     verbose: verbose.toString(),
+//   };
+
+//   axios.get(apiUrl, { params })
+//     .then(response => {
+//       const apiUrl = `https://api.gbif.org/v1/species/${response.data.usageKey}/media`;
+//       axios.get(apiUrl)
+//         .then(response => {
+//           const listOfNames = response.data.results.map(obj => obj.identifier);
+//           console.log(listOfNames)
+//           return listOfNames;
+//         })
+//         .catch(error => {
+//           console.error(`Error: ${error.message}`);
+//         });
+//     })
+//     .catch(error => {
+//       console.error(`Error: ${error.message}`);
+//     });
+// }

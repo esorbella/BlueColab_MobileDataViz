@@ -1,6 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList } from 'react-native';
+import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList } from 'react-native';
 import axios from 'axios';
 import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,6 +12,7 @@ export default function AiScreen({ navigation }) {
   const [capturedImage, setCapturedImage] = useState(null)
   const [aiReplyVisible, setAIVisible] = useState(false);
   const [speciesData, setSpeciesData] = useState([]);
+
 
 
   // permission handling
@@ -87,21 +88,21 @@ export default function AiScreen({ navigation }) {
         },
       });
 
-      if (response.data.message != 'Species not found' ) {
+      if (response.data.message != 'Species not found') {
         setSpeciesData(response.data.result.data.results);
       } else {
         setSpeciesData([
           {
-            species : {
-              scientificNameWithoutAuthor : "No Valid Plant Found",
-              commonNames : []
+            species: {
+              scientificNameWithoutAuthor: "Error! Could not identify a plant.",
+              commonNames: []
             },
-            score : 0,
-            invasive : false
+            score: 0,
+            invasive: false
           }
         ]);
       }
-      
+
     } catch (error) {
       // Handle errors
       console.error('Error uploading image: ', error);
@@ -220,48 +221,86 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
     </View>
   )
 }
+const ImageGallery = ({imageUrls}) => {
 
-const Item = ({ title, score, commonNames, isInvasive }) => {
+  return (
+    <View style={styles.container}>
+      <Text>Sample Images (if available):</Text>
+      <FlatList
+        data={imageUrls}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item }} style={styles.thumbnail} />
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
+  );
+}
+
+const Item = ({ title, score, commonNames, isInvasive, isEnabled, imgs }) => {
+
+  if (isEnabled && score < 0.01) {
+    return <></>
+  }
+
 
   if (commonNames.length <= 0)
     return (<View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.sidewaystitle}><Text>{title}</Text></Text>
       <Text>Score: {Math.round(score * 10000) / 100}</Text>
       <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+      <ImageGallery imageUrls={imgs} />
     </View>)
   else if ((commonNames.length == 1)) {
     return (<View style={styles.item}>
       <Text style={styles.title}>{commonNames[0]}</Text>
-      <Text>Scientific Name: {title}</Text>
+      <Text>Scientific Name: <Text style={styles.sideways} >{title}</Text></Text>
       <Text>Score: {Math.round(score * 10000) / 100}</Text>
       <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+      <ImageGallery imageUrls={imgs} />
     </View>)
   } else if ((commonNames.length > 1)) {
     return (<View style={styles.item}>
       <Text style={styles.title}>{commonNames[0]}</Text>
       <Text>Other Common Name(s): {commonNames.slice(1).join(", ")}</Text>
-      <Text>Scientific Name: {title}</Text>
+      <Text>Scientific Name: <Text style={styles.sideways} >{title}</Text></Text>
       <Text>Score: {Math.round(score * 10000) / 100}</Text>
       <Text>Invasive: {isInvasive ? "Yes" : "No"}</Text>
+      <ImageGallery imageUrls={imgs} />
     </View>)
   }
 };
 
 const AIResponse = ({ speciesData }) => {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const loadingImages = [
     "https://cdn.dribbble.com/users/2882885/screenshots/7861928/media/a4c4da396c3da907e7ed9dd0b55e5031.gif",
     "https://media.tenor.com/DHkIdy0a-UkAAAAC/loading-cat.gif",
     "https://64.media.tumblr.com/bdaea39db57dc0b48d763262514268db/tumblr_mgj44mNyST1s199fdo1_500.gif",
     "https://cdn.dribbble.com/users/160117/screenshots/3197970/main.gif",
   ];
-  
+
   const displaySpecies = (species) => {
     if (species.length > 0) { // valid array received
       return (
         <SafeAreaView style={styles.container}>
+          <View>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+            <Text>Display responses with a score above 1%.</Text>
+          </View>
           <FlatList
             data={species}
-            renderItem={({ item }) => <Item title={item.species.scientificNameWithoutAuthor} score={item.score} commonNames={item.species.commonNames} isInvasive={item.invasive} />}
+            renderItem={({ item }) => <Item title={item.species.scientificNameWithoutAuthor} score={item.score} commonNames={item.species.commonNames} isInvasive={item.invasive} isEnabled={isEnabled} imgs={item.imgs} />}
             keyExtractor={item => item.species.scientificNameWithoutAuthor}
           />
         </SafeAreaView>
@@ -319,6 +358,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  sidewaystitle: {
+    fontSize: 32,
+    fontStyle: 'italic'
+  },
+  sideways: {
+    fontStyle: 'italic'
+  },
+
+  thumbnail: {
+    width: 200, // Adjust the width as needed
+    height: 200, // Adjust the height as needed
+    resizeMode: 'cover', // or 'contain' for different scaling options
   },
 });
 

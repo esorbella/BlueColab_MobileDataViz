@@ -27,68 +27,90 @@ export default function DataHub({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableHighlight
-          onPress={() => {
-            handleChoatePress();
-          }}
-        >
-          <View style={styles.graphImage}>
-            <Image
-              source={require("../../assets/datahub/choate.png")}
-              style={{ height: "100%", width: "auto" }}
-            />
+        <View style={styles.dataHubWidget}>
+          <Image
+            source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.graphParagraphText}>
+            Choate Pond is in the center of the Pace University campus. This 
+            Pond and many others flow out into the Hudson River, contributing 
+            to its overall water quality which is why we look at its quality and
+            Pace University's contribution to either better or worse Hudson water 
+            quality.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleChoatePress();
+            }}
+          >
             <View style={styles.dataButton}>
               <Text style={styles.dataButtonText}>Choate Data</Text>
             </View>
-          </View>
-        </TouchableHighlight>
+          </TouchableHighlight>
+        </View>
 
-        <TouchableHighlight
-          onPress={() => {
-            handlePoughPress();
-          }}
-        >
-          <View style={styles.graphImage}>
-            <Image
-              source={require("../../assets/datahub/pough.png")}
-              style={{ height: "100%", width: "auto" }}
-            />
+        <View style={styles.dataHubWidget}>
+          <Image
+            source={{uri:"https://cdn18.picryl.com/photo/2019/11/18/poughkeepsie-bridge-spanning-hudson-river-poughkeepsie-dutchess-county-ny-e51f90-1024.jpg"}}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.graphParagraphText}>
+            Poughkeepsie is the furthest north out of all the data points in this
+            app. Ideally this would have the highest water quality as the pollution
+            of the bigger towns down below could not reach it.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handlePoughPress();
+            }}
+          >
             <View style={styles.dataButton}>
               <Text style={styles.dataButtonText}>Poughkeepsie Data</Text>
             </View>
-          </View>
-        </TouchableHighlight>
+          </TouchableHighlight>
+        </View>
 
-        <TouchableHighlight
-          onPress={() => {
-            handleWPPress();
-          }}
-        >
-          <View style={styles.graphImage}>
-            <Image
-              source={require("../../assets/datahub/westpoint.png")}
-              style={{ height: "100%", width: "auto" }}
-            />
+        <View style={styles.dataHubWidget}>
+          <Image
+            source={{uri: "https://www.stripes.com/incoming/522n9n-3011234658_baf0dc3ac9_c.jpg/alternates/LANDSCAPE_910/3011234658_baf0dc3ac9_c.jpg"}}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.graphParagraphText}>
+            The West Point Military academy is still north of Pace,
+            closer to areas such as Beacon and Cold Spring. 
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleWPPress();
+            }}
+          >
             <View style={styles.dataButton}>
               <Text style={styles.dataButtonText}>West Point Data</Text>
             </View>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          onPress={() => {
-            handleYonkPress();
-          }}
-        >
-          <View style={styles.graphImage}>
-            <Image
-              source={require("../../assets/datahub/yonkers.png")}
-              style={{ height: "100%", width: "auto" }}
-            />
+          </TouchableHighlight>
+        </View>
+
+        <View style={styles.dataHubWidget}>
+          <Image
+            source={require("../../assets/datahub/yonkers.png")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.graphParagraphText}>
+            Yonkers is the furthest south out of all the data shown. Being 
+            closest to NYC we expect this point to be the lowest quality and
+            we at Pace University contribute to this part of the river.
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleYonkPress();
+            }}
+          >
             <View style={styles.dataButton}>
               <Text style={styles.dataButtonText}>Yonkers Data</Text>
             </View>
-          </View>
-        </TouchableHighlight>
+          </TouchableHighlight>
+        </View>
       </View>
     </ScrollView>
   );

@@ -1,9 +1,14 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
-import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList } from 'react-native';
+import { Dimensions, Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList, TouchableHighlight } from 'react-native';
 import axios from 'axios';
 import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import styles from "../../styles";
+
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
+
 
 export default function AiScreen({ navigation }) {
   const [type, setType] = useState(CameraType.back);
@@ -22,11 +27,21 @@ export default function AiScreen({ navigation }) {
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet
+    //permission screen
+    
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View style={styles.aiContainer}>
+        <Text style = {styles.aiParagraphText}>We need permission to use your device's camera</Text>
+        <Image
+        source = {require('../../assets/robot.png')}
+        style = {{ height: deviceHeight/3.5, width: deviceHeight/3.5, margin: deviceWidth/20 }}
+            />
+        <TouchableHighlight onPress={requestPermission}>
+          <View style = {styles.aiButton}>
+            <Text style = {styles.aiButtonText}> Grant Permission </Text>
+          </View>
+
+        </TouchableHighlight>
       </View>
     );
   }
@@ -325,52 +340,4 @@ const AIResponse = ({ speciesData }) => {
   )
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-  sidewaystitle: {
-    fontSize: 32,
-    fontStyle: 'italic'
-  },
-  sideways: {
-    fontStyle: 'italic'
-  },
-
-  thumbnail: {
-    width: 200, // Adjust the width as needed
-    height: 200, // Adjust the height as needed
-    resizeMode: 'cover', // or 'contain' for different scaling options
-  },
-});
 

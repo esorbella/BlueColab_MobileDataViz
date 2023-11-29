@@ -25,6 +25,8 @@ const fetchFonts = () => {
   });
 };
 
+//the navigator declares names for each page and we use these names 
+//throughout the app as the navigation names
 const navigator = createStackNavigator(
   {
     Wel: WelcomeScreen,

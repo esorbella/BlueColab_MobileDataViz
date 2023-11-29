@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const fs = require('fs');
 const axios = require('axios');
@@ -8,20 +8,11 @@ const multer = require('multer');
 const path = require('path');
 const csv = require('csv-parser');
 
-
 const app = express();
 const port = 3000;
 
 // Set up a storage engine for multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Specify the directory where uploaded files should be stored
-  },
-  filename: function (req, file, cb) {
-    // Use a unique filename, or use the original filename
-    cb(null, 'a-' + file.originalname);
-  }
-});
+const storage = multer.memoryStorage(); // Use memory storage to handle file uploads directly in memory
 
 const upload = multer({ storage: storage });
 
@@ -41,19 +32,21 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
       throw new Error('No image data received.');
     }
 
-    // Your existing code for sending data to another server
-    const result = await sendToAnotherServer(fileDetails);
+    // Getting Plant identification 
+    const result = await getPlantID(fileDetails);
 
     console.log('done')
 
+    // handle cases where no valid plant was found
     if (result.data == "Not Found") {
       res.json({ message: 'Species not found', result });
       return;
     }
 
+    // attaches links to images of the plants
     const promises = result.data.results.map(async (item) => {
       try {
-        const result1 = await test1(item.gbif.id);
+        const result1 = await getImages(item.gbif.id);
         item.imgs = result1;
       } catch (error) {
         console.error(`Error for ${item.species.scientificNameWithoutAuthor}: ${error.message}`);
@@ -64,18 +57,16 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
     console.log("Loop done")
 
-
+    // attaches if plant species is invasive or not
     const file_path = './USRIISv2_MasterList.csv';
     fs.createReadStream(file_path)
       .pipe(csv())
       .on('data', (row) => {
-        // Assuming the name is in the 'name' column, adjust the key if it's in a different column
+        // goes row by row and sees if any plants are invasive 
         const currentName = row.scientificName;
         for (let specie of result.data.results) {
           let scientificNameWithoutAuthor = specie.species.scientificNameWithoutAuthor;
           if (scientificNameWithoutAuthor == currentName) {
-            console.log("Ahhh")
-            // if (specie.invasive) {
             specie.invasive = true;
 
           } else if (specie.invasive == true) {
@@ -87,16 +78,15 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
         }
       })
       .on('end', () => {
+        // Successful request
         console.log('Finished reading the CSV file.');
-        //        console.log('data', require('util').inspect(data, false, null, true)); // should be: read "Step 6" below]
-        res.json({ message: 'Image received, saved, and processed successfully!!!', result });
+        res.json({ message: 'Image received and processed successfully!!!', result });
         console.log(result.data.results)
 
       })
       .on('error', (error) => {
         console.error(`An error occurred: ${error}`);
       });
-
 
   } catch (error) {
     // Handle errors
@@ -105,13 +95,16 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
   }
 });
 
-// Your existing code for sending data to another server
-async function sendToAnotherServer(fileDetails) {
-  let form = new FormData();
+// Code to get plant ids
+async function getPlantID(fileDetails) {
+  const form = new FormData();
   form.append('organs', 'auto');
-  form.append('images', fs.createReadStream(fileDetails.path));
+  form.append('images', fileDetails.buffer, {
+    filename: fileDetails.originalname,
+    contentType: fileDetails.mimetype
+  });
 
-  const project = 'all';
+  const project = 'all'; // see api docs: https://my-api.plantnet.org/
 
   try {
     const { status, data } = await axios.post(
@@ -121,14 +114,12 @@ async function sendToAnotherServer(fileDetails) {
     });
 
     console.log('status', status);
- //   console.log('data', require('util').inspect(data, false, null, true));
 
     return { status, data };
   } catch (error) {
     if (error.response && error.response.status === 404) {
       // Handle 404 error from the external server
       console.error('External server returned a 404 error:', error.response.data);
-      // You can choose to respond to the client with a specific message or take other actions
       return { status: 404, data: 'Not Found' };
     }
     console.error('error', error);
@@ -136,13 +127,8 @@ async function sendToAnotherServer(fileDetails) {
   }
 }
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
-
-
-async function test1(id) {
+// gets images of plants
+async function getImages(id) {
   try {
     const apiUrl = `https://api.gbif.org/v1/species/${id}/media`;
     const response = await axios.get(apiUrl);
@@ -156,31 +142,17 @@ async function test1(id) {
   }
 }
 
-// async function test(species) {
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});
 
-//   const apiUrl = 'https://api.gbif.org/v1/species/match';
-//   const speciesName = species;;
-//   const verbose = true;
-
-//   const params = {
-//     species: speciesName,
-//     verbose: verbose.toString(),
-//   };
-
-//   axios.get(apiUrl, { params })
-//     .then(response => {
-//       const apiUrl = `https://api.gbif.org/v1/species/${response.data.usageKey}/media`;
-//       axios.get(apiUrl)
-//         .then(response => {
-//           const listOfNames = response.data.results.map(obj => obj.identifier);
-//           console.log(listOfNames)
-//           return listOfNames;
-//         })
-//         .catch(error => {
-//           console.error(`Error: ${error.message}`);
-//         });
-//     })
-//     .catch(error => {
-//       console.error(`Error: ${error.message}`);
-//     });
-// }
+app.get("/", async function (req, res) {
+  try {
+    res.status(200).send(`Wassup`);
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});

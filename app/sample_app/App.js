@@ -13,6 +13,7 @@ import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import AiScreen from "./src/screens/AiScreen";
+import AiScreenTemp from "./src/screens/AiScreenNoServer"
 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -38,7 +39,7 @@ const navigator = createStackNavigator(
     WP: DataWP,
     Yonk: DataYonk,
     Blog: BlogScreen,
-    Ai: AiScreen
+    Ai: AiScreenTemp
   },
   {
     initialRouteName: 'Wel',

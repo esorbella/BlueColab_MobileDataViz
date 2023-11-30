@@ -41,7 +41,7 @@ const navigator = createStackNavigator(
     WP: DataWP,
     Yonk: DataYonk,
     Blog: BlogScreen,
-    Ai: AiScreenTemp
+    Ai: AiScreen
   },
   {
     initialRouteName: 'Wel',

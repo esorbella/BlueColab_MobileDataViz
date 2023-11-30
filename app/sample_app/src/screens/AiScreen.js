@@ -215,12 +215,12 @@ export default function AiScreen({ navigation }) {
    
     <View style={styles.container}>
       
-      { previewVisible && capturedImage ? {/* should we display the preview screen and has there been an image captured? */}
-      (aiReplyVisible ? {/* Yes! But...should we display the AI Response Instead? */}
-        (<AIResponse speciesData={speciesData} />) :  {/* Yes! Display AI Screen. Otherwise show the Camera Preview Screen*/}
+      { previewVisible && capturedImage ?
+      (aiReplyVisible ? 
+        (<AIResponse speciesData={speciesData} />) :  
         (<CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} /> ) ) 
         :
-      (  <Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} > {/* Display the camera and its options*/}
+      (  <Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} > 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -250,8 +250,6 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
         height: '100%'
       }}
     > 
-
-      {/* Makes the photo the background and then overlays buttons on it*/}
       <ImageBackground
         source={{ uri: photo && photo.uri }}
         style={{
@@ -334,7 +332,7 @@ const AIResponse = ({ speciesData }) => {
     if (speciesData.length > 0) { // valid array received
       return (
         <SafeAreaView style={styles.container}>
-          <View> {/*  The switch to turn on or off if responses < 1 % should be displayed  */}
+          <View> 
             <Switch
               trackColor={{ false: '#767577', true: '#81b0ff' }}
               thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
@@ -345,10 +343,6 @@ const AIResponse = ({ speciesData }) => {
             <Text>Display responses with a score above 1%.</Text> 
           </View>
 
-          {/* The flat list is a way of displaying lists - automatically. data. speciesData is the array.
-          renderItem is what displays the individual items in the list. The Item component is found below the AIResponse component
-          keyExtractor sets key (without it warnings appear)
-          */}
           <FlatList
             data={speciesData}
             renderItem={({ item }) => <Item title={item.species.scientificNameWithoutAuthor} score={item.score} commonNames={item.species.commonNames} isInvasive={item.invasive} isEnabled={isEnabled} imgs={item.imgs} />}
@@ -380,8 +374,8 @@ const AIResponse = ({ speciesData }) => {
 const Item = ({ title, score, commonNames, isInvasive, isEnabled, imgs }) => {
 
   // logic to check the toggle state
-  if (isEnabled && score < 0.01) {
-    return <></> // disabled
+  if (isEnabled && score < 0.01) { // disabled
+    return <></> 
   }
   if (commonNames.length <= 0) // if the number of common names is 0, it just displays the scientific name as the title
     return (<View style={styles.item}>

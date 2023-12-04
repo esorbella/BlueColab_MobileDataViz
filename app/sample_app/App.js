@@ -17,8 +17,9 @@ import AiScreenTemp from "./src/screens/AiScreenNoServer"
 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
+//THIS IS THE APP ENTRY POINT
 
-
+//fonts literally just dont work
 const fetchFonts = () => {
   return Font.loadAsync({
     'Nunito': require('./assets/fonts/Nunito/static/Nunito-Black.ttf'),

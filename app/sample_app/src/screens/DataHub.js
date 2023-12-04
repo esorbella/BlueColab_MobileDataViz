@@ -27,6 +27,8 @@ export default function DataHub({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
+        
+        {/*Choate Pond Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
             source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
@@ -49,7 +51,9 @@ export default function DataHub({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+        {/*End Choate Pond Widget*/}
 
+        {/*Start Pough Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
             source={{uri:"https://cdn18.picryl.com/photo/2019/11/18/poughkeepsie-bridge-spanning-hudson-river-poughkeepsie-dutchess-county-ny-e51f90-1024.jpg"}}
@@ -70,7 +74,10 @@ export default function DataHub({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+        {/*End Pough Widget*/}
 
+
+        {/*Start West Point Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
             source={{uri: "https://www.stripes.com/incoming/522n9n-3011234658_baf0dc3ac9_c.jpg/alternates/LANDSCAPE_910/3011234658_baf0dc3ac9_c.jpg"}}
@@ -90,7 +97,9 @@ export default function DataHub({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+        {/*End West Point Widget*/}
 
+        {/*Start Yonkers Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
             source={require("../../assets/datahub/yonkers.png")}
@@ -111,6 +120,8 @@ export default function DataHub({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
+        {/*End Yonkers Widget*/}
+
       </View>
     </ScrollView>
   );

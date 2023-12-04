@@ -200,7 +200,7 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/*End AI Widget*/}
 
-
+            <Text> Hidden text to make the bottom on this screen come out a little more </Text>
       </View>
     </ScrollView>
   );

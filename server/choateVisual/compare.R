@@ -601,9 +601,9 @@ gauge_chart <- function(wqi, location) {
           list(range = c(90, 100), color = "#2a6423")
         ),
         bgcolor = "#333333",
-        bar = list(color = "#ffffffe7"),
+        bar = list(color = "#000000"),
         threshold = list(
-          line = list(color = "ffffffe7", width = 4),
+          line = list(color = "#000000", width = 4),
           thickness = 0.75,
           value = 0 # Set the threshold value to 0 for "NA" case
         )

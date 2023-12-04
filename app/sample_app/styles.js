@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AppLoading from 'expo-app-loading';
-import {useFonts} from 'expo-font';
+import { useFonts } from 'expo-font';
 
 
 
@@ -19,6 +19,8 @@ export default StyleSheet.create({
         backgroundColor: 'black',
         alignItems: 'center',
         width: deviceWidth,
+        height: 'auto',
+        
         
 
     },

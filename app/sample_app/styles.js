@@ -193,6 +193,7 @@ export default StyleSheet.create({
     //Template to copy/paste for text or just use as a placeholder
     mainButtonText: {
         color: 'black',
+        textAlign: 'center',
     },
     //used for OUR STORY
     //widget template to copy/paste or use as a placeholder

@@ -326,7 +326,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
                   fontSize: 20
                 }}
               >
-                Analyze hoto
+                Analyze Photo
               </Text>
             </TouchableOpacity>
           </View>
@@ -460,11 +460,11 @@ const AIResponse = ({ speciesData, navigation }) => {
       );
     } else { // an error or we're still waiting for a response from a server
       return (
-        <View>
+        <View style = {styles.infoContainer}>
           <Text>Loading...</Text>
           <Image
             source={{ uri: loadingImages[Math.floor(Math.random() * loadingImages.length)] }}
-            style={{ height: 500, width: 400 }} // Adjust the dimensions as needed
+            style={{ height: "100%", width: "100%" }} // Adjust the dimensions as needed
           />
         </View>
       );
@@ -519,7 +519,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       > 
         <View>
-          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style = {styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Yonkers") {

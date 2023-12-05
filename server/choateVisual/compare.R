@@ -96,6 +96,10 @@ server <- function(input, output, session) {
 
     # gets location provided in URL, if provided
     query <- parseQueryString(session$clientData$url_search) # gets url parameters
+    print(query[["month"]])
+    print(query[["year"]])
+
+
     if (!is.null(query[["defaultLocation"]]) && location=="NA") {
       location_URL <- query[["defaultLocation"]] # gets location parameter
 

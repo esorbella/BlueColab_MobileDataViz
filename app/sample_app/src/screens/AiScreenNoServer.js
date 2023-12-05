@@ -133,6 +133,13 @@ export default function AiScreen({ navigation }) {
 
       const responseData = await response.json();
 
+
+
+      if (response.status == 404) {
+
+        return;
+      }
+
       let plantList = responseData.results;
 
       // attaches links to images of the plants

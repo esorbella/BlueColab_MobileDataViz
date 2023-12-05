@@ -21,9 +21,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: deviceWidth,
         height: 'auto',
-        
-        
-
     },
     aiContainer: {
         flex: 1,
@@ -403,8 +400,21 @@ export default StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 10,
-        
-
       },
+
+      sampleContainer: {
+        flex: 1,
+        backgroundColor: '#f9c2ff',
+        alignItems: 'center',
+        width: deviceWidth,
+        height: 'auto',
+    },
+    infoContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        width: deviceWidth,
+        height: 'auto',
+    },
 
 });

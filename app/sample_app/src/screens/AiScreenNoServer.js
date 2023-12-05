@@ -326,7 +326,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
                   fontSize: 20
                 }}
               >
-                analyze photo
+                Analyze hoto
               </Text>
             </TouchableOpacity>
           </View>
@@ -338,7 +338,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
 const ImageGallery = ({ imageUrls }) => {
 
   return (
-    <View style={styles.container}>
+    <View style={styles.sampleContainer}>
       <Text>Sample Images (if available):</Text>
       <FlatList
         data={imageUrls}
@@ -427,7 +427,7 @@ const AIResponse = ({ speciesData, navigation }) => {
   const displaySpecies = (species) => {
     if (species.length > 0) { // valid array received
       return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.infoContainer}>
           <View>
             <Switch
               trackColor={{ false: '#767577', true: '#81b0ff' }}

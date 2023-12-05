@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 
 
 
+
 let deviceHeight = Dimensions.get('window').height;
 let deviceWidth = Dimensions.get('window').width;
 
@@ -340,24 +341,28 @@ export default StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 10,
-        marginLeft: deviceWidth/19.5
+        marginLeft: deviceWidth/19.5,
     },
 
     //kenjis stuff
  
       camera: {
-        flex: 1,
+        height: deviceHeight,
+        width: deviceWidth,
       },
   
       button: {
         flex: 1,
         alignSelf: 'flex-end',
         alignItems: 'center',
+       
       },
       text: {
-        fontSize: 24,
+        fontSize: deviceHeight/30,
         fontWeight: 'bold',
         color: 'white',
+        textAlign: 'center',
+        marginBottom: deviceHeight/20,
       },
       item: {
         backgroundColor: '#f9c2ff',
@@ -380,6 +385,26 @@ export default StyleSheet.create({
         width: 200, // Adjust the width as needed
         height: 200, // Adjust the height as needed
         resizeMode: 'cover', // or 'contain' for different scaling options
+      },
+      camButtonContainer: {
+        height: deviceHeight/6,
+        width: '100%',
+        flexDirection: 'row',
+        backgroundColor: 'black',
+        alignItems: 'center',
+        opacity: .8,
+        bottom: deviceHeight/-1.35,
+       
+      },
+      camImageContainer:{
+        height: '65%',
+        width: '85%',
+        marginBottom: deviceWidth/15,
+        borderColor: "black",
+        borderWidth: 2,
+        borderRadius: 10,
+        
+
       },
 
 });

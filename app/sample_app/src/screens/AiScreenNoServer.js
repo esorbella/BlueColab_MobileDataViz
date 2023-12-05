@@ -58,14 +58,14 @@ export default function AiScreen({ navigation }) {
     // Camera permissions are not granted yet
     return (
       <View style={styles.aiContainer}>
-        <Text style = {styles.aiParagraphText}>We need permission to use your device's camera</Text>
+        <Text style={styles.aiParagraphText}>We need permission to use your device's camera</Text>
         <Image
-        source = {require('../../assets/robot.png')}
-        style = {{ height: deviceHeight/3.5, width: deviceHeight/3.5, margin: deviceWidth/20 }}
-            />
+          source={require('../../assets/robot.png')}
+          style={{ height: deviceHeight / 3.5, width: deviceHeight / 3.5, margin: deviceWidth / 20 }}
+        />
         <TouchableHighlight onPress={requestPermission}>
-          <View style = {styles.aiButton}>
-            <Text style = {styles.aiButtonText}> Grant Permission </Text>
+          <View style={styles.aiButton}>
+            <Text style={styles.aiButtonText}> Grant Permission </Text>
           </View>
 
         </TouchableHighlight>
@@ -148,54 +148,54 @@ export default function AiScreen({ navigation }) {
 
 
 
-      if (response.status == 404) {
-
-        return;
-      }
-
-      let plantList = responseData.results;
-
-      // attaches links to images of the plants
-      const promises = plantList.map(async (item) => {
-        try {
-          const result1 = await getImages(item.gbif.id);
-          item.imgs = result1;
-        } catch (error) {
-          console.error(`Error for ${item.species.scientificNameWithoutAuthor}: ${error.message}`);
-        }
-      });
-
-      await Promise.all(promises);
+      if (response.status != 404) {
 
 
-      try {
-        const rows = jsonData.scientificName;
 
-        // Iterate over CSV rows
-        rows.forEach((row) => {
-          currentName = row;
-          plantList.forEach((species) => {
-            const scientificNameWithoutAuthor = species.species.scientificNameWithoutAuthor;
 
-            if (scientificNameWithoutAuthor === currentName) {
-              species.invasive = true;
-            } else if (species.invasive === true) {
-              // edge case
-            } else {
-              species.invasive = false;
-            }
-          });
+        let plantList = responseData.results;
+
+        // attaches links to images of the plants
+        const promises = plantList.map(async (item) => {
+          try {
+            const result1 = await getImages(item.gbif.id);
+            item.imgs = result1;
+          } catch (error) {
+            console.error(`Error for ${item.species.scientificNameWithoutAuthor}: ${error.message}`);
+          }
         });
 
-        console.log('Finished reading the CSV file.');
-        setSpeciesData(plantList);
-        // console.log(result.data.results);
-      } catch (error) {
-        console.error(`An error occurred: ${error}`);
-        res.status(500).json({ error: 'Internal Server Error' });
+        await Promise.all(promises);
+
+
+        try {
+          const rows = jsonData.scientificName;
+
+          // Iterate over CSV rows
+          rows.forEach((row) => {
+            currentName = row;
+            plantList.forEach((species) => {
+              const scientificNameWithoutAuthor = species.species.scientificNameWithoutAuthor;
+
+              if (scientificNameWithoutAuthor === currentName) {
+                species.invasive = true;
+              } else if (species.invasive === true) {
+                // edge case
+              } else {
+                species.invasive = false;
+              }
+            });
+          });
+
+          console.log('Finished reading the CSV file.');
+          setSpeciesData(plantList);
+          // console.log(result.data.results);
+        } catch (error) {
+          console.error(`An error occurred: ${error}`);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+
       }
-
-
 
       if (responseData != 'Species not found') {
         setSpeciesData(responseData.results);
@@ -239,22 +239,22 @@ export default function AiScreen({ navigation }) {
       ) : (<Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} >
         <View style={styles.camButtonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-          <Image
-            source={{uri:"https://i.pngimg.me/thumb/f/720/m2i8i8A0i8b1G6m2.jpg"}}
-            style={styles.camImageContainer}
-          />
+            <Image
+              source={{ uri: "https://i.pngimg.me/thumb/f/720/m2i8i8A0i8b1G6m2.jpg" }}
+              style={styles.camImageContainer}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={takePicture} >
-          <Image
-            source={{uri:"https://play-lh.googleusercontent.com/ibiGJ0ggc5HNUS5aNkFxun54MoE6CleUMVU7SbvjpLAYZF7mkSsS-E8TYWAkfauCxCE=w240-h480-rw"}}
-            style={styles.camImageContainer}
-          />
+            <Image
+              source={{ uri: "https://play-lh.googleusercontent.com/ibiGJ0ggc5HNUS5aNkFxun54MoE6CleUMVU7SbvjpLAYZF7mkSsS-E8TYWAkfauCxCE=w240-h480-rw" }}
+              style={styles.camImageContainer}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={pickImage} >
-          <Image
-            source={{uri:"https://www.shutterstock.com/image-vector/add-photo-icon-on-white-600nw-221329180.jpg"}}
-            style={styles.camImageContainer}
-          />
+            <Image
+              source={{ uri: "https://www.shutterstock.com/image-vector/add-photo-icon-on-white-600nw-221329180.jpg" }}
+              style={styles.camImageContainer}
+            />
           </TouchableOpacity>
         </View>
       </Camera>)}
@@ -519,7 +519,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         onPress={() => {
           handleChoatePress();
         }}
-      > 
+      >
         <View>
           <Text style = {styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
@@ -530,7 +530,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         onPress={() => {
           handleYonkPress();
         }}
-      > 
+      >
         <View>
           <Text>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
@@ -541,7 +541,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         onPress={() => {
           handleWPPress();
         }}
-      > 
+      >
         <View>
           <Text>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
@@ -552,7 +552,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         onPress={() => {
           handlePoughPress();
         }}
-      > 
+      >
         <View>
           <Text>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
@@ -563,7 +563,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         onPress={() => {
           handleChoatePress();
         }}
-      > 
+      >
         <View>
           <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>

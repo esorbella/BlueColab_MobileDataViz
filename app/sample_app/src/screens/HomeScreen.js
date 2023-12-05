@@ -11,11 +11,16 @@ import {
 } from "react-native";
 import styles from "../../styles";
 
+//this is the first screen you see after the welcome screen 
+//takes you to all the other sections of the app
+
 let deviceHeight = Dimensions.get('window').height;
 let deviceWidth = Dimensions.get('window').width;
 
 
 export default function HomeScreen({ navigation }) {
+
+ //each of these constants handle navigation from each button
   const handleStoryScreenPress = () => {
     navigation.navigate("Story");
   };
@@ -39,7 +44,10 @@ export default function HomeScreen({ navigation }) {
     <ScrollView>
       <View style={styles.container}>
 
+        {/*Start Our Story Widget*/}
         <View style={styles.buttonContainer}>
+
+          {/*Choate pond image*/}
           <Image
             source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
             style={styles.imageContainer}
@@ -50,6 +58,8 @@ export default function HomeScreen({ navigation }) {
           principle that the human right to clean water requires the 
           right-to-know water is clean.
           </Text>
+
+          {/*Start Our story button*/}
           <TouchableHighlight
             onPress={() => {
               handleStoryScreenPress();
@@ -59,9 +69,14 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainButtonText}>Learn more...</Text>
             </View>
           </TouchableHighlight>
+          {/*End Our Story Button*/}
+
         </View>
-       
+        {/*End Our Story Widget*/}
+
+        {/*Start Graph Widget*/}
         <View style={styles.graphButtonContainer}>
+          {/*Green graph image*/}
           <Image
             source={{uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg"}}
             style={styles.imageContainer}
@@ -73,6 +88,7 @@ export default function HomeScreen({ navigation }) {
           drinking water sources and bring this type of information to people across
           the globe.
         </Text>
+        {/*Start Data Hub button*/}
           <TouchableHighlight
             onPress={() => {
               handleDataHubPress();
@@ -82,8 +98,11 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainButtonText}>See Live Data...</Text>
             </View>
           </TouchableHighlight>
+          {/*End Data Hub Button*/}
         </View>
+        {/*End Graph Widget*/}
         
+        {/*Start Wildlife Widget*/}
         <View style={styles.animalButtonContainer}>
           <Image
             source={require("../../assets/homescreen/turtle.png")}
@@ -95,6 +114,7 @@ export default function HomeScreen({ navigation }) {
           Learn about how Wildlife in Choate Pond and the Hudson River is affect
           by changes in certain statistics in water quality.
           </Text>
+          {/*Start wildlife button*/}
           <TouchableHighlight
             onPress={() => {
               handleWildlifeScreenPress();
@@ -104,9 +124,14 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainButtonText}>See Local Wildlife...</Text>
             </View>
           </TouchableHighlight>
+          {/*End Wildlife button*/}
         </View>
+        {/*End Wildlife Widget*/}
 
+        {/*start Weather Widget*/}
         <View style={styles.weatherButtonContainer}>
+
+          {/*Lightning image*/}
           <Image
             source={require("../../assets/homescreen/lightning-bolts.jpg")}
             style={styles.imageContainer}
@@ -114,6 +139,8 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.paragraphText}>
           Weather has a signifigant impact on the health of marine ecosystems.
           </Text>
+
+          {/*Start Weather Button*/}
           <TouchableHighlight
             onPress={() => {
               handleWeatherScreenPress();
@@ -123,9 +150,14 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainButtonText}>See Local Weather...</Text>
             </View>
           </TouchableHighlight>
+          {/*End Weather Button*/}
         </View>
+        {/*End Weather Widget*/}
 
+        {/*Start blog page*/}
         <View style={styles.buttonContainer}>
+
+          {/*Water Splash picture*/}
           <Image
             source={require("../../assets/homescreen/waterSplash2.jpg")}
             style={styles.imageContainer}
@@ -133,6 +165,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.storyParagraphText}>
           Check out some of the Blue CoLab Blogs.
           </Text>
+          {/*Start blog page button*/}
           <TouchableHighlight
             onPress={() => {
               handleBlogScreenPress();
@@ -142,9 +175,12 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainButtonText}>Learn more...</Text>
             </View>
           </TouchableHighlight>
+          {/*End blog page button*/}
         </View>
+        {/*End blog page*/}
 
-        <View style={styles.buttonContainer}>
+        {/*Start AI Widget*/}
+        <View style={styles.aiWidget}>
           <Image
             source={require("../../assets/homescreen/waterQuestion.jpg")}
             style={styles.imageContainer}
@@ -157,12 +193,14 @@ export default function HomeScreen({ navigation }) {
               handleAiPress();
             }}
           >
-            <View style={styles.storyButton}>
+            <View style={styles.aiWidgetButton}>
               <Text style={styles.mainButtonText}>Discover more...</Text>
             </View>
           </TouchableHighlight>
         </View>
+        {/*End AI Widget*/}
 
+            <Text> Hidden text to make the bottom on this screen come out a little more </Text>
       </View>
     </ScrollView>
   );

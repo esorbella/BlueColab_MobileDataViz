@@ -13,11 +13,13 @@ import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import AiScreen from "./src/screens/AiScreen";
+import AiScreenTemp from "./src/screens/AiScreenNoServer";
 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
+//THIS IS THE APP ENTRY POINT
 
-
+//fonts literally just dont work
 const fetchFonts = () => {
   return Font.loadAsync({
     'Nunito': require('./assets/fonts/Nunito/static/Nunito-Black.ttf'),
@@ -25,6 +27,8 @@ const fetchFonts = () => {
   });
 };
 
+//the navigator declares names for each page and we use these names 
+//throughout the app as the navigation names
 const navigator = createStackNavigator(
   {
     Wel: WelcomeScreen,
@@ -38,7 +42,7 @@ const navigator = createStackNavigator(
     WP: DataWP,
     Yonk: DataYonk,
     Blog: BlogScreen,
-    Ai: AiScreen
+    Ai: AiScreenTemp
   },
   {
     initialRouteName: 'Wel',

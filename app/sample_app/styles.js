@@ -1,7 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AppLoading from 'expo-app-loading';
-import {useFonts} from 'expo-font';
+import { useFonts } from 'expo-font';
+
 
 
 
@@ -19,9 +20,70 @@ export default StyleSheet.create({
         backgroundColor: 'black',
         alignItems: 'center',
         width: deviceWidth,
+        height: 'auto',
+    },
+    aiContainer: {
+        flex: 1,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: deviceWidth,
         
 
     },
+
+    aiButton: {
+        backgroundColor: 'limegreen',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: deviceWidth/1.4,
+        height: deviceHeight/13,
+        borderWidth: 2,
+        borderColor: 'darkgreen',
+
+    },
+
+    aiButtonText: {
+        color: 'black',
+        fontSize: deviceHeight/27
+    },
+
+    aiParagraphText: {
+        color: 'limegreen',
+        fontSize: deviceHeight/20,
+        marginTop: deviceHeight/100,
+        marginBottom: deviceHeight/20,
+        marginLeft: deviceWidth/15,
+        marginRight: deviceWidth/15,
+        textAlign: 'center',
+        fontFamily: 'Nunito-Black',
+    },
+
+    aiWidget: {
+        width: deviceWidth/1.01,
+        backgroundColor: 'dimgray',
+        borderColor: '#787878',
+        borderRadius: 20,
+        borderWidth: 1,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight/200,
+        
+    },
+    aiWidgetButton: {
+        borderRadius: 8,
+        height: deviceHeight / 25, 
+        width: deviceWidth / 2,
+        alignItems: 'center',
+        backgroundColor: 'limegreen',
+        borderWidth: 2,
+        borderColor: 'white',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        margin: deviceWidth/55,
+    },
+
     //wildlife screen background
     wildContainer: {
         flex: 1,
@@ -32,7 +94,7 @@ export default StyleSheet.create({
         
 
     },
-    //welcome screen backgroun
+    //welcome screen background
     welcome: {
         flex: 1,
         backgroundColor: 'lightcyan',
@@ -100,7 +162,7 @@ export default StyleSheet.create({
         bottom: 0,
         right: 0,
     },
-    //button in the weathe widget
+    //button in the weather widget
     weatherButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -131,6 +193,7 @@ export default StyleSheet.create({
     //Template to copy/paste for text or just use as a placeholder
     mainButtonText: {
         color: 'black',
+        textAlign: 'center',
     },
     //used for OUR STORY
     //widget template to copy/paste or use as a placeholder
@@ -144,7 +207,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/200,
         
     },
-   //idk what this is too scared to delete
+   //images in the datahub page
     graphImage: {
         width: deviceWidth/1.01,
         height: deviceHeight/4,
@@ -158,6 +221,18 @@ export default StyleSheet.create({
     },
     //data widget
     graphButtonContainer: {
+        width: deviceWidth/1.01,
+        backgroundColor: 'mediumaquamarine',
+        borderColor: '#787878',
+        borderRadius: 20,
+        borderWidth: 1,
+        marginTop: deviceHeight / 300,
+        marginBottom: deviceHeight/300,
+        
+    },
+
+    //data hub widget
+    dataHubWidget: {
         width: deviceWidth/1.01,
         backgroundColor: 'mediumaquamarine',
         borderColor: '#787878',
@@ -195,9 +270,9 @@ export default StyleSheet.create({
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
-        backgroundColor: '#50A684',
+        backgroundColor: 'lightcyan',
         borderWidth: 2,
-        borderColor: 'white',
+        borderColor: 'black',
         justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
@@ -264,7 +339,84 @@ export default StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 10,
-        marginLeft: deviceWidth/19.5
+        marginLeft: deviceWidth/19.5,
+    },
+
+    //kenjis stuff
+ 
+      camera: {
+        height: deviceHeight,
+        width: deviceWidth,
+      },
+  
+      button: {
+        flex: 1,
+        alignSelf: 'flex-end',
+        alignItems: 'center',
+       
+      },
+      text: {
+        fontSize: deviceHeight/30,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        marginBottom: deviceHeight/20,
+      },
+      item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        
+      },
+      title: {
+        fontSize: 32,
+      },
+      sidewaystitle: {
+        fontSize: 32,
+        fontStyle: 'italic'
+      },
+      sideways: {
+        fontStyle: 'italic'
+      },
+    
+      thumbnail: {
+        width: 200, // Adjust the width as needed
+        height: 200, // Adjust the height as needed
+        resizeMode: 'cover', // or 'contain' for different scaling options
+      },
+      camButtonContainer: {
+        height: deviceHeight/5,
+        width: '100%',
+        flexDirection: 'row',
+        backgroundColor: 'black',
+        alignItems: 'center',
+        opacity: .8,
+        top: deviceHeight/1.35,
+       
+      },
+      camImageContainer:{
+        height: '65%',
+        width: '85%',
+        marginBottom: deviceWidth/15,
+        borderColor: "black",
+        borderWidth: 2,
+        borderRadius: 10,
+        marginBottom: deviceHeight/17,
+      },
+
+      sampleContainer: {
+        flex: 1,
+        backgroundColor: '#f9c2ff',
+        alignItems: 'center',
+        width: deviceWidth,
+        height: 'auto',
+    },
+    infoContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        width: deviceWidth,
+        height: 'auto',
     },
 
 });

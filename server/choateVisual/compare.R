@@ -14,6 +14,7 @@ library(purrr)
 
 # Define UI
 ui <- fluidPage(
+  # background color
   setBackgroundColor("#333333"),
 
   # title
@@ -22,7 +23,7 @@ ui <- fluidPage(
     style = "color: white;"
   )),
 
-  # text outs like for WQIs
+  # data outputs
   plotlyOutput("distPlot") %>% withSpinner(color = "#FFFFFF"),
   fluidRow(
     column(6, uiOutput("first"), plotlyOutput("firstGauge", height = "175px")),
@@ -81,34 +82,41 @@ ui <- fluidPage(
 
 # Define server logic
 server <- function(input, output, session) {
+  # renders plot
   output$distPlot <- renderPlotly({
-    query <- parseQueryString(session$clientData$url_search)
-    if (!is.null(query[["defaultLocation"]])) {
-      location_URL <- query[["defaultLocation"]]
-
-      if (location_URL=="Choate") {
-        updateSelectInput(session, "location", selected = "Choate Pond")
-      } else if (location_URL=="WP") {
-        updateSelectInput(session, "location", selected = "West Point (01374019)")
-      } else if (location_URL=="P") {
-        updateSelectInput(session, "location", selected = "Poughkeepsie (01372043)")
-      } else if (location_URL=="Y") {
-        updateSelectInput(session, "location", selected = "Yonkers (01376307)")
-      } else {
-        updateSelectInput(session, "location", selected = "Choate Pond")
-      }
-    } else {
-      updateSelectInput(session, "location", selected = "Choate Pond")
-    }
-
+    # various switches responsible for getting parameters from the user
     # getting location
     location <- switch(input$location,
       "Yonkers (01376307)" = "01376307",
       "West Point (01374019)" = "01374019",
       "Poughkeepsie (01372043)" = "01372043",
       "Choate Pond" = "Choate",
-      "NA" = "NA"
-    )
+      "NA" = "NA" # location by default has to be NA because we take in parameters through URL
+    )             # otherwise, the default location code would run, then the one in the parameter
+
+    # gets location provided in URL, if provided
+    query <- parseQueryString(session$clientData$url_search) # gets url parameters
+    print(query[["month"]])
+    print(query[["year"]])
+
+
+    if (!is.null(query[["defaultLocation"]]) && location=="NA") {
+      location_URL <- query[["defaultLocation"]] # gets location parameter
+
+      if (location_URL == "Choate") {
+        updateSelectInput(session, "location", selected = "Choate Pond")
+      } else if (location_URL == "WP") {
+        updateSelectInput(session, "location", selected = "West Point (01374019)")
+      } else if (location_URL == "P") {
+        updateSelectInput(session, "location", selected = "Poughkeepsie (01372043)")
+      } else if (location_URL == "Y") {
+        updateSelectInput(session, "location", selected = "Yonkers (01376307)")
+      } else {
+        updateSelectInput(session, "location", selected = "Choate Pond")
+      }
+    } else if (location == "NA") {
+      updateSelectInput(session, "location", selected = "Choate Pond") # if no parameter are provided
+    }
 
     # getting drop downs for first month
     first_start_year <- switch(input$firstYear,
@@ -196,7 +204,6 @@ server <- function(input, output, session) {
       "NA" = "NA"
     )
 
-
     thresholds <- list(
       "Conductivity" = c(150, 500),
       "pH" = c(7, 8),
@@ -206,7 +213,10 @@ server <- function(input, output, session) {
       "Turbidity" = c(0, 24)
     )
 
-    if (location != "NA") {
+
+    if (location != "NA") { # if to check to make sure a location is selected
+      
+      
       # this section gets data for the first month
       # gets data
       data <- fetch_data(location, input$dataset, first_start_year, first_start_month, start_day, first_end_year, first_end_month, first_end_day)
@@ -218,7 +228,7 @@ server <- function(input, output, session) {
         wqi <- "NA"
       }
       # display reports
-      output$first <- generate_ui(input$firstMonth, input$firstYear, data)
+      output$first <- generate_ui(input$firstMonth, input$firstYear, data, input$dataset)
       output$firstGauge <- renderPlotly({
         gauge_chart(wqi, location)
       })
@@ -228,72 +238,71 @@ server <- function(input, output, session) {
 
       # Compute daily averages
       data_avg <- find_daily_avg(data)
+
+
+
+      if ((second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") && location != "NA") {
+        # this section runs only where one month is selected
+        # gets the graph
+        interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
+
+        # displays graph
+        interactive_plot
+      } else if (second_end_day != "NA" && second_start_month != "NA" && second_start_year != "NA" && second_location != "NA" && location != "NA") {
+        # this runs only when there's two months selected
+        # this section gets data for the second month
+
+        # get data
+        second_data <- fetch_data(second_location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
+
+        # get wqis
+        if (second_location == "Choate") {
+          second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
+        } else {
+          second_wqi <- "NA"
+        }
+
+        # display reports
+        output$second <- generate_ui(input$secondMonth, input$secondYear, second_data, input$dataset)
+        output$secondGauge <- renderPlotly({
+          gauge_chart(second_wqi, second_location)
+        })
+
+        # find max mins
+        second_data_maxmin <- find_max_min(second_data)
+
+        # Compute daily averages
+        second_data_avg <- find_daily_avg(second_data)
+
+        # cleans up timestamp mismatch
+        if (nrow(data_maxmin) > nrow(second_data_maxmin)) {
+          data_maxmin <- head(data_maxmin, nrow(second_data_maxmin) - nrow(data_maxmin))
+          data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
+        } else if (nrow(second_data_maxmin) > nrow(data_maxmin)) {
+          second_data_maxmin <- head(second_data_maxmin, nrow(data_maxmin) - nrow(second_data_maxmin))
+          second_data_maxmin$timestamp <- as.Date(data_maxmin$timestamp, format = "%Y-%m-%d")
+        } else {
+          data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
+        }
+
+        # cleans up data mismatch
+        if (nrow(data_avg) > nrow(second_data_avg)) {
+          data_avg <- head(data_avg, nrow(second_data_avg) - nrow(data_avg))
+          data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
+        } else if (nrow(second_data_avg) > nrow(data_avg)) {
+          second_data_avg <- head(second_data_avg, nrow(data_avg) - nrow(second_data_avg))
+          second_data_avg$timestamp <- as.Date(data_avg$timestamp, format = "%Y-%m-%d")
+        } else {
+          data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
+        }
+
+        # gets the graph
+        interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds)
+
+        # displays graph
+        interactive_plot
+      }
     }
-
-    if ((second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") && location != "NA")  {
-      # this runs only where one month is selected
-      # gets the graph
-      interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
-
-      # displays graph
-      interactive_plot
-    } else if (second_end_day != "NA" && second_start_month != "NA" && second_start_year != "NA" && second_location != "NA" && location != "NA") {
-      # this runs only when there's two months selected
-      # this section gets data for the second month
-
-      # get data
-      second_data <- fetch_data(second_location, input$dataset, second_start_year, second_start_month, start_day, second_end_year, second_end_month, second_end_day)
-
-      # get wqis
-      if (second_location == "Choate") {
-        second_wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", second_start_month, "-", second_start_year, sep = ""))
-      } else {
-        second_wqi <- "NA"
-      }
-
-      # display reports
-      output$second <- generate_ui(input$secondMonth, input$secondYear, second_data)
-
-      output$secondGauge <- renderPlotly({
-        gauge_chart(second_wqi, second_location)
-      })
-
-      # find max mins
-      second_data_maxmin <- find_max_min(second_data)
-
-      # Compute daily averages
-      second_data_avg <- find_daily_avg(second_data)
-
-      # cleans up timestamp mismatch
-      if (nrow(data_maxmin) > nrow(second_data_maxmin)) {
-        data_maxmin <- head(data_maxmin, nrow(second_data_maxmin) - nrow(data_maxmin))
-        data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
-      } else if (nrow(second_data_maxmin) > nrow(data_maxmin)) {
-        second_data_maxmin <- head(second_data_maxmin, nrow(data_maxmin) - nrow(second_data_maxmin))
-        second_data_maxmin$timestamp <- as.Date(data_maxmin$timestamp, format = "%Y-%m-%d")
-      } else {
-        data_maxmin$timestamp <- as.Date(second_data_maxmin$timestamp, format = "%Y-%m-%d")
-      }
-
-      # cleans up data mismatch
-      if (nrow(data_avg) > nrow(second_data_avg)) {
-        data_avg <- head(data_avg, nrow(second_data_avg) - nrow(data_avg))
-        data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
-      } else if (nrow(second_data_avg) > nrow(data_avg)) {
-        second_data_avg <- head(second_data_avg, nrow(data_avg) - nrow(second_data_avg))
-        second_data_avg$timestamp <- as.Date(data_avg$timestamp, format = "%Y-%m-%d")
-      } else {
-        data_avg$timestamp <- as.Date(second_data_avg$timestamp, format = "%Y-%m-%d")
-      }
-
-      # gets the graph
-      interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds)
-
-      # displays graph
-      interactive_plot
-    }
-
-    
   })
 }
 
@@ -423,6 +432,7 @@ max_do <- function(temperature) {
   return(round(o2, 2)) # Update dissolved oxygen field
 }
 
+# removing outliers by doing rolling average
 remove_outliers <- function(data) {
   # Define the window size for the rolling mean
   window_size <- 4 # Adjust the window size as needed
@@ -435,12 +445,11 @@ remove_outliers <- function(data) {
   return(data)
 }
 
-
-# logic to display WQIs
-generate_ui <- function(month, year, data) {
+# logic to display mins and maxes
+generate_ui <- function(month, year, data, dataset) {
   return(renderUI({
     HTML(paste0(
-      "<div style='color:white;'>Monthly Summary For ", month, " ", year, ":</div><br/>",
+      "<div style='color:white; font-weight: bold; font-size: larger;'>Monthly Summary For ", month, " ", year, " of ",dataset,":</div><br/>",
       "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
       "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
       "<div style='color:white;'>Average: ", round(mean(data$value)), "</div>"
@@ -596,9 +605,9 @@ gauge_chart <- function(wqi, location) {
           list(range = c(90, 100), color = "#2a6423")
         ),
         bgcolor = "#333333",
-        bar = list(color = "#ffffffe7"),
+        bar = list(color = "#000000"),
         threshold = list(
-          line = list(color = "ffffffe7", width = 4),
+          line = list(color = "#000000", width = 4),
           thickness = 0.75,
           value = 0 # Set the threshold value to 0 for "NA" case
         )

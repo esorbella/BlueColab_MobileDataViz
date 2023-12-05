@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=SensorTest
+comment1.params=
+comment1.target=SensorTest()
+comment2.params=
+comment2.target=void\ testTemperature()
+comment3.params=
+comment3.target=void\ testSalinity()
+comment4.params=
+comment4.target=void\ testPh()
+numComments=5

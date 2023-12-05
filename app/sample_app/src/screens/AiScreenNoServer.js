@@ -1,10 +1,12 @@
 import { Camera, CameraType } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
-import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList } from 'react-native';
+import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList, TouchableHighlight } from 'react-native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 
 export default function AiScreen({ navigation }) {
+
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -13,12 +15,32 @@ export default function AiScreen({ navigation }) {
   const [speciesData, setSpeciesData] = useState([]);
   const [jsonData, setJsonData] = useState(null);
 
+
   useEffect(() => {
     // Import the local JSON file using require
     const localJson = require('../../assets/USRIISv2_MasterList.json');
 
     // Access the JSON data
     setJsonData(localJson);
+
+    const getLocation = async () => {
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      } catch (error) {
+        console.error('Error getting location:', error);
+        setErrorMsg('Error getting location');
+      }
+    };
+
+    getLocation();
   }, []); // Run only once when the component mounts
 
 
@@ -128,7 +150,7 @@ export default function AiScreen({ navigation }) {
 
       try {
         const rows = jsonData.scientificName;
-        
+
         // Iterate over CSV rows
         rows.forEach((row) => {
           currentName = row;
@@ -147,7 +169,7 @@ export default function AiScreen({ navigation }) {
 
         console.log('Finished reading the CSV file.');
         setSpeciesData(plantList);
-       // console.log(result.data.results);
+        // console.log(result.data.results);
       } catch (error) {
         console.error(`An error occurred: ${error}`);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -193,7 +215,7 @@ export default function AiScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {previewVisible && capturedImage ? (aiReplyVisible ? (<AIResponse speciesData={speciesData} />) : (<CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} />)
+      {previewVisible && capturedImage ? (aiReplyVisible ? (<AIResponse speciesData={speciesData} navigation={navigation} />) : (<CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} />)
       ) : (<Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} >
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
@@ -338,9 +360,35 @@ const Item = ({ title, score, commonNames, isInvasive, isEnabled, imgs }) => {
   }
 };
 
-const AIResponse = ({ speciesData }) => {
+const AIResponse = ({ speciesData, navigation }) => {
+
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      } catch (error) {
+        console.error('Error getting location:', error);
+        setErrorMsg('Error getting location');
+      }
+    };
+
+    getLocation();
+  }, []); // Run only once when the component mounts
+
 
   const loadingImages = [
     "https://cdn.dribbble.com/users/2882885/screenshots/7861928/media/a4c4da396c3da907e7ed9dd0b55e5031.gif",
@@ -363,6 +411,19 @@ const AIResponse = ({ speciesData }) => {
             />
             <Text>Display responses with a score above 1%.</Text>
           </View>
+
+          <View>
+            {errorMsg ? (
+              <Text>{errorMsg}</Text>
+            ) : location ? (
+              <Text>
+                <ClosetLocation lat={location.coords.latitude} long={location.coords.longitude} navigation={navigation}></ClosetLocation>
+              </Text>
+            ) : (
+              <Text>Loading Location...</Text>
+            )}
+          </View>
+
           <FlatList
             data={species}
             renderItem={({ item }) => <Item title={item.species.scientificNameWithoutAuthor} score={item.score} commonNames={item.species.commonNames} isInvasive={item.invasive} isEnabled={isEnabled} imgs={item.imgs} />}
@@ -390,6 +451,129 @@ const AIResponse = ({ speciesData }) => {
   )
 }
 
+const ClosetLocation = ({ lat, long, navigation }) => {
+  const handleChoatePress = () => {
+    navigation.navigate("Choate");
+  };
+  const handlePoughPress = () => {
+    navigation.navigate("Pough");
+  };
+  const handleWPPress = () => {
+    navigation.navigate("WP");
+  };
+  const handleYonkPress = () => {
+    navigation.navigate("Yonk");
+  };
+  // Example usage:
+  const coordinates1 = { latitude: lat, longitude: long };
+
+  const locationList = [
+    { location: "Choate", latitude: 41.127462, longitude: -73.8088307 },
+    { location: "Yonkers", latitude: 40.936250, longitude: -73.904306 },
+    { location: "West Point", latitude: 41.3862049, longitude: -73.95513879 },
+    { location: "Pough", latitude: 41.721667, longitude: -73.941111 }
+  ]
+
+  let minDistance = haversineDistance(coordinates1, locationList[0]);
+  let minLocation = locationList[0].location;
+
+  for (let location of locationList) {
+    if (haversineDistance(coordinates1, location) < minDistance) {
+      minLocation = location.location;
+      minDistance = haversineDistance(coordinates1, location);
+    }
+  }
+
+  if (minLocation == "Choate") {
+    return (<View>
+      <TouchableHighlight
+        onPress={() => {
+          handleChoatePress();
+        }}
+      > 
+        <View>
+          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+        </View>
+      </TouchableHighlight></View>)
+  } else if (minLocation == "Yonkers") {
+    return (<View>
+      <TouchableHighlight
+        onPress={() => {
+          handleYonkPress();
+        }}
+      > 
+        <View>
+          <Text>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
+        </View>
+      </TouchableHighlight></View>)
+  } else if (minLocation == "West Point") {
+    return (<View>
+      <TouchableHighlight
+        onPress={() => {
+          handleWPPress();
+        }}
+      > 
+        <View>
+          <Text>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
+        </View>
+      </TouchableHighlight></View>)
+  } else if (minLocation == "Pough") {
+    return (<View>
+      <TouchableHighlight
+        onPress={() => {
+          handlePoughPress();
+        }}
+      > 
+        <View>
+          <Text>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
+        </View>
+      </TouchableHighlight></View>)
+  } else {
+    return (<View>
+      <TouchableHighlight
+        onPress={() => {
+          handleChoatePress();
+        }}
+      > 
+        <View>
+          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+        </View>
+      </TouchableHighlight></View>)
+  }
+
+
+
+
+  // return (
+  //   <View><Text>Hello {minLocation} at {minDistance} km</Text></View>
+  // )
+}
+
+function haversineDistance(coord1, coord2) {
+  function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+  }
+
+  const R = 6371; // Earth radius in kilometers
+
+  const lat1 = toRadians(coord1.latitude);
+  const lon1 = toRadians(coord1.longitude);
+  const lat2 = toRadians(coord2.latitude);
+  const lon2 = toRadians(coord2.longitude);
+
+  const dLat = lat2 - lat1;
+  const dLon = lon2 - lon1;
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = R * c; // Distance in kilometers
+
+  return distance;
+}
 
 const styles = StyleSheet.create({
   container: {

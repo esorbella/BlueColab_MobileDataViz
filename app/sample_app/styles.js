@@ -385,13 +385,13 @@ export default StyleSheet.create({
         resizeMode: 'cover', // or 'contain' for different scaling options
       },
       camButtonContainer: {
-        height: deviceHeight/6,
+        height: deviceHeight/5,
         width: '100%',
         flexDirection: 'row',
         backgroundColor: 'black',
         alignItems: 'center',
         opacity: .8,
-        bottom: deviceHeight/-1.35,
+        top: deviceHeight/1.35,
        
       },
       camImageContainer:{
@@ -401,6 +401,7 @@ export default StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 10,
+        marginBottom: deviceHeight/17,
       },
 
       sampleContainer: {

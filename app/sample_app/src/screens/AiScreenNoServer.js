@@ -4,6 +4,8 @@ import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackgrou
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
+import styles from "../../styles";
+
 
 export default function AiScreen({ navigation }) {
 
@@ -53,9 +55,18 @@ export default function AiScreen({ navigation }) {
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View style={styles.aiContainer}>
+        <Text style = {styles.aiParagraphText}>We need permission to use your device's camera</Text>
+        <Image
+        source = {require('../../assets/robot.png')}
+        style = {{ height: deviceHeight/3.5, width: deviceHeight/3.5, margin: deviceWidth/20 }}
+            />
+        <TouchableHighlight onPress={requestPermission}>
+          <View style = {styles.aiButton}>
+            <Text style = {styles.aiButtonText}> Grant Permission </Text>
+          </View>
+
+        </TouchableHighlight>
       </View>
     );
   }
@@ -224,15 +235,24 @@ export default function AiScreen({ navigation }) {
     <View style={styles.container}>
       {previewVisible && capturedImage ? (aiReplyVisible ? (<AIResponse speciesData={speciesData} navigation={navigation} />) : (<CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} />)
       ) : (<Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} >
-        <View style={styles.buttonContainer}>
+        <View style={styles.camButtonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <Image
+            source={{uri:"https://i.pngimg.me/thumb/f/720/m2i8i8A0i8b1G6m2.jpg"}}
+            style={styles.camImageContainer}
+          />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={takePicture} >
-            <Text style={styles.text}>Take Photo</Text>
+          <Image
+            source={{uri:"https://play-lh.googleusercontent.com/ibiGJ0ggc5HNUS5aNkFxun54MoE6CleUMVU7SbvjpLAYZF7mkSsS-E8TYWAkfauCxCE=w240-h480-rw"}}
+            style={styles.camImageContainer}
+          />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={pickImage} >
-            <Text style={styles.text}>Photo from Phone</Text>
+          <Image
+            source={{uri:"https://www.shutterstock.com/image-vector/add-photo-icon-on-white-600nw-221329180.jpg"}}
+            style={styles.camImageContainer}
+          />
           </TouchableOpacity>
         </View>
       </Camera>)}
@@ -582,51 +602,5 @@ function haversineDistance(coord1, coord2) {
   return distance;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-  sidewaystitle: {
-    fontSize: 32,
-    fontStyle: 'italic'
-  },
-  sideways: {
-    fontStyle: 'italic'
-  },
 
-  thumbnail: {
-    width: 200, // Adjust the width as needed
-    height: 200, // Adjust the height as needed
-    resizeMode: 'cover', // or 'contain' for different scaling options
-  },
-});
 

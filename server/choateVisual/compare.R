@@ -84,9 +84,19 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # renders plot
   output$distPlot <- renderPlotly({
+    # various switches responsible for getting parameters from the user
+    # getting location
+    location <- switch(input$location,
+      "Yonkers (01376307)" = "01376307",
+      "West Point (01374019)" = "01374019",
+      "Poughkeepsie (01372043)" = "01372043",
+      "Choate Pond" = "Choate",
+      "NA" = "NA" # location by default has to be NA because we take in parameters through URL
+    )             # otherwise, the default location code would run, then the one in the parameter
+
     # gets location provided in URL, if provided
     query <- parseQueryString(session$clientData$url_search) # gets url parameters
-    if (!is.null(query[["defaultLocation"]])) {
+    if (!is.null(query[["defaultLocation"]]) && location=="NA") {
       location_URL <- query[["defaultLocation"]] # gets location parameter
 
       if (location_URL == "Choate") {
@@ -100,19 +110,9 @@ server <- function(input, output, session) {
       } else {
         updateSelectInput(session, "location", selected = "Choate Pond")
       }
-    } else {
+    } else if (location == "NA") {
       updateSelectInput(session, "location", selected = "Choate Pond") # if no parameter are provided
     }
-
-    # various switches responsible for getting parameters from the user
-    # getting location
-    location <- switch(input$location,
-      "Yonkers (01376307)" = "01376307",
-      "West Point (01374019)" = "01374019",
-      "Poughkeepsie (01372043)" = "01372043",
-      "Choate Pond" = "Choate",
-      "NA" = "NA" # location by default has to be NA because we take in parameters through URL
-    )             # otherwise, the default location code would run, then the one in the parameter
 
     # getting drop downs for first month
     first_start_year <- switch(input$firstYear,
@@ -224,7 +224,7 @@ server <- function(input, output, session) {
         wqi <- "NA"
       }
       # display reports
-      output$first <- generate_ui(input$firstMonth, input$firstYear, data)
+      output$first <- generate_ui(input$firstMonth, input$firstYear, data, input$dataset)
       output$firstGauge <- renderPlotly({
         gauge_chart(wqi, location)
       })
@@ -259,7 +259,7 @@ server <- function(input, output, session) {
         }
 
         # display reports
-        output$second <- generate_ui(input$secondMonth, input$secondYear, second_data)
+        output$second <- generate_ui(input$secondMonth, input$secondYear, second_data, input$dataset)
         output$secondGauge <- renderPlotly({
           gauge_chart(second_wqi, second_location)
         })
@@ -441,11 +441,11 @@ remove_outliers <- function(data) {
   return(data)
 }
 
-# logic to display WQIs
-generate_ui <- function(month, year, data) {
+# logic to display mins and maxes
+generate_ui <- function(month, year, data, dataset) {
   return(renderUI({
     HTML(paste0(
-      "<div style='color:white;'>Monthly Summary For ", month, " ", year, ":</div><br/>",
+      "<div style='color:white; font-weight: bold; font-size: larger;'>Monthly Summary For ", month, " ", year, " of ",dataset,":</div><br/>",
       "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
       "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
       "<div style='color:white;'>Average: ", round(mean(data$value)), "</div>"

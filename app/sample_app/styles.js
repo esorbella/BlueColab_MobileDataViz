@@ -345,7 +345,8 @@ export default StyleSheet.create({
     },
     //date text for the wildlife page
     dateText:{
-        margin: 15
+        margin: 15,
+        color: "white",
     },
     //general image styling for widgets 
     imageContainer:{

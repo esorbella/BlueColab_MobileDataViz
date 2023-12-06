@@ -146,7 +146,7 @@ export default function AiScreen({ navigation }) {
 
       const responseData = await response.json();
 
-
+      console.log(response.status)
 
       if (response.status != 404) {
 
@@ -192,10 +192,6 @@ export default function AiScreen({ navigation }) {
           res.status(500).json({ error: 'Internal Server Error' });
         }
 
-      }
-
-      if (responseData != 'Species not found') {
-        setSpeciesData(responseData.results);
       } else {
         setSpeciesData([
           {
@@ -208,7 +204,6 @@ export default function AiScreen({ navigation }) {
           }
         ]);
       }
-
     } catch (error) {
       // Handle errors
       console.error('Error uploading image: ', error);
@@ -425,6 +420,7 @@ const AIResponse = ({ speciesData, navigation }) => {
   ];
 
   const displaySpecies = (species) => {
+    console.log(species);
     if (species.length > 0) { // valid array received
       return (
         <SafeAreaView style={styles.infoContainer}>

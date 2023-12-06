@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  WebView
 } from "react-native";
 import styles from "../../styles";
 

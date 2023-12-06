@@ -281,7 +281,11 @@ const WildlifeScreen = ({ navigation }) => {
       <View style={styles.wildContainer}>
         
         {/* Display the current date */}
-        <Text style={styles.dateText}>{currentDate}</Text>
+        {/* //plain 
+        <Text style={styles.dateText}>{currentDate}</Text>*/}
+        <Text style={styles.dateText}>
+        Wildlife Activity on <Text style={styles.dateText}>{currentDate}</Text>:
+        </Text>
 
         {/* Choate Pond wildlife carousel */}
         <Text style={styles.paragraphTextWildlife}>Wildlife in Choate Pond:</Text>

@@ -259,6 +259,9 @@ const WildlifeScreen = ({ navigation }) => {
       if (greatBlueHeron){
         greatBlueHeron.funFact = "Great Blue Herons are continuing to forage for fish in open waters or move to areas with less ice cover to hunt for food."
       }
+      if (atlanticSturgeon) {
+        atlanticSturgeon.funFact = "Female Atlantic Sturgeon in Northeast America are currently spawning and laying eggs in rivers like the Hudson River."
+      }
     }
     
 

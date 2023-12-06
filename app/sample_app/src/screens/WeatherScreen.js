@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  ImageBackground,
-  WebView
-} from "react-native";
+import { WebView } from 'react-native-webview';
 import styles from "../../styles";
 
 export default function WeatherScreen({navigation}) {

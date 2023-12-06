@@ -148,9 +148,6 @@ export default function AiScreen({ navigation }) {
 
       if (response.status != 404) {
 
-
-
-
         let plantList = responseData.results;
 
         // attaches links to images of the plants
@@ -422,6 +419,7 @@ const AIResponse = ({ speciesData, navigation }) => {
     "https://media.tenor.com/DHkIdy0a-UkAAAAC/loading-cat.gif",
     "https://64.media.tumblr.com/bdaea39db57dc0b48d763262514268db/tumblr_mgj44mNyST1s199fdo1_500.gif",
     "https://cdn.dribbble.com/users/160117/screenshots/3197970/main.gif",
+    "https://cdn.dribbble.com/users/1797086/screenshots/5615214/fish3.gif"
   ];
 
   const displaySpecies = (species) => {

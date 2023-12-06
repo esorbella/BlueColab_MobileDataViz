@@ -1,4 +1,6 @@
 import React from "react";
+import moment from 'moment'; 
+
 import {
   View,
   Text,
@@ -157,22 +159,131 @@ const WildlifeScreen = ({ navigation }) => {
     // Add more wildlife data entries in the same format
   ];
 
+      // Function to check if the current month is December
+    const isWinter = moment().format('MMMM') === 'December'|| moment().format('MMMM') === 'January'|| moment().format('MMMM') === 'February';
+    const isSummer = moment().format('MMMM') === 'May' || moment().format('MMMM') === 'June';
 
-  const renderItem = ({ item }) => (
-    <View style={styles.wildContainer}>
-      <Image
-        source={{ uri: item.imageUri }}
-        style={{ width: windowWidth * 0.9, aspectRatio: 2097 / 1227 }}
-      />
-      <Text style={styles.pictureSub}>{item.animalName}</Text>
-      <Text style={styles.pictureSubScientific}>{item.scientificName}</Text>
-      <Text style={styles.pictureSub}>{item.funFact}</Text>
-    </View>
-  );
+    //Hudson River animals 
+    const linedSeahorse = hudsonWildlifeData.find(item => item.animalName === "Lined Seahorse");
+    const atlanticSturgeon = hudsonWildlifeData.find(item => item.animalName === "Atlantic Sturgeon");
+    const diamondbackTerrapin = hudsonWildlifeData.find(item => item.animalName === "Diamondback Terrapin");
+    const blueCrab = hudsonWildlifeData.find(item => item.animalName === "Blue Crab");
+    const humpbackWhale = hudsonWildlifeData.find(item => item.animalName === "Humpback Whale");
+    const greatBlueHeron = hudsonWildlifeData.find(item => item.animalName === "Great Blue Heron");
+    const americanShad = hudsonWildlifeData.find(item => item.animalName === "American Shad");
+    const mink = hudsonWildlifeData.find(item => item.animalName === "Mink");
+    const americanEel = hudsonWildlifeData.find(item => item.animalName === "American Eel");
+    const easternRedBackedSalamander = hudsonWildlifeData.find(item => item.animalName === "Eastern Red-backed Salamander");
 
+    //Choate Pond Animals 
+    const largemouthBass = choateWildlifeData.find(item => item.animalName === "Largemouth bass");
+    const snappingTurtle = choateWildlifeData.find(item => item.animalName === "Snapping turtle");
+    const redEaredSliders = choateWildlifeData.find(item => item.animalName === "Red-Eared Sliders");
+    const goldfish = choateWildlifeData.find(item => item.animalName === "Goldfish");
+    const woodDucks = choateWildlifeData.find(item => item.animalName === "Wood Ducks");
+    const greatBlueHeronChoate = choateWildlifeData.find(item => item.animalName === "Great Blue Heron");
+    const crayFish = choateWildlifeData.find(item => item.animalName === "CrayFish");
+    const northernWaterSnake = choateWildlifeData.find(item => item.animalName === "Northern Water Snake");
+    const greenFrog = choateWildlifeData.find(item => item.animalName === "Green Frog");
+    const bullfrog = choateWildlifeData.find(item => item.animalName === "Bullfrog");
+    
+    // Modify the funFact based on the current month
+    if (isSummer) {
+      // If the item is found, update the funFact
+      if (atlanticSturgeon) {
+        atlanticSturgeon.funFact = "Female Atlantic Sturgeon, aged 2 to 5 years, are currently laying eggs in the Hudson River";
+      }
+      if (linedSeahorse) {
+        linedSeahorse.funFact = "Lined seahorses are currently engaging in breeding rituals, including courtship dances, reproduction, and seeking sheltered habitats to ensure their survival and reproductive success.";
+      }
+
+    }
+    if (isWinter){
+      //Choate Winter 
+      if (greatBlueHeronChoate) {
+        greatBlueHeronChoate.funFact = "Great Blue Herons are continuing to forage for fish in open waters or move to areas with less ice cover to hunt for food."
+      }
+      if (bullfrog) {
+        bullfrog.funFact = "Bullfrogs are entering a state of dormancy or hibernation by seeking refuge in the mud at the bottom of Choate Pond of water to endure the cold temperatures."
+      }
+      if (greenFrog) {
+        greenFrog.funFact = "Green Frogs are currently exhibiting reduced activity levels, possibly hibernating or seeking shelter in mud at the bottom of Choate Pond to survive the cold weather."
+      }
+      if (largemouthBass) {
+        largemouthBass.funFact = "Largemouth Bass are currently slowing down their activity levels, seeking deeper water while feeding less frequently due to the colder temperatures affecting their metabolism."
+      }
+      if (snappingTurtle) {
+        snappingTurtle.funFact = "Snapping Turtles in Choate Pond are entering a period of reduced activity, seeking out burrows or deeper water to hibernate and conserve energy during the colder months."
+      }
+      if (redEaredSliders) {
+        redEaredSliders.funFact = "Red-Eared Sliders in Choate Pond are likely experiencing decreased activity levels, seeking shelter in aquatic environments or burrowing into mud to hibernate or limit their movements at this time of year."
+      }
+      if (woodDucks) {
+        woodDucks.funFact = "Wood Ducks, seasonal residents of Choate Pond, are migrating to wintering grounds, moving to open waters or coastal habitats to escape freezing temperatures and find suitable feeding areas."
+      }
+      if (crayFish) {
+        crayFish.funFact = "Crayfish may experience reduced activity, seeking refuge in burrows or deeper water to survive the colder temperatures, at this time of year."
+      }
+      if (northernWaterSnake) {
+        northernWaterSnake.funFact = "Northern Water Snakes of Choate Pond are going into hibernation or brumation, seeking shelter in dens or burrows to survive the cold weather."
+      }
+      if (goldfish) {
+        goldfish.funFact = "Goldfish in Choate Pond continue to forage actively for food and adapt to varying water temperatures, displaying heightened movement and activity levels compared to some native fish species in the pond."
+      }
+
+      //Hudson Winter 
+      if (linedSeahorse) {
+        linedSeahorse.funFact = "Lined Seahorses are currently reducing their activity levels, seeking sheltered and warmer areas to escape colder temperatures, potentially decreasing their reproductive and feeding activities during this December."
+      }
+      if (mink) {
+        mink.funFact = "Minks are currently focusing on foraging for food, grooming their winter fur, and seeking shelter to endure the colder weather conditions."
+      }
+      if (americanEel) {
+        americanEel.funFact = "American Eels are currently migrating downstream to brackish waters or estuaries in preparation for their spawning phase, triggered by cooler temperatures."
+      }
+      if (humpbackWhale) {
+        humpbackWhale.funFact = "Humpback Whales are currently migrating southward towards warmer waters for breeding and calving after feeding in the northern regions during the summer and fall."
+      }
+      if (easternRedBackedSalamander) {
+        easternRedBackedSalamander.funFact = "Eastern Red Backed Salamanders are currently undergoing a period of hibernation, seeking refuge in underground shelters to survive the colder temperatures."
+      }
+      if (blueCrab) {
+        blueCrab.funFact = "Blue Crabs are currently migrating to deeper, warmer waters, or become less active and enter a state of torpor due to the cooler temperatures."
+      }
+      if (diamondbackTerrapin){
+        diamondbackTerrapin.funFact = "Many Diamondback Terrapin are in a state of brumation, a reptilian hibernation, during Winter."
+      }
+      if (americanShad){
+        americanShad.funFact = "During Winter, American Shad are spawning in the Hudson River after migrating from the ocean."
+      }
+      if (greatBlueHeron){
+        greatBlueHeron.funFact = "Great Blue Herons are continuing to forage for fish in open waters or move to areas with less ice cover to hunt for food."
+      }
+    }
+    
+
+    const renderItem = ({ item }) => (
+      <View style={styles.wildContainer}>
+        <Image
+          source={{ uri: item.imageUri }}
+          style={{ width: windowWidth * 0.9, aspectRatio: 2097 / 1227 }}
+        />
+        <Text style={styles.pictureSub}>{item.animalName}</Text>
+        <Text style={styles.pictureSubScientific}>{item.scientificName}</Text>
+        <Text style={styles.pictureSub}>{item.funFact}</Text>
+      </View>
+    );
+
+    const currentDate = moment().format('MMMM Do YYYY');
+  
   return (
     <ScrollView>
       <View style={styles.wildContainer}>
+        
+        {/* Display the current date */}
+        <Text style={styles.dateText}>{currentDate}</Text>
+
+        {/* Choate Pond wildlife carousel */}
         <Text style={styles.paragraphText}>Wildlife in Choate Pond:</Text>
         <Carousel
           data={choateWildlifeData}
@@ -185,6 +296,7 @@ const WildlifeScreen = ({ navigation }) => {
           inactiveSlideScale={0.9}
           inactiveSlideOpacity={0.7}
         />
+        {/* Hudson River wildlife carousel */}
         <Text style={styles.paragraphText}>Wildlife in The Hudson River:</Text>
         <Carousel
           data={hudsonWildlifeData}

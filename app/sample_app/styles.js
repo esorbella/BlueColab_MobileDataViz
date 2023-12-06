@@ -321,6 +321,7 @@ export default StyleSheet.create({
         color: 'white',
         fontSize: 16,
         textAlign: 'center',
+        margin: 5,
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
     },
@@ -328,9 +329,13 @@ export default StyleSheet.create({
     pictureSubScientific:{
         color: 'white',
         fontSize: 16,
-        marginBottom: 15,
+        margin: 5,
         textAlign: 'center',
         fontStyle: "italic"
+    },
+    //date text for the wildlife page
+    dateText:{
+        margin: 15
     },
     //general image styling for widgets 
     imageContainer:{

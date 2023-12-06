@@ -1,11 +1,13 @@
 import { Camera, CameraType } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
-import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList, TouchableHighlight } from 'react-native';
+import { Switch, Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, SafeAreaView, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import styles from "../../styles";
 
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
 
 export default function AiScreen({ navigation }) {
 
@@ -323,7 +325,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }) => {
                   fontSize: 20
                 }}
               >
-                Analyze hoto
+                Analyze Photo
               </Text>
             </TouchableOpacity>
           </View>
@@ -458,11 +460,11 @@ const AIResponse = ({ speciesData, navigation }) => {
       );
     } else { // an error or we're still waiting for a response from a server
       return (
-        <View>
+        <View style = {styles.infoContainer}>
           <Text>Loading...</Text>
           <Image
             source={{ uri: loadingImages[Math.floor(Math.random() * loadingImages.length)] }}
-            style={{ height: 500, width: 400 }} // Adjust the dimensions as needed
+            style={{ height: "100%", width: "100%" }} // Adjust the dimensions as needed
           />
         </View>
       );
@@ -517,7 +519,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style = {styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Yonkers") {

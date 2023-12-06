@@ -22,6 +22,7 @@ export default StyleSheet.create({
         width: deviceWidth,
         height: 'auto',
     },
+    //AI permission screen background
     aiContainer: {
         flex: 1,
         backgroundColor: 'black',
@@ -31,7 +32,7 @@ export default StyleSheet.create({
         
 
     },
-
+    //AI Screen permission button
     aiButton: {
         backgroundColor: 'limegreen',
         alignItems: 'center',
@@ -42,12 +43,11 @@ export default StyleSheet.create({
         borderColor: 'darkgreen',
 
     },
-
     aiButtonText: {
         color: 'black',
         fontSize: deviceHeight/27
     },
-
+    //The big paragraph on the AI screen
     aiParagraphText: {
         color: 'limegreen',
         fontSize: deviceHeight/20,
@@ -58,7 +58,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito-Black',
     },
-
+    //AI screen widget in the homescree
     aiWidget: {
         width: deviceWidth/1.01,
         backgroundColor: 'dimgray',
@@ -69,6 +69,7 @@ export default StyleSheet.create({
         marginBottom: deviceHeight/200,
         
     },
+    //button in the AI Widget
     aiWidgetButton: {
         borderRadius: 8,
         height: deviceHeight / 25, 
@@ -293,7 +294,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito',
     },
-    //Text below the image
+    //Text below the graph widget image
     graphParagraphText: {
         color: 'black',
         fontSize: deviceHeight/25,
@@ -331,7 +332,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontStyle: "italic"
     },
-    //image styling
+    //general image styling for widgets 
     imageContainer:{
         height: deviceHeight/3,
         width: "90%",
@@ -342,7 +343,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/19.5,
     },
 
-    //kenjis stuff
+    //AI PAGE STUFF
  
       camera: {
         height: deviceHeight,
@@ -355,13 +356,7 @@ export default StyleSheet.create({
         alignItems: 'center',
        
       },
-      text: {
-        fontSize: deviceHeight/30,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center',
-        marginBottom: deviceHeight/20,
-      },
+      //the big pink box for the information about the species scanned by the API 
       item: {
         backgroundColor: '#f9c2ff',
         padding: 20,
@@ -384,6 +379,7 @@ export default StyleSheet.create({
         height: 200, // Adjust the height as needed
         resizeMode: 'cover', // or 'contain' for different scaling options
       },
+      //At the bottom of the camera screen, has the little camera images inside
       camButtonContainer: {
         height: deviceHeight/5,
         width: '100%',
@@ -394,6 +390,7 @@ export default StyleSheet.create({
         top: deviceHeight/1.35,
        
       },
+      //styling for the images themselves
       camImageContainer:{
         height: '65%',
         width: '85%',
@@ -403,7 +400,7 @@ export default StyleSheet.create({
         borderRadius: 10,
         marginBottom: deviceHeight/17,
       },
-
+      //final screen in the AI section that shows information 
       sampleContainer: {
         flex: 1,
         backgroundColor: '#f9c2ff',
@@ -411,7 +408,8 @@ export default StyleSheet.create({
         width: deviceWidth,
         height: 'auto',
     },
-    infoContainer: {
+      //background for the information screen
+      infoContainer: {
         flex: 1,
         backgroundColor: 'white',
         alignItems: 'center',

@@ -597,12 +597,12 @@ gauge_chart <- function(wqi, location) {
           tickvals = c(0, 25, 50, 70, 90, 100),
           ticktext = c("0", "25", "50", "70", "90", "100")
         ),
-          steps = list(
-          list(range = c(0, 25), color = "darkred"),
-          list(range = c(25, 50), color = "darkorange"),
-          list(range = c(50, 70), color = "yellow"),
-          list(range = c(70, 90), color = "#4ff04ce8"),
-          list(range = c(90, 100), color = "#2a6423")
+        steps = list(
+          list(range = c(0, 25), color = "#960505"),
+          list(range = c(25, 50), color = "#964105"),
+          list(range = c(50, 70), color = "#a89503"),
+          list(range = c(70, 90), color = "#368f03"),
+          list(range = c(90, 100), color = "#0b5407")
         ),
         bgcolor = "#333333",
         bar = list(color = "#000000"),
@@ -647,9 +647,9 @@ gauge_chart <- function(wqi, location) {
         list(range = c(90, 100), color = "#2a6423")
       ),
       bgcolor = "#333333",
-      bar = list(color = "#232323"),
+      bar = list(color = "#ffffffe7"),
       threshold = list(
-        line = list(color = "#232323", width = 4),
+        line = list(color = "ffffffe7", width = 4),
         thickness = 0.75,
         value = wqi$wqi
       )

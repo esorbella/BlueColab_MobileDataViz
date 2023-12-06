@@ -26,25 +26,6 @@ export default function AiScreen({ navigation }) {
 
     // Access the JSON data
     setJsonData(localJson);
-
-    const getLocation = async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-
-        if (status !== 'granted') {
-          setErrorMsg('Permission to access location was denied');
-          return;
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-      } catch (error) {
-        console.error('Error getting location:', error);
-        setErrorMsg('Error getting location');
-      }
-    };
-
-    getLocation();
   }, []); // Run only once when the component mounts
 
 
@@ -456,7 +437,7 @@ const AIResponse = ({ speciesData, navigation }) => {
       );
     } else { // an error or we're still waiting for a response from a server
       return (
-        <View style = {styles.infoContainer}>
+        <View style={styles.infoContainer}>
           <Text>Loading...</Text>
           <Image
             source={{ uri: loadingImages[Math.floor(Math.random() * loadingImages.length)] }}
@@ -515,7 +496,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text style = {styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Yonkers") {
@@ -526,7 +507,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "West Point") {
@@ -537,7 +518,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Pough") {
@@ -548,7 +529,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else {
@@ -559,7 +540,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   }

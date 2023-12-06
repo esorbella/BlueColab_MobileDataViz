@@ -1,0 +1,12 @@
+name: choateVisualWeather
+title: choateVisualWeather
+username: choate-visual-weather
+account: choate-visual-weather
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10727834
+bundleId: 8012387
+url: https://choate-visual-weather.shinyapps.io/choateVisualWeather/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

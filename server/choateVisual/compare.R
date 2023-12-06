@@ -597,7 +597,7 @@ gauge_chart <- function(wqi, location) {
           tickvals = c(0, 25, 50, 70, 90, 100),
           ticktext = c("0", "25", "50", "70", "90", "100")
         ),
-        steps = list(
+          steps = list(
           list(range = c(0, 25), color = "darkred"),
           list(range = c(25, 50), color = "darkorange"),
           list(range = c(50, 70), color = "yellow"),

@@ -647,9 +647,9 @@ gauge_chart <- function(wqi, location) {
         list(range = c(90, 100), color = "#2a6423")
       ),
       bgcolor = "#333333",
-      bar = list(color = "#ffffffe7"),
+      bar = list(color = "#232323"),
       threshold = list(
-        line = list(color = "ffffffe7", width = 4),
+        line = list(color = "#232323", width = 4),
         thickness = 0.75,
         value = wqi$wqi
       )

@@ -284,7 +284,7 @@ const WildlifeScreen = ({ navigation }) => {
         <Text style={styles.dateText}>{currentDate}</Text>
 
         {/* Choate Pond wildlife carousel */}
-        <Text style={styles.paragraphText}>Wildlife in Choate Pond:</Text>
+        <Text style={styles.paragraphTextWildlife}>Wildlife in Choate Pond:</Text>
         <Carousel
           data={choateWildlifeData}
           renderItem={renderItem}
@@ -297,7 +297,7 @@ const WildlifeScreen = ({ navigation }) => {
           inactiveSlideOpacity={0.7}
         />
         {/* Hudson River wildlife carousel */}
-        <Text style={styles.paragraphText}>Wildlife in The Hudson River:</Text>
+        <Text style={styles.paragraphTextWildlife}>Wildlife in The Hudson River:</Text>
         <Carousel
           data={hudsonWildlifeData}
           renderItem={renderItem}

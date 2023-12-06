@@ -316,6 +316,16 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Nunito-Black',
     },
+    paragraphTextWildlife:{
+        color: 'white',
+        fontSize: deviceHeight/25,
+        marginTop: deviceHeight/100,
+        marginBottom: deviceHeight/100,
+        marginLeft: deviceWidth/15,
+        marginRight: deviceWidth/15,
+        textAlign: 'center',
+        fontFamily: 'Nunito-Black',
+    },
     //used in wildlife page
     pictureSub:{
         color: 'white',

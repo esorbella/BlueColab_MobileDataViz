@@ -47,7 +47,7 @@ const navigator = createStackNavigator(
   {
     initialRouteName: 'Wel',
     defaultNavigationOptions: {
-      title: 'ChoateVisual',
+      title: 'AquaWatch Mobile',
     },
   }
 );

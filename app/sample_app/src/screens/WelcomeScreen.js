@@ -44,6 +44,8 @@ export default function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.welcome}>
 
+
+
       {/* Blue colab logo image */}
       <Image
         source={{

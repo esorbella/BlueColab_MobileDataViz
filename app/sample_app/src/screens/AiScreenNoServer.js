@@ -26,25 +26,6 @@ export default function AiScreen({ navigation }) {
 
     // Access the JSON data
     setJsonData(localJson);
-
-    const getLocation = async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-
-        if (status !== 'granted') {
-          setErrorMsg('Permission to access location was denied');
-          return;
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-      } catch (error) {
-        console.error('Error getting location:', error);
-        setErrorMsg('Error getting location');
-      }
-    };
-
-    getLocation();
   }, []); // Run only once when the component mounts
 
 
@@ -146,12 +127,9 @@ export default function AiScreen({ navigation }) {
 
       const responseData = await response.json();
 
-
+      console.log(response.status)
 
       if (response.status != 404) {
-
-
-
 
         let plantList = responseData.results;
 
@@ -195,10 +173,6 @@ export default function AiScreen({ navigation }) {
           res.status(500).json({ error: 'Internal Server Error' });
         }
 
-      }
-
-      if (responseData != 'Species not found') {
-        setSpeciesData(responseData.results);
       } else {
         setSpeciesData([
           {
@@ -211,7 +185,6 @@ export default function AiScreen({ navigation }) {
           }
         ]);
       }
-
     } catch (error) {
       // Handle errors
       console.error('Error uploading image: ', error);
@@ -424,9 +397,11 @@ const AIResponse = ({ speciesData, navigation }) => {
     "https://media.tenor.com/DHkIdy0a-UkAAAAC/loading-cat.gif",
     "https://64.media.tumblr.com/bdaea39db57dc0b48d763262514268db/tumblr_mgj44mNyST1s199fdo1_500.gif",
     "https://cdn.dribbble.com/users/160117/screenshots/3197970/main.gif",
+    "https://cdn.dribbble.com/users/1797086/screenshots/5615214/fish3.gif"
   ];
 
   const displaySpecies = (species) => {
+    console.log(species);
     if (species.length > 0) { // valid array received
       return (
         <SafeAreaView style={styles.infoContainer}>
@@ -462,7 +437,7 @@ const AIResponse = ({ speciesData, navigation }) => {
       );
     } else { // an error or we're still waiting for a response from a server
       return (
-        <View style = {styles.infoContainer}>
+        <View style={styles.infoContainer}>
           <Text>Loading...</Text>
           <Image
             source={{ uri: loadingImages[Math.floor(Math.random() * loadingImages.length)] }}
@@ -521,7 +496,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text style = {styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Yonkers") {
@@ -532,7 +507,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "West Point") {
@@ -543,7 +518,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! West Point is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "Pough") {
@@ -554,7 +529,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Poughkeepsie is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else {
@@ -565,7 +540,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
         }}
       >
         <View>
-          <Text>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
+          <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   }

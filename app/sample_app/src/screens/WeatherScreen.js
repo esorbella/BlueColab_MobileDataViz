@@ -13,6 +13,9 @@ import styles from "../../styles";
 export default function WeatherScreen({navigation}) {
 
     return (
-        <Text> Weather </Text>
+      <WebView
+      source={{ uri: 'https://choate-visual-weather.shinyapps.io/choateVisualWeather/' }}
+      style={{ flex: 1 }}
+    />
     )
 }

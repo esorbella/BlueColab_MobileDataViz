@@ -27,7 +27,7 @@ export default function DataHub({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        
+
         {/*Choate Pond Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
@@ -102,7 +102,7 @@ export default function DataHub({ navigation }) {
         {/*Start Yonkers Widget*/}
         <View style={styles.dataHubWidget}>
           <Image
-            source={require("../../assets/datahub/yonkers.png")}
+            source= {{uri: "https://res.cloudinary.com/simpleview/image/upload/v1522775889/clients/westchesterny/shutterstock_20108908_1__b0a14121-1a73-4fe0-b578-cac657063725.jpg"}}
             style={styles.imageContainer}
           />
           <Text style={styles.graphParagraphText}>

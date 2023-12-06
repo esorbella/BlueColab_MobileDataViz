@@ -44,6 +44,8 @@ export default function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.welcome}>
 
+
+
       {/* Blue colab logo image */}
       <Image
         source={{
@@ -71,20 +73,7 @@ export default function WelcomeScreen({ navigation }) {
       </TouchableHighlight>
       {/*End Get Started Button*/}
 
-      {/*Colab logo on the bottom left*/}
-      <Image
-        source={{
-          uri: "https://cdn.discordapp.com/attachments/1151185129549602860/1173717151232839700/Blue_CoLab_2.png?ex=6564f847&is=65528347&hm=139e1acbabfdb193ad52e2b60687e7a8347eab9061333f2e254447b6d791a10d&",
-        }}
-        style={{
-          height: deviceHeight / 16,
-          width: deviceWidth / 1.7,
-          margin: deviceWidth / 20,
-          position: "absolute",
-          left: -deviceWidth / 69,
-          bottom: -deviceWidth / 69,
-        }}
-      />
+     
     </View>
   );
 }

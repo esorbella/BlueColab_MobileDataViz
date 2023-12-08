@@ -51,9 +51,8 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.storyParagraphText}>
-            Blue CoLab is a program of training, innovation, and research in
-            real-time water monitoring technologies, committed to the principle
-            that the human right to clean water requires the right-to-know water
+            This app is brought to you by Blue CoLab, a program committed to the principle
+            that the human right to clean water requires the right-to-know that water
             is clean.
           </Text>
 
@@ -63,7 +62,7 @@ export default function HomeScreen({ navigation }) {
               handleStoryScreenPress();
             }}
           >
-            <View style={styles.storyButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>Learn more...</Text>
             </View>
           </TouchableHighlight>
@@ -81,11 +80,13 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.graphParagraphText}>
-            Adding sensors and visualizing the information and statistics of our
+            {/*Adding sensors and visualizing the information and statistics of our
             local water sources is important for determining the water quality.
             We aim to optimize this process so one day we can put these sensors
             into our drinking water sources and bring this type of information
-            to people across the globe.
+            to people across the globe.*/}
+            It is important to know the quality of outdoor water before you swim or fish
+            in it. The purpose of our app is to make this information more accessible. 
           </Text>
           {/*Start Data Hub button*/}
           <TouchableHighlight
@@ -93,7 +94,7 @@ export default function HomeScreen({ navigation }) {
               handleDataHubPress();
             }}
           >
-            <View style={styles.graphButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>See Live Data...</Text>
             </View>
           </TouchableHighlight>
@@ -109,9 +110,7 @@ export default function HomeScreen({ navigation }) {
           />
           <Text style={styles.paragraphText}>
             Some of the local wildlife in both Choate Pond and the 
-            Hudson River might surprise you. View this page to learn about 
-            the wildlife in these bodies of water and what they are doing 
-            at this time of year!
+            Hudson River might surprise you!
           </Text>
           {/*Start wildlife button*/}
           <TouchableHighlight
@@ -119,7 +118,7 @@ export default function HomeScreen({ navigation }) {
               handleWildlifeScreenPress();
             }}
           >
-            <View style={styles.wildlifeButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>See Local Wildlife...</Text>
             </View>
           </TouchableHighlight>
@@ -135,7 +134,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.paragraphText}>
-            Weather has a signifigant impact on the health of marine ecosystems.
+            Weather has a signifigant impact on the health of aquatic ecosystems.
           </Text>
 
           {/*Start Weather Button*/}
@@ -144,7 +143,7 @@ export default function HomeScreen({ navigation }) {
               handleWeatherScreenPress();
             }}
           >
-            <View style={styles.weatherButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>See Local Weather...</Text>
             </View>
           </TouchableHighlight>
@@ -160,7 +159,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.storyParagraphText}>
-            Check out some of the Blue CoLab Blogs.
+            Check out some of the Blue CoLab Blogs!
           </Text>
           {/*Start blog page button*/}
           <TouchableHighlight
@@ -168,7 +167,7 @@ export default function HomeScreen({ navigation }) {
               handleBlogScreenPress();
             }}
           >
-            <View style={styles.storyButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>Learn more...</Text>
             </View>
           </TouchableHighlight>
@@ -183,14 +182,14 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.storyParagraphText}>
-            Coming Soon: What's That in The Water
+            Use this AI identify any species of plant that you may see outdoors!
           </Text>
           <TouchableHighlight
             onPress={() => {
               handleAiPress();
             }}
           >
-            <View style={styles.aiWidgetButton}>
+            <View style={styles.generalButton}>
               <Text style={styles.mainButtonText}>Discover more...</Text>
             </View>
           </TouchableHighlight>

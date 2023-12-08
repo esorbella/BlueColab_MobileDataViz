@@ -71,7 +71,7 @@ export default StyleSheet.create({
     },
     //button in the AI Widget
     aiWidgetButton: {
-        borderRadius: 8,
+        borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -112,7 +112,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         width: deviceWidth/1.4,
         height: deviceHeight/13,
-        borderRadius: 17,
+        borderRadius: 20,
         borderWidth: 2,
         borderColor: 'darkgreen',
 
@@ -135,8 +135,34 @@ export default StyleSheet.create({
         
      },
     //button in the Our Story widget 
-    storyButton: {
-        borderRadius: 8,
+    generalButton: {
+        borderRadius: 20,
+        height: deviceHeight / 25, 
+        width: deviceWidth / 2,
+        alignItems: 'center',
+        backgroundColor: '#e0ffff',
+        borderWidth: 2,
+        borderColor: 'black',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        margin: deviceWidth/55,
+    },
+    //button in the data widget
+    graphButton: {
+        /*borderRadius: 20,
+        height: deviceHeight / 25, 
+        width: deviceWidth / 2,
+        alignItems: 'center',
+        backgroundColor: 'lightcyan',
+        borderWidth: 2,
+        borderColor: '#333333',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,*/
+        borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -149,23 +175,9 @@ export default StyleSheet.create({
         right: 0,
         margin: deviceWidth/55,
     },
-    //button in the data widget
-    graphButton: {
-        borderRadius: 8,
-        height: deviceHeight / 25, 
-        width: deviceWidth / 2,
-        alignItems: 'center',
-        backgroundColor: 'lightcyan',
-        borderWidth: 2,
-        borderColor: '#333333',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-    },
     //button in the weather widget
     weatherButton: {
-        borderRadius: 8,
+        borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -179,7 +191,7 @@ export default StyleSheet.create({
     },
     //button in the wildlife widget
     wildlifeButton: {
-        borderRadius: 8,
+        borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -193,7 +205,7 @@ export default StyleSheet.create({
     },
     //Template to copy/paste for text or just use as a placeholder
     mainButtonText: {
-        color: 'black',
+        color: '#263030',
         textAlign: 'center',
     },
     //used for OUR STORY
@@ -218,7 +230,6 @@ export default StyleSheet.create({
         borderWidth: 1,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight/200,
-        
     },
     //data widget
     graphButtonContainer: {
@@ -229,7 +240,6 @@ export default StyleSheet.create({
         borderWidth: 1,
         marginTop: deviceHeight / 300,
         marginBottom: deviceHeight/300,
-        
     },
 
     //data hub widget
@@ -267,7 +277,7 @@ export default StyleSheet.create({
     },
     //button in the data widget
     dataButton: {
-        borderRadius: 8,
+        borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -286,7 +296,7 @@ export default StyleSheet.create({
     //specific to OUR STORY widget paragraph text
     storyParagraphText: {
         color: 'white',
-        fontSize: deviceHeight/25,
+        fontSize: deviceHeight/35,
         marginTop: deviceHeight/100,
         marginBottom: deviceHeight/20,
         marginLeft: deviceWidth/15,
@@ -297,7 +307,7 @@ export default StyleSheet.create({
     //Text below the graph widget image
     graphParagraphText: {
         color: 'black',
-        fontSize: deviceHeight/25,
+        fontSize: deviceHeight/35,
         marginTop: deviceHeight/100,
         marginBottom: deviceHeight/20,
         marginLeft: deviceWidth/15,
@@ -308,7 +318,7 @@ export default StyleSheet.create({
     //used throughout app- also good copy/paste template
     paragraphText: {
         color: 'white',
-        fontSize: deviceHeight/25,
+        fontSize: deviceHeight/35,
         marginTop: deviceHeight/100,
         marginBottom: deviceHeight/20,
         marginLeft: deviceWidth/15,
@@ -355,7 +365,7 @@ export default StyleSheet.create({
         margin: deviceWidth/30,
         borderColor: "black",
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius: 20,
         marginLeft: deviceWidth/19.5,
     },
 
@@ -404,7 +414,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         opacity: .8,
         top: deviceHeight/1.35,
-       
       },
       //styling for the images themselves
       camImageContainer:{
@@ -413,7 +422,7 @@ export default StyleSheet.create({
         marginBottom: deviceWidth/15,
         borderColor: "black",
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius: 20,
         marginBottom: deviceHeight/17,
       },
       //final screen in the AI section that shows information 

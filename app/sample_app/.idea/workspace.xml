@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f8e3e14-3a0f-4c8e-8a92-95a30e5563ef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/AiScreenNoServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AiScreenNoServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../jUnitTest/address-book-junit-copy/package.bluej" beforeDir="false" afterPath="$PROJECT_DIR$/../../jUnitTest/address-book-junit-copy/package.bluej" afterDir="false" />
-    </list>
+    <list default="true" id="6f8e3e14-3a0f-4c8e-8a92-95a30e5563ef" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -10,7 +10,7 @@ public class Sensor
     // instance variables - replace the example below with your own
     private double temperature;
     private double turb;
-    private double pH;
+    private final double pH;
 
     /**
      * Constructor for objects of class Sensor
@@ -31,5 +31,16 @@ public class Sensor
     }
     public double getpH(){
         return pH;
+    }
+    
+    public void setTemperature(double temperature)
+    {
+       this.temperature = temperature;
+    }
+    public void setTurbidity(double turb){
+       this.turb = turb;
+    }
+    public void setpH(double pH){
+     //   this.pH = pH;
     }
 }

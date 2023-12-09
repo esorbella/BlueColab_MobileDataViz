@@ -36,7 +36,7 @@ public class SensorReader
      * @param filename The file to be read - should be in CSV format.
      * @return A list of Sightings.
      */
-    public ArrayList<Sensor> getSightings(String filename)
+    public ArrayList<Sensor> getSensos(String filename)
     {
         // Create a Sighting from a CSV input line.
         Function<String, Sensor> createSensor = 
@@ -44,13 +44,14 @@ public class SensorReader
                            String[] parts = record.split(",");
                            if(parts.length == NUMBER_OF_FIELDS) {
                                try {
-                                   double temp = Double.parseDouble(parts[TEMPERATURE].trim());
+                                  // double temp = Double.parseDouble(parts[TEMPERATURE].trim());
+                                    double temp = Double.parseDouble(parts[TEMPERATURE].trim());
                                    double turb = Double.parseDouble(parts[TURB].trim());
                                    double pH = Double.parseDouble(parts[PH].trim());
                                    return new Sensor(temp, turb, pH);
                                }
                                catch(NumberFormatException e) {
-                                   System.out.println("Sensor record has a malformed integer: " + record);
+                                   System.out.println("Sensor record has a malformed double: " + record);
                                    return null;
                                }
                            }

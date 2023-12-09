@@ -5,6 +5,6 @@ comment1.params=
 comment1.target=SensorReader()
 comment1.text=\r\n\ Create\ a\ SightingReader.\r\n
 comment2.params=filename
-comment2.target=java.util.ArrayList\ getSightings(java.lang.String)
+comment2.target=java.util.ArrayList\ getSensos(java.lang.String)
 comment2.text=\r\n\ Read\ sightings\ in\ CSV\ format\ from\ the\ given\ file.\r\n\ Return\ an\ ArrayList\ of\ Sighting\ objects\ created\ from\r\n\ the\ information\ in\ the\ file.\r\n\ \r\n\ @param\ filename\ The\ file\ to\ be\ read\ -\ should\ be\ in\ CSV\ format.\r\n\ @return\ A\ list\ of\ Sightings.\r\n
 numComments=3

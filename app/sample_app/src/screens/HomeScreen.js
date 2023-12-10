@@ -38,11 +38,15 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("Ai");
   };
 
+  const handleAttributionPress = () => {
+    navigation.navigate("Attributions");
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
 
-        
+
         {/*Start Our Story Widget*/}
         <View style={styles.buttonContainer}>
           {/*Choate pond image*/}
@@ -86,7 +90,7 @@ export default function HomeScreen({ navigation }) {
             into our drinking water sources and bring this type of information
             to people across the globe.*/}
             It is important to know the quality of outdoor water before you swim or fish
-            in it. The purpose of our app is to make this information more accessible. 
+            in it. The purpose of our app is to make this information more accessible.
           </Text>
           {/*Start Data Hub button*/}
           <TouchableHighlight
@@ -109,7 +113,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.paragraphText}>
-            Some of the local wildlife in both Choate Pond and the 
+            Some of the local wildlife in both Choate Pond and the
             Hudson River might surprise you!
           </Text>
           {/*Start wildlife button*/}
@@ -196,7 +200,24 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/*End AI Widget*/}
 
-        <Text>
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => {
+          handleAttributionPress();
+        }}>
+          <>
+
+            <Text style={styles.storyParagraphText}>Code & Data Attributions</Text>
+
+            <TouchableHighlight style={styles.buttonContainer} onPress={() => {
+              handleAttributionPress();
+            }}>
+              <View style={styles.generalButton}>
+                <Text style={styles.mainButtonText}>Find out more</Text>
+              </View>
+            </TouchableHighlight>
+          </>
+        </TouchableHighlight>
+
+        <Text >
           {" "}
           Hidden text to make the bottom on this screen come out a little more{" "}
         </Text>

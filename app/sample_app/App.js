@@ -14,7 +14,7 @@ import DataHub from "./src/screens/DataHub";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import AiScreen from "./src/screens/AiScreen";
 import AiScreenTemp from "./src/screens/AiScreenNoServer";
-
+import Attributions from "./src/screens/Attributions";
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 //THIS IS THE APP ENTRY POINT
@@ -42,7 +42,8 @@ const navigator = createStackNavigator(
     WP: DataWP,
     Yonk: DataYonk,
     Blog: BlogScreen,
-    Ai: AiScreenTemp
+    Ai: AiScreenTemp,
+    Attributions: Attributions
   },
   {
     initialRouteName: 'Wel',

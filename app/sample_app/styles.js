@@ -441,5 +441,10 @@ export default StyleSheet.create({
         width: deviceWidth,
         height: 'auto',
     },
+    attributions:  {
+        margin: 16
+    },
+    links: { color: 'blue', textDecorationLine: 'underline' }
+
 
 });

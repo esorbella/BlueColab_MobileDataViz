@@ -98,10 +98,13 @@ server <- function(input, output) {
 
     data <- fetchData(location,input$dataset,start_year,start_month,start_day,end_year,end_month,end_day)
 
+    month_year <- paste(input$month, input$year)
+
     output$example <- renderUI({
       HTML(paste0(
         
-        "<div style='color:white;'>Monthly summary</div><br/><div style='color:white;'>Min: ", min(data$value), "</div><br/>",
+        "div style='color:white; font-weight: bold; font-size: larger;'>Monthly Summary For ", input$month, " ", input$year, " of ", input$dataset, ":</div><br/>",
+        "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
         "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
         "<div style='color:white;'>Average: ", mean(data$value), "</div><br/>"
       ))
@@ -124,22 +127,27 @@ server <- function(input, output) {
 
     # plot(rollmean(data, 5), type = "l", col = color)
 
+
+
     plot <- ggplot() +
       geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336CED") +
       theme(plot.background = element_rect(fill = "#333333"), panel.background = element_rect(fill = "white"), panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "grey")) +
       geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
+    scale_x_continuous(expand = c(0,0)) +
+    scale_y_continuous(expand = c(0,0)) +
+
       # geom_point(data = subset(thresholds_data, low_flag), aes(x = timestamp, y = value), color = "red", size = 2, shape = 4) +
       # geom_point(data = subset(thresholds_data, high_flag), aes(x = timestamp, y = value), color = "blue", size = 2, shape = 2) +
       theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
-      labs(title = "Daily Min / Max / Average", x = "Month-Day", y = "Measurement") +
+      labs(title = "Daily Min / Max / Average", x = paste(c(month_year)), y = input$dataset) +
       theme(
         text = element_text(family = "Nunito", color = "White"),
         axis.text.x = element_text(size = 10, color = "white"),
         axis.text.y = element_text(size = 10, color = "white")
-      )
+      ) 
 
-    #    ggplotly(plot)
 
+ 
     interactive_plot <- ggplotly(plot) %>%
       layout(hovermode = "x unified")
 
@@ -171,6 +179,10 @@ fetchData <- function(location,dataset,start_year,start_month,start_day,end_year
         )
       )
     
+    
+  if (dataset == "Air Temperature") {
+    data <- data %>% mutate(value = map_dbl(value, ~ (. * (9 / 5) + 32) %>% unlist()))
+    }
   return(data)
 }
 

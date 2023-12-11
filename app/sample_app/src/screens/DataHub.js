@@ -34,7 +34,7 @@ export default function DataHub({ navigation }) {
             source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
             style={styles.imageContainer}
           />
-          <Text style={styles.graphParagraphText}>
+          <Text style={styles.homeParagraphText}>
             Choate Pond is in the center of the Pace University campus. This 
             Pond and many others flow out into the Hudson River, contributing 
             to its overall water quality which is why we look at its quality and
@@ -46,8 +46,8 @@ export default function DataHub({ navigation }) {
               handleChoatePress();
             }}
           >
-            <View style={styles.dataButton}>
-              <Text style={styles.dataButtonText}>Choate Data</Text>
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>Choate Data</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -59,7 +59,7 @@ export default function DataHub({ navigation }) {
             source={{uri:"https://cdn18.picryl.com/photo/2019/11/18/poughkeepsie-bridge-spanning-hudson-river-poughkeepsie-dutchess-county-ny-e51f90-1024.jpg"}}
             style={styles.imageContainer}
           />
-          <Text style={styles.graphParagraphText}>
+          <Text style={styles.homeParagraphText}>
             Poughkeepsie is the furthest north out of all the data points in this
             app. Ideally this would have the highest water quality as the pollution
             of the bigger towns down below could not reach it.
@@ -69,8 +69,8 @@ export default function DataHub({ navigation }) {
               handlePoughPress();
             }}
           >
-            <View style={styles.dataButton}>
-              <Text style={styles.dataButtonText}>Poughkeepsie Data</Text>
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>Poughkeepsie Data</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -83,7 +83,7 @@ export default function DataHub({ navigation }) {
             source={{uri: "https://www.stripes.com/incoming/522n9n-3011234658_baf0dc3ac9_c.jpg/alternates/LANDSCAPE_910/3011234658_baf0dc3ac9_c.jpg"}}
             style={styles.imageContainer}
           />
-          <Text style={styles.graphParagraphText}>
+          <Text style={styles.homeParagraphText}>
             The West Point Military academy is still north of Pace,
             closer to areas such as Beacon and Cold Spring. 
           </Text>
@@ -92,8 +92,8 @@ export default function DataHub({ navigation }) {
               handleWPPress();
             }}
           >
-            <View style={styles.dataButton}>
-              <Text style={styles.dataButtonText}>West Point Data</Text>
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>West Point Data</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -105,7 +105,7 @@ export default function DataHub({ navigation }) {
             source= {{uri: "https://res.cloudinary.com/simpleview/image/upload/v1522775889/clients/westchesterny/shutterstock_20108908_1__b0a14121-1a73-4fe0-b578-cac657063725.jpg"}}
             style={styles.imageContainer}
           />
-          <Text style={styles.graphParagraphText}>
+          <Text style={styles.homeParagraphText}>
             Yonkers is the furthest south out of all the data shown. Being 
             closest to NYC we expect this point to be the lowest quality and
             we at Pace University contribute to this part of the river.
@@ -115,8 +115,8 @@ export default function DataHub({ navigation }) {
               handleYonkPress();
             }}
           >
-            <View style={styles.dataButton}>
-              <Text style={styles.dataButtonText}>Yonkers Data</Text>
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>Yonkers Data</Text>
             </View>
           </TouchableHighlight>
         </View>

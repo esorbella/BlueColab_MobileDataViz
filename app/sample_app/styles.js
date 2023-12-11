@@ -29,7 +29,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: deviceWidth,
-
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
 
     },
     //AI Screen permission button
@@ -64,7 +65,7 @@ export default StyleSheet.create({
         borderColor: '#787878',
         borderRadius: 20,
         marginTop: deviceHeight / 200,
-        //marginBottom: deviceHeight / 20,
+        marginBottom: deviceHeight / 200,
     },
     //button in the AI Widget
     aiWidgetButton: {
@@ -88,7 +89,8 @@ export default StyleSheet.create({
         backgroundColor: 'darkolivegreen',
         alignItems: 'center',
         width: deviceWidth,
-
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
 
 
     },
@@ -247,19 +249,19 @@ export default StyleSheet.create({
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
-        marginTop: deviceHeight / 300,
-        marginBottom: deviceHeight / 300,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
     },
 
     //data hub widget
     dataHubWidget: {
         width: deviceWidth/1.01,
-        backgroundColor: '#007A78s',
+        backgroundColor: '#008280',
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
-        marginTop: deviceHeight / 300,
-        marginBottom: deviceHeight/300,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight/200,
     },
     //weather widget
     weatherButtonContainer: {
@@ -268,8 +270,8 @@ export default StyleSheet.create({
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
-        marginTop: deviceHeight / 300,
-        marginBottom: deviceHeight/300,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
     },
     //wildlife screen widget
     animalButtonContainer: {
@@ -278,8 +280,8 @@ export default StyleSheet.create({
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
-        marginTop: deviceHeight / 300,
-        marginBottom: deviceHeight / 300,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
 
     },
     //button in the data widget

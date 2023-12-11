@@ -89,7 +89,8 @@ app.get("/Weather/Choate/:month", async function(req, res)
 
 app.get("/WQI/Choate/:month", async function(req, res) {
   try{
-    console.log(req.params.month)
+    console.log(req.params.month);
+    const genwqi = findWQI(req.params.month);
     const wqi = await returnWQI(req.params.month);
     res.json(wqi);
   }
@@ -134,7 +135,7 @@ async function findWQI()
   const sum = wqiArray.reduce((acc, num) => acc + num, 0);
   const average = sum / wqiArray.length;
   
-  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "01-2023"})
+  await wqiDoc.create({Location: "Choate Pond", wqi: average, MonthYear: "11-2023"})
   return "yay you did it";
 };
 

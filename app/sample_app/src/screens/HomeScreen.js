@@ -193,10 +193,12 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
-        {/*End AI Widget*/}
-
         <View style={styles.attributionsWidget}>
-          <Text style={styles.storyParagraphText}>
+          <Image
+            source={require("../../assets/homescreen/code.jpg")}
+            style={styles.imageContainer}
+          />
+          <Text style={styles.homeParagraphText}>
           Code & Data Attributions
           </Text>
           <TouchableHighlight
@@ -209,10 +211,10 @@ export default function HomeScreen({ navigation }) {
             </View>
           </TouchableHighlight>
         </View>
-        <Text >
+        {<Text >
           {" "}
           Hidden text to make the bottom on this screen come out a little more{" "}
-        </Text>
+        </Text>}
       </View>
     </ScrollView>
   );

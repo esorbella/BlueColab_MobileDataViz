@@ -56,37 +56,21 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-<<<<<<< HEAD
-=======
-        // fontFamily: 'Nunito-Black',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //AI screen widget in the homescreen
     aiWidget: {
-<<<<<<< HEAD
         width: deviceWidth/1.01,
         backgroundColor: '#2B7555',
-=======
-        width: deviceWidth / 1.01,
-        backgroundColor: 'dimgray',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         borderColor: '#787878',
         borderRadius: 20,
-        //borderWidth: 2,
         marginTop: deviceHeight / 200,
-        marginBottom: deviceHeight / 200,
-
+        //marginBottom: deviceHeight / 20,
     },
     //button in the AI Widget
     aiWidgetButton: {
         borderRadius: 20,
-<<<<<<< HEAD
         height: deviceHeight / 30, 
         width: deviceWidth / 2.4,
-=======
-        height: deviceHeight / 25,
-        width: deviceWidth / 2,
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         alignItems: 'center',
         backgroundColor: 'limegreen',
         borderWidth: 2,
@@ -139,13 +123,8 @@ export default StyleSheet.create({
     },
     //Text for the quote on the welcome screen
     quoteText: {
-<<<<<<< HEAD
         fontSize: deviceHeight/39,
         color: '#0071A6',
-=======
-        fontSize: deviceHeight / 39,
-        color: '#336CED',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         textAlign: 'center',
         marginBottom: deviceHeight / 25,
         marginLeft: deviceWidth / 18,
@@ -155,13 +134,8 @@ export default StyleSheet.create({
     //button in the Our Story widget 
     generalButton: {
         borderRadius: 20,
-<<<<<<< HEAD
         height: deviceHeight / 20, 
         width: deviceWidth / 1.6,
-=======
-        height: deviceHeight / 25,
-        width: deviceWidth / 2,
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         alignItems: 'center',
         backgroundColor: '#e0ffff',
         borderWidth: 2,
@@ -170,12 +144,7 @@ export default StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
-<<<<<<< HEAD
-       
         margin: deviceWidth/55,
-=======
-        margin: deviceWidth / 55,
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //button in the data widget
     graphButton: {
@@ -240,15 +209,9 @@ export default StyleSheet.create({
     },
     //used for OUR STORY
     //widget template to copy/paste or use as a placeholder
-<<<<<<< HEAD
     BlueCoLabContainer: {
         width: deviceWidth/1.01,
         backgroundColor: '#214178',
-=======
-    buttonContainer: {
-        width: deviceWidth / 1.01,
-        backgroundColor: '#0E2B58',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
@@ -279,13 +242,8 @@ export default StyleSheet.create({
     },
     //data widget
     graphButtonContainer: {
-<<<<<<< HEAD
         width: deviceWidth/1.01,
         backgroundColor: '#008280',
-=======
-        width: deviceWidth / 1.01,
-        backgroundColor: 'mediumaquamarine',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
@@ -295,23 +253,13 @@ export default StyleSheet.create({
 
     //data hub widget
     dataHubWidget: {
-<<<<<<< HEAD
         width: deviceWidth/1.01,
         backgroundColor: '#007A78s',
-=======
-        width: deviceWidth / 1.01,
-        backgroundColor: 'mediumaquamarine',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
         borderColor: '#787878',
         borderRadius: 20,
         //borderWidth: 2,
         marginTop: deviceHeight / 300,
-<<<<<<< HEAD
         marginBottom: deviceHeight/300,
-=======
-        marginBottom: deviceHeight / 300,
-
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //weather widget
     weatherButtonContainer: {
@@ -321,12 +269,7 @@ export default StyleSheet.create({
         borderRadius: 20,
         //borderWidth: 2,
         marginTop: deviceHeight / 300,
-<<<<<<< HEAD
         marginBottom: deviceHeight/300,
-=======
-        marginBottom: deviceHeight / 300,
-
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //wildlife screen widget
     animalButtonContainer: {
@@ -366,7 +309,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-<<<<<<< HEAD
     },
     //Text below the graph widget image
     homeParagraphText: {
@@ -377,20 +319,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-=======
-        // fontFamily: 'Nunito',
-    },
-    //Text below the graph widget image
-    graphParagraphText: {
-        color: 'black',
-        fontSize: deviceHeight / 35,
-        marginTop: deviceHeight / 100,
-        marginBottom: deviceHeight / 20,
-        marginLeft: deviceWidth / 15,
-        marginRight: deviceWidth / 15,
-        textAlign: 'center',
-        // fontFamily: 'Nunito',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //used throughout app- also good copy/paste template
     paragraphText: {
@@ -401,10 +329,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-<<<<<<< HEAD
-=======
-        // fontFamily: 'Nunito-Black',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     paragraphTextWildlife: {
         color: 'white',
@@ -414,10 +338,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-<<<<<<< HEAD
-=======
-        // fontFamily: 'Nunito-Black',
->>>>>>> 92461fe633a9a67896b5f785a435e8ed107f579b
     },
     //used in wildlife page
     pictureSub: {
@@ -525,15 +445,15 @@ export default StyleSheet.create({
         height: 'auto',
     },
     attributions: {
-        margin: 16
+        margin: 16,
     },
     links: { color: 'blue', textDecorationLine: 'underline' },
     attributionsWidget: {
         width: deviceWidth / 1.01,
-        backgroundColor: 'green',
+        backgroundColor: '#38639D',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 1,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight / 200,
     },

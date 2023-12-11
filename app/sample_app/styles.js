@@ -56,15 +56,14 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
     },
-    //AI screen widget in the homescree
+    //AI screen widget in the homescreen
     aiWidget: {
         width: deviceWidth/1.01,
-        backgroundColor: 'dimgray',
+        backgroundColor: '#2B7555',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight/200,
         
@@ -72,8 +71,8 @@ export default StyleSheet.create({
     //button in the AI Widget
     aiWidgetButton: {
         borderRadius: 20,
-        height: deviceHeight / 25, 
-        width: deviceWidth / 2,
+        height: deviceHeight / 30, 
+        width: deviceWidth / 2.4,
         alignItems: 'center',
         backgroundColor: 'limegreen',
         borderWidth: 2,
@@ -127,7 +126,7 @@ export default StyleSheet.create({
     //Text for the quote on the welcome screen
     quoteText: {
         fontSize: deviceHeight/39,
-        color: '#336CED',
+        color: '#0071A6',
         textAlign: 'center',
         marginBottom: deviceHeight/ 25,
         marginLeft: deviceWidth/18,
@@ -137,8 +136,8 @@ export default StyleSheet.create({
     //button in the Our Story widget 
     generalButton: {
         borderRadius: 20,
-        height: deviceHeight / 25, 
-        width: deviceWidth / 2,
+        height: deviceHeight / 20, 
+        width: deviceWidth / 1.6,
         alignItems: 'center',
         backgroundColor: '#e0ffff',
         borderWidth: 2,
@@ -147,6 +146,7 @@ export default StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
+       
         margin: deviceWidth/55,
     },
     //button in the data widget
@@ -166,6 +166,7 @@ export default StyleSheet.create({
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
+        //backgroundColor: '#275B5C',
         backgroundColor: '#F7B00C',
         borderWidth: 2,
         borderColor: 'white',
@@ -207,15 +208,26 @@ export default StyleSheet.create({
     mainButtonText: {
         color: '#263030',
         textAlign: 'center',
+        fontSize: deviceHeight/50,
     },
     //used for OUR STORY
     //widget template to copy/paste or use as a placeholder
-    buttonContainer: {
+    BlueCoLabContainer: {
         width: deviceWidth/1.01,
-        backgroundColor: '#0E2B58',
+        backgroundColor: '#214178',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight/200,
+        
+    },
+    BlogContainer: {
+        width: deviceWidth/1.01,
+        backgroundColor: '#3287B1',
+        borderColor: '#787878',
+        borderRadius: 20,
+        //borderWidth: 2,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight/200,
         
@@ -225,19 +237,19 @@ export default StyleSheet.create({
         width: deviceWidth/1.01,
         height: deviceHeight/4,
         backgroundColor: '#0E2B58',
-        borderColor: '#787878',
+        borderColor: '#black',
         borderRadius: 20,
-        borderWidth: 1,
+        borderWidth: 2,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight/200,
     },
     //data widget
     graphButtonContainer: {
         width: deviceWidth/1.01,
-        backgroundColor: 'mediumaquamarine',
+        backgroundColor: '#008280',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
         marginTop: deviceHeight / 300,
         marginBottom: deviceHeight/300,
     },
@@ -245,13 +257,12 @@ export default StyleSheet.create({
     //data hub widget
     dataHubWidget: {
         width: deviceWidth/1.01,
-        backgroundColor: 'mediumaquamarine',
+        backgroundColor: '#007A78s',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
         marginTop: deviceHeight / 300,
         marginBottom: deviceHeight/300,
-        
     },
     //weather widget
     weatherButtonContainer: {
@@ -259,10 +270,9 @@ export default StyleSheet.create({
         backgroundColor: '#333333',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
         marginTop: deviceHeight / 300,
         marginBottom: deviceHeight/300,
-        
     },
     //wildlife screen widget
     animalButtonContainer: {
@@ -270,7 +280,7 @@ export default StyleSheet.create({
         backgroundColor: 'darkolivegreen',
         borderColor: '#787878',
         borderRadius: 20,
-        borderWidth: 1,
+        //borderWidth: 2,
         marginTop: deviceHeight / 300,
         marginBottom: deviceHeight/300,
         
@@ -302,18 +312,16 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
     },
     //Text below the graph widget image
-    graphParagraphText: {
-        color: 'black',
+    homeParagraphText: {
+        color: 'white',
         fontSize: deviceHeight/35,
         marginTop: deviceHeight/100,
-        marginBottom: deviceHeight/20,
+        marginBottom: deviceHeight/15,
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
     },
     //used throughout app- also good copy/paste template
     paragraphText: {
@@ -324,7 +332,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
     },
     paragraphTextWildlife:{
         color: 'white',
@@ -334,7 +341,6 @@ export default StyleSheet.create({
         marginLeft: deviceWidth/15,
         marginRight: deviceWidth/15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
     },
     //used in wildlife page
     pictureSub:{

@@ -44,13 +44,13 @@ export default function HomeScreen({ navigation }) {
 
         
         {/*Start Our Story Widget*/}
-        <View style={styles.buttonContainer}>
+        <View style={styles.BlueCoLabContainer}>
           {/*Choate pond image*/}
           <Image
             source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
             style={styles.imageContainer}
           />
-          <Text style={styles.storyParagraphText}>
+          <Text style={styles.homeParagraphText}>
             This app is brought to you by Blue CoLab, a program committed to the principle
             that the human right to clean water requires the right-to-know that water
             is clean.
@@ -79,13 +79,13 @@ export default function HomeScreen({ navigation }) {
             }}
             style={styles.imageContainer}
           />
-          <Text style={styles.graphParagraphText}>
+          <Text style={styles.homeParagraphText}>
             {/*Adding sensors and visualizing the information and statistics of our
             local water sources is important for determining the water quality.
             We aim to optimize this process so one day we can put these sensors
             into our drinking water sources and bring this type of information
             to people across the globe.*/}
-            It is important to know the quality of outdoor water before you swim or fish
+            It is important to know the quality of water before you swim or fish
             in it. The purpose of our app is to make this information more accessible. 
           </Text>
           {/*Start Data Hub button*/}
@@ -108,7 +108,7 @@ export default function HomeScreen({ navigation }) {
             source={require("../../assets/homescreen/turtle.png")}
             style={styles.imageContainer}
           />
-          <Text style={styles.paragraphText}>
+          <Text style={styles.homeParagraphText}>
             Some of the local wildlife in both Choate Pond and the 
             Hudson River might surprise you!
           </Text>
@@ -133,8 +133,8 @@ export default function HomeScreen({ navigation }) {
             source={require("../../assets/homescreen/lightning-bolts.jpg")}
             style={styles.imageContainer}
           />
-          <Text style={styles.paragraphText}>
-            Weather has a signifigant impact on the health of aquatic ecosystems.
+          <Text style={styles.homeParagraphText}>
+            Weather has a significant impact on the health of aquatic ecosystems.
           </Text>
 
           {/*Start Weather Button*/}
@@ -152,13 +152,13 @@ export default function HomeScreen({ navigation }) {
         {/*End Weather Widget*/}
 
         {/*Start blog page*/}
-        <View style={styles.buttonContainer}>
+        <View style={styles.BlogContainer}>
           {/*Water Splash picture*/}
           <Image
             source={require("../../assets/homescreen/waterSplash2.jpg")}
             style={styles.imageContainer}
           />
-          <Text style={styles.storyParagraphText}>
+          <Text style={styles.homeParagraphText}>
             Check out some of the Blue CoLab Blogs!
           </Text>
           {/*Start blog page button*/}
@@ -178,11 +178,11 @@ export default function HomeScreen({ navigation }) {
         {/*Start AI Widget*/}
         <View style={styles.aiWidget}>
           <Image
-            source={require("../../assets/homescreen/waterQuestion.jpg")}
+            source={require("../../assets/homescreen/Plant2.jpg")}
             style={styles.imageContainer}
           />
-          <Text style={styles.storyParagraphText}>
-            Use this AI identify any species of plant that you may see outdoors!
+          <Text style={styles.homeParagraphText}>
+            Use this AI to identify any species of plant that you may see outdoors!
           </Text>
           <TouchableHighlight
             onPress={() => {

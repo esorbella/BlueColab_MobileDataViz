@@ -1,12 +1,12 @@
-name: choateVisual
-title: choateVisual
+name: aquaWatchMobileR
+title: aquaWatchMobileR
 username: choatevisual
 account: choatevisual
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 10236285
-bundleId: 8016116
-url: https://choatevisual.shinyapps.io/choateVisual/
+appId: 10765066
+bundleId: 8032874
+url: https://aquawatchmobile.shinyapps.io/aquaWatchMobileR/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE

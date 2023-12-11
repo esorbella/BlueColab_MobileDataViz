@@ -11,7 +11,7 @@ library(plotly)
 library(ggthemes)
 library(shinycssloaders)
 library(purrr)
-#Hello this is lulu testing nothing
+# Hello this is lulu testing nothing
 # Define UI
 ui <- fluidPage(
   # background color
@@ -46,12 +46,12 @@ ui <- fluidPage(
                   selectize = FALSE
       ),
       selectInput("firstYear", "Choose a Start Year:",
-                  choices = c("2023", "2021", "2022"),
+                  choices = c("NA", "2023", "2021", "2022"),
                   selectize = FALSE
       ),
       selectInput("firstMonth", "Choose a Start Month:",
                   choices = c(
-                    "January", "February", "March", "April", "May",
+                    "NA", "January", "February", "March", "April", "May",
                     "June", "July", "August", "September", "October",
                     "November", "December"
                   ),
@@ -92,15 +92,35 @@ server <- function(input, output, session) {
                        "Poughkeepsie (01372043)" = "01372043",
                        "Choate Pond" = "Choate",
                        "NA" = "NA" # location by default has to be NA because we take in parameters through URL
-    )             # otherwise, the default location code would run, then the one in the parameter
+    ) # otherwise, the default location code would run, then the one in the parameter
+    
+    # getting drop downs for first month
+    first_start_year <- switch(input$firstYear,
+                               "2023" = "2023",
+                               "2022" = "2022",
+                               "2021" = "2021",
+                               "NA" = "NA"
+    )
+    first_start_month <- switch(input$firstMonth,
+                                "January" = "01",
+                                "February" = "02",
+                                "March" = "03",
+                                "April" = "04",
+                                "May" = "05",
+                                "June" = "06",
+                                "July" = "07",
+                                "August" = "08",
+                                "September" = "09",
+                                "October" = "10",
+                                "November" = "11",
+                                "December" = "12",
+                                "NA" = "NA"
+    )
     
     # gets location provided in URL, if provided
     query <- parseQueryString(session$clientData$url_search) # gets url parameters
-    print(query[["month"]])
-    print(query[["year"]])
     
-    
-    if (!is.null(query[["defaultLocation"]]) && location=="NA") {
+    if (!is.null(query[["defaultLocation"]]) && location == "NA") {
       location_URL <- query[["defaultLocation"]] # gets location parameter
       
       if (location_URL == "Choate") {
@@ -118,26 +138,27 @@ server <- function(input, output, session) {
       updateSelectInput(session, "location", selected = "Choate Pond") # if no parameter are provided
     }
     
-    # getting drop downs for first month
-    first_start_year <- switch(input$firstYear,
-                               "2023" = "2023",
-                               "2022" = "2022",
-                               "2021" = "2021"
-    )
-    first_start_month <- switch(input$firstMonth,
-                                "January" = "01",
-                                "February" = "02",
-                                "March" = "03",
-                                "April" = "04",
-                                "May" = "05",
-                                "June" = "06",
-                                "July" = "07",
-                                "August" = "08",
-                                "September" = "09",
-                                "October" = "10",
-                                "November" = "11",
-                                "December" = "12"
-    )
+    if (!is.null(query[["year"]]) && first_start_year == "NA") {
+      year_URL <- query[["year"]] # gets year parameter
+      
+      updateSelectInput(session, "firstYear", selected = year_URL)
+    } else if (first_start_year == "NA") {
+      updateSelectInput(session, "firstYear", selected = "2023") # if no parameter are provided
+    }
+    
+    if (!is.null(query[["month"]]) && first_start_month == "NA") {
+      month_URL <- query[["month"]] # gets month parameter
+      
+      updateSelectInput(session, "firstMonth", selected = month_URL)
+    } else if (first_start_year == "NA") {
+      updateSelectInput(session, "firstMonth", selected = "January") # if no parameter are provided
+    }
+    
+    
+    
+    
+    
+    
     start_day <- "01"
     first_end_year <- first_start_year
     first_end_month <- first_start_month
@@ -213,8 +234,16 @@ server <- function(input, output, session) {
       "Turbidity" = c(0, 24)
     )
     
+    units <- switch(input$dataset,
+                    "Conductivity" = "mS/m",
+                    "Dissolved Oxygen" = "Percentage Oxygen in Liquid",
+                    "Salinity" = "Parts/Thousand",
+                    "Temperature" = "°F",
+                    "Turbidity" = "NTU",
+                    "pH" = ""
+    )
     
-    if (location != "NA") { # if to check to make sure a location is selected
+    if (location != "NA" && first_start_year != "NA" && first_start_month != "NA") { # if to check to make sure a location/month/year is selected
       
       
       # this section gets data for the first month
@@ -223,12 +252,14 @@ server <- function(input, output, session) {
       
       # get wqis
       if (location == "Choate") {
-        wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
+        if (first_start_month != "11" && first_start_month != "12") { # waiting for November WQI
+          wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
+        }
       } else {
         wqi <- "NA"
       }
       # display reports
-      output$first <- generate_ui(input$firstMonth, input$firstYear, data, input$dataset)
+      output$first <- generate_ui(input$firstMonth, input$firstYear, data, input$dataset, units)
       output$firstGauge <- renderPlotly({
         gauge_chart(wqi, location)
       })
@@ -241,10 +272,11 @@ server <- function(input, output, session) {
       
       
       
-      if ((second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") && location != "NA") {
+      if ((second_end_day == "NA" || second_start_month == "NA" || second_start_year == "NA" || second_location == "NA") && (location != "NA" && first_start_year != "NA" && first_start_month != "NA")) {
         # this section runs only where one month is selected
+        
         # gets the graph
-        interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds)
+        interactive_plot <- single_plot(data, data_maxmin, data_avg, input$dataset, thresholds, paste(input$firstMonth, input$firstYear), input$location, units)
         
         # displays graph
         interactive_plot
@@ -263,7 +295,7 @@ server <- function(input, output, session) {
         }
         
         # display reports
-        output$second <- generate_ui(input$secondMonth, input$secondYear, second_data, input$dataset)
+        output$second <- generate_ui(input$secondMonth, input$secondYear, second_data, input$dataset,units)
         output$secondGauge <- renderPlotly({
           gauge_chart(second_wqi, second_location)
         })
@@ -297,7 +329,7 @@ server <- function(input, output, session) {
         }
         
         # gets the graph
-        interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds)
+        interactive_plot <- double_plot(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, input$dataset, thresholds, paste(input$firstMonth, input$firstYear), input$location, paste(input$secondMonth, input$secondYear), input$secondLocation, units)
         
         # displays graph
         interactive_plot
@@ -319,7 +351,14 @@ fetch_data <- function(location, dataset, start_year, start_month, start_day, en
                               "-", end_day, "T23%3A59%3A59%2B00%3A00",
                               sep = ""
     )) # R doesn't have string concatenation
-    
+    print(paste("https://colabprod01.pace.edu/api/influx/",
+                "sensordata/Alan/idk/range?stream=false",
+                "&start_date=", start_year, "-", start_month,
+                "-", start_day, "T00%3A00%3A00%2B00%3A00",
+                "&stop_date=", end_year, "-", end_month,
+                "-", end_day, "T23%3A59%3A59%2B00%3A00",
+                sep = ""
+    ))
     my_data$timestamp <- as.Date(my_data$timestamp)
     
     # gets specific parameter
@@ -446,13 +485,13 @@ remove_outliers <- function(data) {
 }
 
 # logic to display mins and maxes
-generate_ui <- function(month, year, data, dataset) {
+generate_ui <- function(month, year, data, dataset, units) {
   return(renderUI({
     HTML(paste0(
-      "<div style='color:white; font-weight: bold; font-size: larger;'>Monthly Summary For ", month, " ", year, " of ",dataset,":</div><br/>",
-      "<div style='color:white;'>Min: ", min(data$value), "</div><br/>",
-      "<div style='color:white;'>Max: ", max(data$value), "</div><br/>",
-      "<div style='color:white;'>Average: ", round(mean(data$value)), "</div>"
+      "<div style='color:white; font-weight: bold; font-size: larger;'>", month, " ", year, " Monthly Summary For ", dataset, ":</div><br/>",
+      "<div style='color:white;'>Min: ", min(data$value), " ", units,"</div><br/>",
+      "<div style='color:white;'>Max: ", max(data$value)," ", units, "</div><br/>",
+      "<div style='color:white;'>Average: ", round(mean(data$value))," ", units, "</div>"
     ))
   }))
 }
@@ -478,7 +517,7 @@ find_daily_avg <- function(data) {
 }
 
 # responsible for drawing the single month
-single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds) {
+single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds, month_year, location, units) {
   # gets markers for average/min/max lines
   avg_thresholds_data <- draw_thresholds_data_avg(data_avg, dataset, thresholds)
   min_thresholds_data <- draw_thresholds_data_min(data_maxmin, dataset, thresholds)
@@ -492,9 +531,6 @@ single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds) {
     geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
     geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
     
-    scale_x_continuous(expand = c(0,0)) +
-    scale_y_continuous(expand = c(0,0)) +
-    
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "blue", size = 2.5, shape = 18) +
     geom_point(data = subset(avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2.5, shape = 18) +
@@ -507,8 +543,8 @@ single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds) {
     # geom_point(data = subset(max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
     labs(
-      title = "Daily Min / Max / Average", x = "Month-Day",
-      y = c(dataset)
+      title = paste("Daily Min / Max / Average", "for", c(dataset)), x = paste(c(month_year), "for", c(location), "(blue)"),
+      y = paste("Units: ", c(units))
     ) +
     theme(
       text = element_text(family = "Nunito", color = "White"),
@@ -523,7 +559,7 @@ single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds) {
 }
 
 # please update this function to however you feel is appropriate!
-double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset, thresholds) {
+double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset, thresholds, month_year_first, location_first, month_year_second, location_second, units) {
   # gets markers for average/max/min lines
   avg_thresholds_data <- draw_thresholds_data_avg(data_avg, dataset, thresholds)
   min_thresholds_data <- draw_thresholds_data_min(data_maxmin, dataset, thresholds)
@@ -544,9 +580,8 @@ double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_
     # draws the second line
     geom_ribbon(data = second_data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#ff000075") +
     geom_line(data = second_data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-    
-    scale_x_continuous(expand = c(0,0)) +
-    scale_y_continuous(expand = c(0,0)) +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
     
     # themes
     theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line(size = .1, color = "black")) +
@@ -564,7 +599,7 @@ double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_
     
     # draws the three thresholds for second month
     geom_point(data = subset(second_avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "blue", size = 2.5, shape = 18) +
-    geom_point(data = subset(second_avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2.5, shape =182) +
+    geom_point(data = subset(second_avg_thresholds_data, high_flag), aes(x = timestamp, y = daily_avg), color = "red", size = 2.5, shape = 182) +
     # geom_point(data = subset(second_avg_thresholds_data, norm_flag), aes(x = timestamp, y = daily_avg), color = "black", size = 2, shape = 3) +
     geom_point(data = subset(second_min_thresholds_data, low_flag), aes(x = timestamp, y = daily_min), color = "blue", size = 2.5, shape = 18) +
     geom_point(data = subset(second_min_thresholds_data, high_flag), aes(x = timestamp, y = daily_min), color = "red", size = 2.5, shape = 18) +
@@ -574,8 +609,8 @@ double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_
     # geom_point(data = subset(second_max_thresholds_data, norm_flag), aes(x = timestamp, y = daily_max), color = "black", size = 2, shape = 3) +
     
     labs(
-      title = "Daily Min / Max / Average", x = "Month-Day",
-      y = c(dataset)
+      title = paste("Daily Min / Max / Average", "for", c(dataset)), x = paste(c(month_year_first), "for", c(location_first), "(blue) &", c(month_year_second), "for", c(location_second), "(red)"),
+      y = paste("Units: ", c(units))
     ) +
     theme(
       text = element_text(family = "Nunito", color = "White"),

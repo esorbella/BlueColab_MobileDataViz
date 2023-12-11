@@ -38,11 +38,15 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("Ai");
   };
 
+  const handleAttributionPress = () => {
+    navigation.navigate("Attributions");
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
 
-        
+
         {/*Start Our Story Widget*/}
         <View style={styles.BlueCoLabContainer}>
           {/*Choate pond image*/}
@@ -80,11 +84,6 @@ export default function HomeScreen({ navigation }) {
             style={styles.imageContainer}
           />
           <Text style={styles.homeParagraphText}>
-            {/*Adding sensors and visualizing the information and statistics of our
-            local water sources is important for determining the water quality.
-            We aim to optimize this process so one day we can put these sensors
-            into our drinking water sources and bring this type of information
-            to people across the globe.*/}
             It is important to know the quality of water before you swim or fish
             in it. The purpose of our app is to make this information more accessible. 
           </Text>
@@ -196,7 +195,21 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/*End AI Widget*/}
 
-        <Text>
+        <View style={styles.attributionsWidget}>
+          <Text style={styles.storyParagraphText}>
+          Code & Data Attributions
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
+              handleAttributionPress();
+            }}
+          >
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>Learn more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <Text >
           {" "}
           Hidden text to make the bottom on this screen come out a little more{" "}
         </Text>

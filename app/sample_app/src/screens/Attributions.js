@@ -20,7 +20,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links} >
               my.plantnet.org
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -30,7 +30,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links} >
               gbif.org
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -41,7 +41,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links} >
               US-RIIS
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -51,7 +51,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links} >
              waterontheweb
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -61,7 +61,16 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links} >
               Python
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
+        </Text>
+        
+        <Text>
+          • Code to calculate distances between to latitudes has been adapted from {" "}
+          <TouchableOpacity onPress={() => handleLinkPress("https://stackoverflow.com/questions/72867971/distance-calculation-gives-strange-output-javascript")}>
+            <Text style={styles.links}>
+              stackoverflow
+            </Text>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -70,7 +79,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links}>
               https://bluecolab.pace.edu/
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>
@@ -80,7 +89,7 @@ export default function Attributions({ navigation }) {
             <Text style={styles.links}>
               Water Data
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>.
         </Text>
 
         <Text>

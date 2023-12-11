@@ -127,7 +127,7 @@ export default function AiScreen({ navigation }) {
 
       const responseData = await response.json();
 
-      console.log(response.status)
+      // console.log(response.status)
 
       if (response.status != 404) {
 
@@ -165,7 +165,7 @@ export default function AiScreen({ navigation }) {
             });
           });
 
-          console.log('Finished reading the CSV file.');
+          // console.log('Finished reading the CSV file.');
           setSpeciesData(plantList);
           // console.log(result.data.results);
         } catch (error) {
@@ -401,7 +401,7 @@ const AIResponse = ({ speciesData, navigation }) => {
   ];
 
   const displaySpecies = (species) => {
-    console.log(species);
+    // console.log(species);
     if (species.length > 0) { // valid array received
       return (
         <SafeAreaView style={styles.infoContainer}>
@@ -416,13 +416,13 @@ const AIResponse = ({ speciesData, navigation }) => {
             <Text>Display responses with a score above 1%.</Text>
           </View>
 
-          <View>
+          <View style={styles.attributions}> 
             {errorMsg ? (
               <Text>{errorMsg}</Text>
             ) : location ? (
-              <Text>
+     
                 <ClosetLocation lat={location.coords.latitude} long={location.coords.longitude} navigation={navigation}></ClosetLocation>
-              </Text>
+       
             ) : (
               <Text>Loading Location...</Text>
             )}
@@ -495,7 +495,7 @@ const ClosetLocation = ({ lat, long, navigation }) => {
           handleChoatePress();
         }}
       >
-        <View>
+        <View >
           <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Choate Pond is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
@@ -506,12 +506,12 @@ const ClosetLocation = ({ lat, long, navigation }) => {
           handleYonkPress();
         }}
       >
-        <View>
+        <View >
           <Text style={styles.mainButtonText}>Invasive Species have an effect on your water! Yonkers is the closest body of water we have access of. Click here to learn more.</Text>
         </View>
       </TouchableHighlight></View>)
   } else if (minLocation == "West Point") {
-    return (<View>
+    return (<View> 
       <TouchableHighlight
         onPress={() => {
           handleWPPress();

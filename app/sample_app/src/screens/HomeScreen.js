@@ -200,23 +200,20 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/*End AI Widget*/}
 
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => {
-          handleAttributionPress();
-        }}>
-          <>
-
-            <Text style={styles.storyParagraphText}>Code & Data Attributions</Text>
-
-            <TouchableHighlight style={styles.buttonContainer} onPress={() => {
+        <View style={styles.attributionsWidget}>
+          <Text style={styles.storyParagraphText}>
+          Code & Data Attributions
+          </Text>
+          <TouchableHighlight
+            onPress={() => {
               handleAttributionPress();
-            }}>
-              <View style={styles.generalButton}>
-                <Text style={styles.mainButtonText}>Find out more</Text>
-              </View>
-            </TouchableHighlight>
-          </>
-        </TouchableHighlight>
-
+            }}
+          >
+            <View style={styles.generalButton}>
+              <Text style={styles.mainButtonText}>Learn more...</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
         <Text >
           {" "}
           Hidden text to make the bottom on this screen come out a little more{" "}

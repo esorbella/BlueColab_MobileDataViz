@@ -530,8 +530,6 @@ single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds, month_
     # draws the first line
     geom_ribbon(data = data_maxmin, aes(x = timestamp, ymin = daily_min, ymax = daily_max), fill = "#336bed95") +
     geom_line(data = data_avg, aes(x = timestamp, y = daily_avg), color = "black", size = 1) +
-    scale_x_continuous(expand = c(0, 0)) +
-    scale_y_continuous(expand = c(0, 0)) +
     
     # draws the three thresholds
     geom_point(data = subset(avg_thresholds_data, low_flag), aes(x = timestamp, y = daily_avg), color = "blue", size = 2.5, shape = 18) +
@@ -561,7 +559,7 @@ single_plot <- function(data, data_maxmin, data_avg, dataset, thresholds, month_
 }
 
 # please update this function to however you feel is appropriate!
-double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset, thresholds, month_year_first, location_first, month_year_second, location_second) {
+double_plot <- function(data, data_maxmin, data_avg, second_data_maxmin, second_data_avg, dataset, thresholds, month_year_first, location_first, month_year_second, location_second, units) {
   # gets markers for average/max/min lines
   avg_thresholds_data <- draw_thresholds_data_avg(data_avg, dataset, thresholds)
   min_thresholds_data <- draw_thresholds_data_min(data_maxmin, dataset, thresholds)

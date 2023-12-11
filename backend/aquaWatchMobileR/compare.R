@@ -252,9 +252,9 @@ server <- function(input, output, session) {
       
       # get wqis
       if (location == "Choate") {
-        if (first_start_month != "11" && first_start_month != "12") { # waiting for November WQI
+    
           wqi <- fromJSON(paste("http://choatevisual.us-east-1.elasticbeanstalk.com/WQI/Choate/", first_start_month, "-", first_start_year, sep = ""))
-        }
+        
       } else {
         wqi <- "NA"
       }

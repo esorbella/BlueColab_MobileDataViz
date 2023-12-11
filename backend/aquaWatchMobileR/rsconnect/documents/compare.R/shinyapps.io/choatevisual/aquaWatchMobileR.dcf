@@ -5,7 +5,7 @@ account: choatevisual
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10765066
-bundleId: 8032874
+bundleId: 8036205
 url: https://aquawatchmobile.shinyapps.io/aquaWatchMobileR/
 version: 1
 asMultiple: FALSE

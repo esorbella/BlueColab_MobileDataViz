@@ -19,13 +19,13 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 //THIS IS THE APP ENTRY POINT
 
-//fonts literally just dont work
-const fetchFonts = () => {
-  return Font.loadAsync({
-    'Nunito': require('./assets/fonts/Nunito/static/Nunito-Black.ttf'),
-    // Add more fonts if needed
-  });
-};
+// //fonts literally just dont work
+// const fetchFonts = () => {
+//   return Font.loadAsync({
+//     'Nunito': require('./assets/fonts/Nunito/static/Nunito-Black.ttf'),
+//     // Add more fonts if needed
+//   });
+// };
 
 //the navigator declares names for each page and we use these names 
 //throughout the app as the navigation names

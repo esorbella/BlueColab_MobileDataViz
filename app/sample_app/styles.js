@@ -56,7 +56,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        // fontFamily: 'Nunito-Black',
     },
     //AI screen widget in the homescree
     aiWidget: {
@@ -302,7 +302,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
+        // fontFamily: 'Nunito',
     },
     //Text below the graph widget image
     graphParagraphText: {
@@ -313,7 +313,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-        fontFamily: 'Nunito',
+        // fontFamily: 'Nunito',
     },
     //used throughout app- also good copy/paste template
     paragraphText: {
@@ -324,7 +324,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        // fontFamily: 'Nunito-Black',
     },
     paragraphTextWildlife: {
         color: 'white',
@@ -334,7 +334,7 @@ export default StyleSheet.create({
         marginLeft: deviceWidth / 15,
         marginRight: deviceWidth / 15,
         textAlign: 'center',
-        fontFamily: 'Nunito-Black',
+        // fontFamily: 'Nunito-Black',
     },
     //used in wildlife page
     pictureSub: {

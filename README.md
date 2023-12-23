@@ -35,6 +35,12 @@ Wireframes and architecture diagrams for the project shown below.
 <p align="center" width="100%">
     <img width="80%" src="https://media.discordapp.net/attachments/381066127129706501/1160307209952047114/image.png?ex=65342f4c&is=6521ba4c&hm=f45bd882f7bebf32040f9067604f8096f07f7645f0cebf85431ac3e7772d8492&=&width=636&height=586">
 </p>
+<p>For a detailed software specification document, <a href="https://docs.google.com/document/d/1jLOfLNpO9n5WtAkfG0nEC0G0osjd11xt/edit?usp=sharing&ouid=111444997732881039746&rtpof=true&sd=true" target="_blank">click here</a>.</p>
+
+<p align="center" width="100%">
+    <img width="80%" src="https://media.discordapp.net/attachments/381066127129706501/1160307209952047114/image.png?ex=65342f4c&is=6521ba4c&hm=f45bd882f7bebf32040f9067604f8096f07f7645f0cebf85431ac3e7772d8492&=&width=636&height=586">
+</p>
+
 <h3> Team </h3>
 <p>
     The members of the team include Ardin Kraja, Erin Sorbella, Kenji Okura, Lulu Moquette, and Meryl Mizell.

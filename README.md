@@ -38,14 +38,3 @@
 <p>
     The members of the team include Ardin Kraja, Erin Sorbella, Kenji Okura, Lulu Moquette, and Meryl Mizell.
 </p>
-
-<h3> Getting the Repository </h3>
-<p>
-    - Install <a href="https://git-scm.com/">Git</a>.
-</p>
-<p>
-    - Navigate to location you want the folders in and open terminal.
-</p>
-<p>
-    - In terminal run <code>git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git</code>
-</p>

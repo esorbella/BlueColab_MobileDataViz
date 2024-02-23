@@ -23,7 +23,7 @@
     "moment": "^2.29.4",
     "patch-package": "^8.0.0",
     "react": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-navigation-bar": "^0.2.1",
     "react-native-orientation-locker": "^1.5.0",
